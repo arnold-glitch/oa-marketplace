@@ -1,0 +1,1144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>OA Connect — Panel Recruitment Workflow</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    /* ===== Workflow-specific styles ===== */
+    .wf-eyebrow {
+      display: inline-block;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+      color: var(--oa-orange);
+      margin-bottom: 0.6rem;
+    }
+    .wf-stage-h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--oa-navy);
+      letter-spacing: -0.01em;
+      margin: 0 0 0.4rem 0;
+    }
+    .wf-stage-sub {
+      font-size: 0.95rem;
+      color: var(--oa-muted);
+      margin: 0 0 2rem 0;
+      max-width: 720px;
+      line-height: 1.55;
+    }
+
+    /* Channel grid (Stage 1) */
+    .wf-channel-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    @media (max-width: 1000px) { .wf-channel-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .wf-channel-grid { grid-template-columns: 1fr; } }
+    .wf-channel-card {
+      background: white;
+      border: 1px solid var(--oa-border);
+      border-radius: 12px;
+      padding: 1.1rem 1.15rem;
+      border-top: 4px solid var(--oa-navy);
+      transition: all 0.15s;
+    }
+    .wf-channel-card:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(11,42,74,0.08); }
+    .wf-channel-card.email { border-top-color: #0EA5E9; }
+    .wf-channel-card.sms { border-top-color: #8B5CF6; }
+    .wf-channel-card.wa { border-top-color: #16A34A; }
+    .wf-channel-card.fb { border-top-color: #1877F2; }
+    .wf-channel-card.li { border-top-color: #0A66C2; }
+    .wf-channel-card.yt { border-top-color: #DC2626; }
+    .wf-channel-card.ctwa { border-top-color: #25D366; }
+    .wf-channel-card.reddit { border-top-color: #FF4500; }
+    .wf-channel-icon {
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+    }
+    .wf-channel-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--oa-navy);
+      margin: 0 0 0.35rem 0;
+    }
+    .wf-channel-meta {
+      font-size: 0.75rem;
+      color: var(--oa-muted);
+      line-height: 1.5;
+    }
+    .wf-channel-meta strong {
+      color: var(--oa-text);
+      font-weight: 600;
+    }
+
+    /* Branch decision visual */
+    .wf-branch {
+      background: white;
+      border: 1px solid var(--oa-border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      text-align: center;
+    }
+    .wf-branch-q {
+      display: inline-block;
+      background: var(--oa-navy-50);
+      color: var(--oa-navy);
+      padding: 0.55rem 1rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+    }
+    .wf-branch-paths {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    @media (max-width: 700px) { .wf-branch-paths { grid-template-columns: 1fr; } }
+    .wf-branch-path {
+      background: var(--oa-bg);
+      border: 1px solid var(--oa-border);
+      border-radius: 10px;
+      padding: 1rem 1.15rem;
+      text-align: left;
+    }
+    .wf-branch-path.yes { border-left: 4px solid var(--oa-green); }
+    .wf-branch-path.no { border-left: 4px solid var(--oa-orange); }
+    .wf-branch-path strong {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--oa-navy);
+      margin-bottom: 0.3rem;
+    }
+    .wf-branch-path .label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.5rem;
+    }
+    .wf-branch-path.yes .label { color: var(--oa-green); }
+    .wf-branch-path.no .label { color: var(--oa-orange); }
+    .wf-branch-path p {
+      margin: 0;
+      font-size: 0.78rem;
+      color: var(--oa-muted);
+      line-height: 1.55;
+    }
+
+    /* ===== Timeline (Stage 2 centerpiece) ===== */
+    .wf-timeline-wrap {
+      background: white;
+      border: 1px solid var(--oa-border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      overflow-x: auto;
+    }
+    .wf-timeline {
+      min-width: 880px;
+      display: grid;
+      grid-template-columns: 130px repeat(13, 1fr);
+      gap: 0;
+      font-size: 0.78rem;
+    }
+    .wf-timeline > div {
+      padding: 0.55rem 0.4rem;
+      border-bottom: 1px solid var(--oa-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .wf-timeline .wf-th {
+      background: var(--oa-bg);
+      font-weight: 700;
+      font-size: 0.7rem;
+      color: var(--oa-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-top: 1px solid var(--oa-border);
+    }
+    .wf-timeline .wf-th-channel {
+      justify-content: flex-start;
+      padding-left: 0.85rem;
+      border-left: 1px solid var(--oa-border);
+    }
+    .wf-timeline .wf-th-end {
+      border-right: 1px solid var(--oa-border);
+    }
+    .wf-timeline .wf-channel-name {
+      justify-content: flex-start;
+      padding-left: 0.85rem;
+      font-weight: 700;
+      color: var(--oa-navy);
+      background: var(--oa-bg);
+      font-size: 0.8rem;
+      border-left: 1px solid var(--oa-border);
+    }
+    .wf-timeline .wf-cell { background: white; }
+    .wf-timeline .wf-cell-end { border-right: 1px solid var(--oa-border); }
+    .wf-timeline .wf-row-end > div:last-child { border-bottom: none; }
+
+    /* Pill markers on timeline */
+    .wf-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 32px;
+      height: 26px;
+      padding: 0 0.5rem;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: white;
+      line-height: 1;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    }
+    .wf-pill.email { background: #0EA5E9; }
+    .wf-pill.sms { background: #8B5CF6; }
+    .wf-pill.wa { background: #16A34A; }
+    .wf-pill.li { background: #0A66C2; }
+    .wf-pill.voice { background: #F59E0B; }
+    .wf-pill.final { background: #6B7280; }
+
+    /* Always-on bar (FB ads / YouTube) */
+    .wf-always {
+      grid-column: 2 / span 13;
+      height: 14px;
+      border-radius: 4px;
+      margin: 0.4rem 0.3rem;
+      background: linear-gradient(90deg, var(--oa-orange) 0%, #FCD34D 100%);
+      position: relative;
+    }
+    .wf-always.yt { background: linear-gradient(90deg, #DC2626 0%, #F97316 100%); }
+    .wf-always-row { display: contents; }
+
+    /* Legend */
+    .wf-legend {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 1.25rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--oa-border);
+      font-size: 0.78rem;
+      color: var(--oa-muted);
+    }
+    .wf-legend-item { display: inline-flex; align-items: center; gap: 0.4rem; }
+    .wf-legend-swatch {
+      width: 18px; height: 14px; border-radius: 4px;
+    }
+
+    /* Rules callout */
+    .wf-rules {
+      margin-top: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.85rem;
+    }
+    @media (max-width: 800px) { .wf-rules { grid-template-columns: 1fr; } }
+    .wf-rule {
+      background: #FFF8F0;
+      border: 1px solid #FED7AA;
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      font-size: 0.82rem;
+      color: var(--oa-text);
+      line-height: 1.55;
+    }
+    .wf-rule strong { color: var(--oa-orange); display: block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.3rem; }
+
+    /* Stage 3 — conversion flow */
+    .wf-flow {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr) auto;
+      gap: 0;
+      align-items: stretch;
+      background: white;
+      border: 1px solid var(--oa-border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    @media (max-width: 900px) { .wf-flow { grid-template-columns: 1fr; } }
+    .wf-flow-step {
+      padding: 1.15rem 1.1rem;
+      border-right: 1px solid var(--oa-border);
+      position: relative;
+    }
+    @media (max-width: 900px) { .wf-flow-step { border-right: none; border-bottom: 1px solid var(--oa-border); } }
+    .wf-flow-step:last-child { border-right: none; }
+    .wf-flow-num {
+      width: 24px; height: 24px;
+      background: var(--oa-orange);
+      color: white;
+      border-radius: 999px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 800;
+      margin-bottom: 0.6rem;
+    }
+    .wf-flow-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--oa-navy);
+      margin: 0 0 0.3rem 0;
+    }
+    .wf-flow-text {
+      font-size: 0.75rem;
+      color: var(--oa-muted);
+      line-height: 1.5;
+      margin: 0;
+    }
+    .wf-flow-payout {
+      background: linear-gradient(135deg, var(--oa-green) 0%, #15803D 100%);
+      color: white;
+      padding: 1.15rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-width: 120px;
+    }
+    .wf-flow-payout strong {
+      font-size: 1.4rem;
+      font-weight: 800;
+      display: block;
+      line-height: 1;
+    }
+    .wf-flow-payout span {
+      font-size: 0.7rem;
+      opacity: 0.85;
+      margin-top: 0.35rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* Retention cards */
+    .wf-retention-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+    @media (max-width: 900px) { .wf-retention-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .wf-retention-grid { grid-template-columns: 1fr; } }
+    .wf-retention-card {
+      background: white;
+      border: 1px solid var(--oa-border);
+      border-radius: 12px;
+      padding: 1.1rem;
+    }
+    .wf-retention-card .icon { font-size: 1.4rem; margin-bottom: 0.5rem; }
+    .wf-retention-card h4 {
+      font-size: 0.9rem;
+      color: var(--oa-navy);
+      margin: 0 0 0.3rem 0;
+      font-weight: 700;
+    }
+    .wf-retention-card p { font-size: 0.78rem; color: var(--oa-muted); margin: 0; line-height: 1.55; }
+
+    /* Infrastructure table styling */
+    .wf-infra {
+      display: grid;
+      grid-template-columns: 2fr 3fr;
+      gap: 2rem;
+    }
+    @media (max-width: 900px) { .wf-infra { grid-template-columns: 1fr; } }
+    .wf-infra-table {
+      background: white;
+      border: 1px solid var(--oa-border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .wf-infra-table table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    .wf-infra-table th, .wf-infra-table td { padding: 0.7rem 0.95rem; text-align: left; border-bottom: 1px solid var(--oa-border); }
+    .wf-infra-table th { background: var(--oa-bg); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--oa-muted); font-weight: 700; }
+    .wf-infra-table tr:last-child td { border-bottom: none; }
+    .wf-infra-table td strong { color: var(--oa-navy); }
+
+    .wf-team-card {
+      background: var(--oa-navy);
+      color: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    .wf-team-card h3 {
+      color: white;
+      font-size: 1rem;
+      margin: 0 0 0.85rem 0;
+      font-weight: 700;
+    }
+    .wf-team-card ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .wf-team-card li {
+      padding: 0.55rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+    .wf-team-card li:last-child { border-bottom: none; }
+    .wf-team-card .count {
+      background: var(--oa-orange);
+      color: white;
+      width: 26px; height: 26px;
+      border-radius: 999px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    /* KPI grid */
+    .wf-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    @media (max-width: 800px) { .wf-kpi-grid { grid-template-columns: 1fr; } }
+    .wf-kpi {
+      background: white;
+      border: 1px solid var(--oa-border);
+      border-radius: 12px;
+      padding: 1.15rem 1.25rem;
+    }
+    .wf-kpi-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 700;
+      color: var(--oa-orange);
+      margin-bottom: 0.65rem;
+    }
+    .wf-kpi ul { margin: 0; padding-left: 1.1rem; }
+    .wf-kpi li { font-size: 0.83rem; color: var(--oa-text); padding: 0.18rem 0; }
+
+    /* Rollout */
+    .wf-rollout {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      counter-reset: weeknum;
+    }
+    @media (max-width: 900px) { .wf-rollout { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .wf-rollout { grid-template-columns: 1fr; } }
+    .wf-week {
+      background: white;
+      border: 1px solid var(--oa-border);
+      border-radius: 12px;
+      padding: 1.15rem 1.2rem;
+      position: relative;
+    }
+    .wf-week-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 800;
+      color: var(--oa-orange);
+      margin-bottom: 0.5rem;
+    }
+    .wf-week h4 {
+      font-size: 0.95rem;
+      color: var(--oa-navy);
+      margin: 0 0 0.65rem 0;
+      font-weight: 700;
+    }
+    .wf-week ul { margin: 0; padding-left: 1rem; }
+    .wf-week li { font-size: 0.78rem; color: var(--oa-text); padding: 0.2rem 0; line-height: 1.4; }
+
+    /* Stage divider */
+    .wf-stage-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 4rem 0 1.5rem 0;
+    }
+    .wf-stage-num {
+      width: 44px; height: 44px;
+      background: var(--oa-navy);
+      color: white;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    /* Funnel summary at top */
+    .wf-funnel {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--oa-border);
+      margin-top: 1.5rem;
+    }
+    @media (max-width: 900px) { .wf-funnel { grid-template-columns: 1fr; } }
+    .wf-funnel-step {
+      padding: 1rem 1.1rem;
+      text-align: center;
+      border-right: 1px solid var(--oa-border);
+    }
+    @media (max-width: 900px) { .wf-funnel-step { border-right: none; border-bottom: 1px solid var(--oa-border); } }
+    .wf-funnel-step:last-child { border-right: none; }
+    .wf-funnel-step .num {
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--oa-muted);
+      font-weight: 700;
+    }
+    .wf-funnel-step .name {
+      font-size: 1rem;
+      color: var(--oa-navy);
+      margin: 0.3rem 0 0.25rem 0;
+      font-weight: 800;
+    }
+    .wf-funnel-step .desc {
+      font-size: 0.72rem;
+      color: var(--oa-muted);
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body class="oa-sales-body">
+
+<!-- ============== TOP NAV ============== -->
+<div class="oa-sales-topbar">
+  <div class="oa-sales-topbar-inner">
+    <a href="sales.html" class="oa-logo">
+      <span class="oa-logo-dot"></span>
+      <span>OA Marketplace</span>
+    </a>
+    <nav class="oa-nav">
+      <a href="#stage-1">Acquisition</a>
+      <a href="#stage-2">Engagement</a>
+      <a href="#stage-3">Conversion</a>
+      <a href="#stage-4">Retention</a>
+      <a href="#infra">Infrastructure</a>
+      <a href="#rollout">Rollout</a>
+    </nav>
+    <a href="panel.html" class="oa-btn">↗ Panel page</a>
+  </div>
+</div>
+
+<!-- ============== HERO ============== -->
+<section class="oa-sales-hero">
+  <div class="oa-constellation-bg"></div>
+  <div class="oa-sales-hero-inner">
+    <span class="oa-sales-eyebrow">Panel Recruitment · Internal Playbook</span>
+    <h1 class="oa-sales-h1">
+      One workflow. <span class="accent">Six channels.</span> Thirty days.
+    </h1>
+    <p class="oa-sales-lede">
+      The end-to-end plan for filling the OA Connect panel — from first ad impression to active panelist taking $50 vendor discovery calls. Designed for BPO Managers and above across PH, India, ZA, MX, CO, US, UK.
+    </p>
+    <div class="oa-sales-hero-stats">
+      <div>
+        <div class="oa-sales-hero-stat-num">6</div>
+        <div class="oa-sales-hero-stat-label">channels orchestrated · email, SMS, WhatsApp, LinkedIn, FB/IG, YouTube</div>
+      </div>
+      <div>
+        <div class="oa-sales-hero-stat-num">21 days</div>
+        <div class="oa-sales-hero-stat-label">per-contact sequence · 5 emails, 3 SMS, 2 WA, 3 LI</div>
+      </div>
+      <div>
+        <div class="oa-sales-hero-stat-num">4 stages</div>
+        <div class="oa-sales-hero-stat-label">acquisition → engagement → conversion → retention</div>
+      </div>
+      <div>
+        <div class="oa-sales-hero-stat-num">4 wks</div>
+        <div class="oa-sales-hero-stat-label">setup before full launch · domains, inboxes, templates</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FUNNEL OVERVIEW ============== -->
+<section class="oa-sales-section" style="padding-bottom:2rem">
+  <div class="oa-sales-section-inner">
+    <span class="wf-eyebrow">Overview</span>
+    <h2 class="wf-stage-h2">The full funnel at a glance.</h2>
+    <p class="wf-stage-sub">Every panel signup flows through these five steps. Each stage has its own channel mix and conversion target.</p>
+
+    <div class="wf-funnel">
+      <div class="wf-funnel-step">
+        <div class="num">Stage 1</div>
+        <div class="name">Acquisition</div>
+        <div class="desc">Cold ads, outbound, organic — fills the top of funnel from 8 channels</div>
+      </div>
+      <div class="wf-funnel-step">
+        <div class="num">Stage 2</div>
+        <div class="name">Engagement</div>
+        <div class="desc">21-day multi-channel sequence per contact, with reply-halt logic</div>
+      </div>
+      <div class="wf-funnel-step">
+        <div class="num">Stage 3</div>
+        <div class="name">Conversion</div>
+        <div class="desc">Signup → profile setup → first pitch matched within 48h</div>
+      </div>
+      <div class="wf-funnel-step">
+        <div class="num">Stage 4a</div>
+        <div class="name">Activation</div>
+        <div class="desc">First accepted call · $50 voucher hits within 24 hours</div>
+      </div>
+      <div class="wf-funnel-step">
+        <div class="num">Stage 4b</div>
+        <div class="name">Retention</div>
+        <div class="desc">WA Community + Status + monthly nurture → recurring meetings</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== STAGE 1 — ACQUISITION ============== -->
+<section class="oa-sales-section tint" id="stage-1" style="padding-top:3rem">
+  <div class="oa-sales-section-inner">
+    <div class="wf-stage-divider">
+      <div class="wf-stage-num">1</div>
+      <div>
+        <span class="wf-eyebrow">Stage 1</span>
+        <h2 class="wf-stage-h2" style="margin:0">Acquisition — always-on, fills the top of funnel</h2>
+      </div>
+    </div>
+    <p class="wf-stage-sub">Eight channels work in parallel. The two highest-leverage for BPO geos are <strong>Click-to-WhatsApp ads</strong> (PH/India/LatAm) and <strong>LinkedIn Sales Nav outreach</strong> (US/UK). Everything else supports those two.</p>
+
+    <div class="wf-channel-grid">
+      <div class="wf-channel-card ctwa">
+        <div class="wf-channel-icon">💬</div>
+        <div class="wf-channel-title">Click-to-WhatsApp Ads</div>
+        <div class="wf-channel-meta">
+          <strong>$20–30/day per geo</strong><br>
+          PH / India / LatAm focus<br>
+          Opens WA, auto-template fires
+        </div>
+      </div>
+      <div class="wf-channel-card fb">
+        <div class="wf-channel-icon">📱</div>
+        <div class="wf-channel-title">FB / IG Direct Ads</div>
+        <div class="wf-channel-meta">
+          <strong>$30–50/day, 3 variants</strong><br>
+          Job-title + employer targeting<br>
+          → panel.html signup
+        </div>
+      </div>
+      <div class="wf-channel-card li">
+        <div class="wf-channel-icon">💼</div>
+        <div class="wf-channel-title">LinkedIn</div>
+        <div class="wf-channel-meta">
+          <strong>Sales Nav + InMail + DMs</strong><br>
+          2–3 SDR profiles<br>
+          CEO/COO personal posts 1×/wk
+        </div>
+      </div>
+      <div class="wf-channel-card email">
+        <div class="wf-channel-icon">✉️</div>
+        <div class="wf-channel-title">Cold Email</div>
+        <div class="wf-channel-meta">
+          <strong>9–12 inboxes · 3–4 domains</strong><br>
+          ~400/day total volume<br>
+          Warmed 3–4 wks pre-launch
+        </div>
+      </div>
+      <div class="wf-channel-card yt">
+        <div class="wf-channel-icon">▶️</div>
+        <div class="wf-channel-title">YouTube</div>
+        <div class="wf-channel-meta">
+          <strong>90s explainer + 3 shorts</strong><br>
+          YT / TikTok / IG Reels<br>
+          Evergreen + retargeting fuel
+        </div>
+      </div>
+      <div class="wf-channel-card sms">
+        <div class="wf-channel-icon">💬</div>
+        <div class="wf-channel-title">SMS</div>
+        <div class="wf-channel-meta">
+          <strong>Twilio + local aggregators</strong><br>
+          2–3 numbers per geo<br>
+          Backup channel, no WA opt-in
+        </div>
+      </div>
+      <div class="wf-channel-card wa">
+        <div class="wf-channel-icon">🟢</div>
+        <div class="wf-channel-title">WhatsApp Business</div>
+        <div class="wf-channel-meta">
+          <strong>1 BSP · 5 numbers</strong><br>
+          PH / IN / US / UK / LatAm<br>
+          4 approved templates
+        </div>
+      </div>
+      <div class="wf-channel-card reddit">
+        <div class="wf-channel-icon">🗨️</div>
+        <div class="wf-channel-title">Reddit + Communities</div>
+        <div class="wf-channel-meta">
+          <strong>r/BPO, r/callcenters, r/CX</strong><br>
+          Organic value posts<br>
+          Soft mentions in comments
+        </div>
+      </div>
+    </div>
+
+    <!-- Branch decision -->
+    <div class="wf-branch">
+      <div class="wf-branch-q">→ Once a lead is captured, which engagement track?</div>
+      <div class="wf-branch-paths">
+        <div class="wf-branch-path yes">
+          <div class="label">If has WhatsApp opt-in</div>
+          <strong>WA-FIRST TRACK</strong>
+          <p>Default for PH / India / LatAm. Opt-in earned via CTWA ad click, form checkbox, or inbound reply. WhatsApp template fires Day 2, voice note on reply, email serves as backup. Highest reply rates (25–40% in PH/IN).</p>
+        </div>
+        <div class="wf-branch-path no">
+          <div class="label">If no WhatsApp opt-in</div>
+          <strong>EMAIL-FIRST TRACK</strong>
+          <p>Default for US / UK / global. Email leads, SMS at days 5/10/17, LinkedIn DM in parallel. Sequence actively tries to earn WA opt-in mid-flight (reply prompt in E2 and E3). Standard 3–8% reply rates.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== STAGE 2 — ENGAGEMENT (TIMELINE) ============== -->
+<section class="oa-sales-section" id="stage-2">
+  <div class="oa-sales-section-inner">
+    <div class="wf-stage-divider">
+      <div class="wf-stage-num">2</div>
+      <div>
+        <span class="wf-eyebrow">Stage 2</span>
+        <h2 class="wf-stage-h2" style="margin:0">Engagement — 21-day multi-channel sequence</h2>
+      </div>
+    </div>
+    <p class="wf-stage-sub">Every captured lead enters this sequence. Channels are interleaved (never same-day overlap) and tuned per geo. <strong>Any reply on any channel halts all other sequences immediately.</strong></p>
+
+    <!-- Timeline -->
+    <div class="wf-timeline-wrap">
+      <div class="wf-timeline">
+        <!-- Header row -->
+        <div class="wf-th wf-th-channel">Channel</div>
+        <div class="wf-th">D0</div>
+        <div class="wf-th">D2</div>
+        <div class="wf-th">D3</div>
+        <div class="wf-th">D5</div>
+        <div class="wf-th">D6</div>
+        <div class="wf-th">D7</div>
+        <div class="wf-th">D9</div>
+        <div class="wf-th">D10</div>
+        <div class="wf-th">D12</div>
+        <div class="wf-th">D14</div>
+        <div class="wf-th">D17</div>
+        <div class="wf-th">D21</div>
+        <div class="wf-th wf-th-end">D30+</div>
+
+        <!-- Email row -->
+        <div class="wf-channel-name">Email</div>
+        <div class="wf-cell"><span class="wf-pill email">E1</span></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell"><span class="wf-pill email">E2</span></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell"><span class="wf-pill email">E3</span></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell"><span class="wf-pill email">E4</span></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell"><span class="wf-pill email">E5</span></div>
+        <div class="wf-cell wf-cell-end" style="font-size:0.7rem;color:var(--oa-muted)">newsletter</div>
+
+        <!-- SMS row -->
+        <div class="wf-channel-name">SMS</div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell"><span class="wf-pill sms">S1</span></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell"><span class="wf-pill sms">S2</span></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell"><span class="wf-pill sms">S3</span></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell wf-cell-end" style="font-size:0.7rem;color:var(--oa-muted)">off</div>
+
+        <!-- WhatsApp row -->
+        <div class="wf-channel-name">WhatsApp</div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell"><span class="wf-pill wa">T2</span></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell"><span class="wf-pill voice">🎤</span></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell"><span class="wf-pill wa">T3</span></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell"><span class="wf-pill final">end</span></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell wf-cell-end" style="font-size:0.7rem;color:var(--oa-muted)">community</div>
+
+        <!-- LinkedIn row -->
+        <div class="wf-channel-name">LinkedIn</div>
+        <div class="wf-cell"><span class="wf-pill li">L1</span></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell"><span class="wf-pill li">L2</span></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell"><span class="wf-pill li">L3</span></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell"></div>
+        <div class="wf-cell wf-cell-end" style="font-size:0.7rem;color:var(--oa-muted)">CEO posts</div>
+
+        <!-- FB/IG Always-on -->
+        <div class="wf-channel-name">FB / IG Ads</div>
+        <div class="wf-always" style="margin-left:0.3rem"></div>
+
+        <!-- YouTube Always-on -->
+        <div class="wf-channel-name wf-row-end">YouTube</div>
+        <div class="wf-always yt" style="margin-left:0.3rem"></div>
+      </div>
+
+      <div class="wf-legend">
+        <div class="wf-legend-item"><span class="wf-legend-swatch" style="background:#0EA5E9"></span>Email</div>
+        <div class="wf-legend-item"><span class="wf-legend-swatch" style="background:#8B5CF6"></span>SMS</div>
+        <div class="wf-legend-item"><span class="wf-legend-swatch" style="background:#16A34A"></span>WA Template</div>
+        <div class="wf-legend-item"><span class="wf-legend-swatch" style="background:#F59E0B"></span>WA Voice Note</div>
+        <div class="wf-legend-item"><span class="wf-legend-swatch" style="background:#0A66C2"></span>LinkedIn DM</div>
+        <div class="wf-legend-item"><span class="wf-legend-swatch" style="background:linear-gradient(90deg,var(--oa-orange),#FCD34D)"></span>Always-on</div>
+      </div>
+    </div>
+
+    <!-- Rules callouts -->
+    <div class="wf-rules">
+      <div class="wf-rule">
+        <strong>Rule 1 — No overlap</strong>
+        Email and SMS never fire on the same day. WhatsApp templates never within 24h of another WA send.
+      </div>
+      <div class="wf-rule">
+        <strong>Rule 2 — Reply halts everything</strong>
+        Any inbound on any channel pauses all queued sequences for that contact. CRM-enforced from day one.
+      </div>
+      <div class="wf-rule">
+        <strong>Rule 3 — Signup exits Stage 2</strong>
+        Registered panelists immediately drop out of cold sequences and enter the activation track.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== STAGE 3 — CONVERSION ============== -->
+<section class="oa-sales-section tint" id="stage-3">
+  <div class="oa-sales-section-inner">
+    <div class="wf-stage-divider">
+      <div class="wf-stage-num">3</div>
+      <div>
+        <span class="wf-eyebrow">Stage 3</span>
+        <h2 class="wf-stage-h2" style="margin:0">Conversion — from signup to first $50</h2>
+      </div>
+    </div>
+    <p class="wf-stage-sub">Once a lead clicks through and registers, the goal is one accepted call within their first week. Profile completion is the leading indicator.</p>
+
+    <div class="wf-flow">
+      <div class="wf-flow-step">
+        <div class="wf-flow-num">1</div>
+        <h4 class="wf-flow-title">Register on panel.html</h4>
+        <p class="wf-flow-text">Email + role + LinkedIn (or CV upload). 30 seconds.</p>
+      </div>
+      <div class="wf-flow-step">
+        <div class="wf-flow-num">2</div>
+        <h4 class="wf-flow-title">Profile setup</h4>
+        <p class="wf-flow-text">Auto-extracted focus areas, manual confirm. 2 minutes total.</p>
+      </div>
+      <div class="wf-flow-step">
+        <div class="wf-flow-num">3</div>
+        <h4 class="wf-flow-title">First pitches matched</h4>
+        <p class="wf-flow-text">2–4 vendor pitches in dashboard within 48 hours.</p>
+      </div>
+      <div class="wf-flow-step">
+        <div class="wf-flow-num">4</div>
+        <h4 class="wf-flow-title">First accepted call</h4>
+        <p class="wf-flow-text">30–45 min discovery. No pressure, no demos required.</p>
+      </div>
+      <div class="wf-flow-payout">
+        <strong>+$50</strong>
+        <span>Amazon voucher · within 24h</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== STAGE 4 — RETENTION ============== -->
+<section class="oa-sales-section" id="stage-4">
+  <div class="oa-sales-section-inner">
+    <div class="wf-stage-divider">
+      <div class="wf-stage-num">4</div>
+      <div>
+        <span class="wf-eyebrow">Stage 4</span>
+        <h2 class="wf-stage-h2" style="margin:0">Activation & retention — keep them taking calls</h2>
+      </div>
+    </div>
+    <p class="wf-stage-sub">Lifetime value depends on monthly recurring meetings. Four touchpoints keep active panelists engaged without spamming.</p>
+
+    <div class="wf-retention-grid">
+      <div class="wf-retention-card">
+        <div class="icon">👥</div>
+        <h4>WhatsApp Community</h4>
+        <p>"OA Panel Insiders" — announcements, monthly leaderboard, panelist-to-panelist sub-group. Exclusive feel, network effect.</p>
+      </div>
+      <div class="wf-retention-card">
+        <div class="icon">📲</div>
+        <h4>WA Status (2–3×/week)</h4>
+        <p>Earnings screenshots (anonymized), new vendor categories, short YouTube clips, FAQ answers. Stays top-of-mind.</p>
+      </div>
+      <div class="wf-retention-card">
+        <div class="icon">📰</div>
+        <h4>Monthly Email</h4>
+        <p>"Vendors this month" digest + earnings recap. Soft re-engagement for panelists who haven't accepted recently.</p>
+      </div>
+      <div class="wf-retention-card">
+        <div class="icon">🔔</div>
+        <h4>Expiry Nudges</h4>
+        <p>"2 pitches expire in 5 days · $100 potential" — delivered in-app, by WA, and email. Drives accept-rate above 60%.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== INFRASTRUCTURE ============== -->
+<section class="oa-sales-section tint" id="infra">
+  <div class="oa-sales-section-inner">
+    <div class="wf-stage-divider">
+      <div class="wf-stage-num">⚙</div>
+      <div>
+        <span class="wf-eyebrow">Setup</span>
+        <h2 class="wf-stage-h2" style="margin:0">Infrastructure & team</h2>
+      </div>
+    </div>
+    <p class="wf-stage-sub">What needs to exist before the workflow can run. None of this is optional — short-cutting any row degrades deliverability or compliance.</p>
+
+    <div class="wf-infra">
+      <div class="wf-team-card">
+        <h3>Headcount needed</h3>
+        <ul>
+          <li><span class="count">1</span> Campaign owner (marketing lead)</li>
+          <li><span class="count">2</span> SDRs monitoring WA + email replies across timezones</li>
+          <li><span class="count">1</span> Paid-media specialist (FB / LI / CTWA)</li>
+          <li><span class="count">1</span> Content lead (YouTube edits, social posts, templates)</li>
+        </ul>
+      </div>
+      <div class="wf-infra-table">
+        <table>
+          <thead>
+            <tr><th>Component</th><th>What's required</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Domains</strong></td><td>3–4 lookalike domains (e.g. oa-marketplace.com) — protects outsourceaccelerator.com reputation</td></tr>
+            <tr><td><strong>Email inboxes</strong></td><td>9–12 inboxes, warmed 3–4 weeks, 30–50 sends/day per inbox</td></tr>
+            <tr><td><strong>SMS numbers</strong></td><td>2–3 numbers per priority geo (Twilio + local aggregators for PH)</td></tr>
+            <tr><td><strong>WhatsApp BSP</strong></td><td>Wati / 360dialog / Respond.io + 5 verified numbers + 4 approved templates</td></tr>
+            <tr><td><strong>Social pages</strong></td><td>Separate FB page, IG handle, YouTube channel — keeps test creative off main brand</td></tr>
+            <tr><td><strong>Outreach tool</strong></td><td>Instantly or Smartlead (email) · Apollo / Clay (enrichment) · HubSpot (CRM)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== KPIs ============== -->
+<section class="oa-sales-section" id="kpis">
+  <div class="oa-sales-section-inner">
+    <span class="wf-eyebrow">Measurement</span>
+    <h2 class="wf-stage-h2">KPIs tracked weekly</h2>
+    <p class="wf-stage-sub">Five buckets. Health metrics are non-negotiable — if email deliverability or WA quality drops, slow the volume until it recovers.</p>
+
+    <div class="wf-kpi-grid">
+      <div class="wf-kpi">
+        <div class="wf-kpi-label">Acquisition</div>
+        <ul>
+          <li>Cost per lead, by channel</li>
+          <li>CTWA chat-start rate</li>
+          <li>Landing page conversion rate</li>
+        </ul>
+      </div>
+      <div class="wf-kpi">
+        <div class="wf-kpi-label">Engagement</div>
+        <ul>
+          <li>Reply rate by channel</li>
+          <li>Sequence completion rate</li>
+          <li>Channel mix per signup</li>
+        </ul>
+      </div>
+      <div class="wf-kpi">
+        <div class="wf-kpi-label">Conversion</div>
+        <ul>
+          <li>Signup rate (lead → register)</li>
+          <li>Profile completion rate</li>
+          <li>Time to first pitch matched</li>
+        </ul>
+      </div>
+      <div class="wf-kpi">
+        <div class="wf-kpi-label">Activation</div>
+        <ul>
+          <li>Time-to-first-accepted-call</li>
+          <li>% panelists with 1+ call/mo</li>
+          <li>Vendor satisfaction rating</li>
+        </ul>
+      </div>
+      <div class="wf-kpi">
+        <div class="wf-kpi-label">Retention</div>
+        <ul>
+          <li>Monthly active panelists</li>
+          <li>Avg meetings per panelist</li>
+          <li>30 / 60 / 90-day churn</li>
+        </ul>
+      </div>
+      <div class="wf-kpi">
+        <div class="wf-kpi-label">Health</div>
+        <ul>
+          <li>Email deliverability (Inbox / Spam)</li>
+          <li>WA quality rating (High / Med / Low)</li>
+          <li>LinkedIn account restrictions</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== ROLLOUT ============== -->
+<section class="oa-sales-section tint" id="rollout">
+  <div class="oa-sales-section-inner">
+    <span class="wf-eyebrow">4-week ramp</span>
+    <h2 class="wf-stage-h2">Rollout schedule before full launch</h2>
+    <p class="wf-stage-sub">Most of week 1–3 is infrastructure that earns nothing yet but underwrites every subsequent week of sending. Don't skip warmup.</p>
+
+    <div class="wf-rollout">
+      <div class="wf-week">
+        <div class="wf-week-label">Week 1</div>
+        <h4>Foundation</h4>
+        <ul>
+          <li>Buy 3–4 lookalike domains</li>
+          <li>Set up 9–12 inboxes · start warmup</li>
+          <li>Pick WhatsApp BSP, submit 4 templates</li>
+          <li>Create FB / IG / YouTube pages</li>
+          <li>Brief paid-media specialist</li>
+        </ul>
+      </div>
+      <div class="wf-week">
+        <div class="wf-week-label">Week 2</div>
+        <h4>Creative</h4>
+        <ul>
+          <li>Record YouTube video (90s + shorts)</li>
+          <li>Build email / SMS / WA sequences in tool</li>
+          <li>Design FB ad creative · 3 variants</li>
+          <li>WhatsApp templates approved by Meta</li>
+          <li>Draft LinkedIn DM scripts</li>
+        </ul>
+      </div>
+      <div class="wf-week">
+        <div class="wf-week-label">Week 3</div>
+        <h4>Data + QA</h4>
+        <ul>
+          <li>Source first 500-contact list (Sales Nav + Clay)</li>
+          <li>End-to-end QA all 6 channels</li>
+          <li>Set up dashboards + reply-halt logic</li>
+          <li>Soft-test with 10 internal contacts</li>
+          <li>Train SDRs on inbox monitoring</li>
+        </ul>
+      </div>
+      <div class="wf-week">
+        <div class="wf-week-label">Week 4</div>
+        <h4>Launch</h4>
+        <ul>
+          <li>Inboxes warm → send at 30/day each</li>
+          <li>Launch FB direct + Click-to-WA ads</li>
+          <li>Begin LinkedIn outreach (2–3 SDRs)</li>
+          <li>Publish YouTube video + shorts</li>
+          <li>Ramp weekly based on quality metrics</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== CLOSING CTA ============== -->
+<section class="oa-sales-section" id="next">
+  <div class="oa-sales-section-inner">
+    <div class="oa-closing-cta">
+      <h2>Ready to brief the team.</h2>
+      <p>This page is the single source of truth for the panel recruitment campaign. Print it, share it, link it from the project tracker. When in doubt, defer to the timeline.</p>
+      <div class="oa-sales-cta-row" style="justify-content:center">
+        <a href="panel.html" class="oa-btn oa-btn-accent oa-btn-lg">↗ View the panel landing page</a>
+        <a href="sales.html" class="oa-btn oa-btn-lg" style="background:transparent;color:white;border-color:rgba(255,255,255,0.3)">↗ Vendor sales page</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FOOTER ============== -->
+<footer class="oa-sales-footer">
+  <div class="oa-sales-footer-inner">
+    <div class="oa-sales-footer-grid">
+      <div>
+        <div class="oa-logo" style="color:white;margin-bottom:0.85rem">
+          <span class="oa-logo-dot"></span>
+          <span style="color:white">OA Marketplace</span>
+        </div>
+        <p style="margin:0;font-size:0.85rem;line-height:1.55;max-width:300px">Internal playbook for panel recruitment. Operated by Outsource Accelerator.</p>
+      </div>
+      <div>
+        <h4>Stages</h4>
+        <ul>
+          <li><a href="#stage-1">1 — Acquisition</a></li>
+          <li><a href="#stage-2">2 — Engagement</a></li>
+          <li><a href="#stage-3">3 — Conversion</a></li>
+          <li><a href="#stage-4">4 — Retention</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Operations</h4>
+        <ul>
+          <li><a href="#infra">Infrastructure</a></li>
+          <li><a href="#kpis">KPIs</a></li>
+          <li><a href="#rollout">Rollout</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Other pages</h4>
+        <ul>
+          <li><a href="panel.html">Panel landing</a></li>
+          <li><a href="sales.html">Vendor sales</a></li>
+          <li><a href="register.html">Register</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="oa-sales-footer-bottom">
+      <div>© 2026 Outsource Accelerator. Internal use only.</div>
+      <div>One workflow. Six channels. Thirty days.</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

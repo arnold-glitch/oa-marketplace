@@ -1,0 +1,1118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>OA Marketplace — OA Connect</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css" />
+</head>
+<body>
+  <div id="oa-topbar-mount"></div>
+
+  <div class="oa-subnav">
+    <div class="oa-subnav-inner">
+      <a href="#" class="active" data-tab="browse" onclick="event.preventDefault();showMTab('browse',this)">Browse Leaders</a>
+      <a href="#" data-tab="saved" onclick="event.preventDefault();showMTab('saved',this)">Saved Lists</a>
+      <a href="#" data-tab="past" onclick="event.preventDefault();showMTab('past',this)">Past Meetings</a>
+      <a href="#" data-tab="how" onclick="event.preventDefault();showMTab('how',this)">How it works</a>
+    </div>
+  </div>
+
+  <div class="oa-page">
+
+    <!-- ============== TAB: BROWSE LEADERS ============== -->
+    <div id="tab-browse" class="m-tab">
+
+    <div class="oa-hero">
+      <div style="display:flex;gap:1rem;align-items:center;margin-bottom:0.5rem">
+        <span class="oa-badge oa-badge-orange" style="background:rgba(249,115,22,0.15);color:#B3C8F5">SELLER VIEW</span>
+        <span class="oa-text-sm" style="opacity:0.8">$300 per booked meeting · Full refund if the prospect declines</span>
+      </div>
+      <h1>Meet outsourcing decision makers directly</h1>
+      <p>Browse 100+ verified managers and above in the BPO industry. Select your ICP, book 30-min intro calls, and get a refund on any prospect who declines.</p>
+      <div class="oa-hero-stats">
+        <div class="oa-hero-stat"><strong>104</strong>verified leaders</div>
+        <div class="oa-hero-stat"><strong>67%</strong>accept rate</div>
+        <div class="oa-hero-stat"><strong>4.7★</strong>seller rating</div>
+        <div class="oa-hero-stat"><strong>$300</strong>per meeting</div>
+      </div>
+    </div>
+
+    <!-- 2-column body: filters + matchmaker left, table right -->
+    <div class="oa-grid" style="grid-template-columns:300px 1fr;gap:1.5rem">
+
+      <!-- LEFT: matchmaker + filters -->
+      <div>
+        <!-- Matchmaker card -->
+        <div class="oa-card oa-mm-card oa-mb-2">
+          <h3 class="oa-card-title" style="margin-top:0">🎯 Find your matches</h3>
+          <p class="oa-text-xs" style="margin:0 0 0.85rem 0;color:#001580;line-height:1.45">Tell us your product. We'll score each leader for ICP fit and re-rank the list with best matches first.</p>
+
+          <label class="oa-label">Company website</label>
+          <input class="oa-input" id="mm-url" placeholder="https://yourcompany.com" />
+
+          <label class="oa-label oa-mt-2">Or describe what you're selling</label>
+          <textarea class="oa-textarea" id="mm-desc" style="min-height:80px" placeholder="e.g., AI quality assurance for BPO contact centers — transcribes and scores 100% of agent calls"></textarea>
+
+          <div style="display:flex;gap:0.5rem;margin-top:0.6rem">
+            <button class="oa-btn oa-btn-accent" style="flex:1" onclick="runMatchmaker()">Find matches</button>
+            <button class="oa-btn oa-btn-sm" id="mm-clear-btn" onclick="clearMatchmaker()" style="display:none">Clear</button>
+          </div>
+          <div id="mm-status" class="oa-mm-status"></div>
+        </div>
+
+        <!-- Filters -->
+        <div class="oa-card">
+          <h3 class="oa-card-title" style="margin-top:0">Filters</h3>
+
+          <label class="oa-label">Seniority</label>
+          <select class="oa-select" id="f-seniority" onchange="resetPage();renderDirectors()">
+            <option value="">All</option><option>C-Suite</option><option>SVP</option><option>VP</option><option>Director</option>
+          </select>
+
+          <label class="oa-label oa-mt-2">Region</label>
+          <select class="oa-select" id="f-region" onchange="resetPage();renderDirectors()">
+            <option value="">All</option><option>Philippines</option><option>India</option><option>USA</option><option>Other</option>
+          </select>
+
+          <label class="oa-label oa-mt-2">Role focus</label>
+          <select class="oa-select" id="f-role" onchange="resetPage();renderDirectors()">
+            <option value="">All</option><option>Operations</option><option>Customer Experience</option><option>Workforce</option><option>HR / People</option><option>Procurement</option><option>Technology</option>
+          </select>
+
+          <label class="oa-label oa-mt-2">Sort by</label>
+          <select class="oa-select" id="f-sort" onchange="resetPage();renderDirectors()">
+            <option value="conn">LinkedIn connections</option>
+            <option value="match">Best match (matchmaker)</option>
+            <option value="name">Name (A–Z)</option>
+            <option value="company">Company</option>
+          </select>
+        </div>
+
+        <!-- Compressed How it works -->
+        <div class="oa-card oa-mt-2" style="background:var(--oa-navy-50);border-color:#BBD3E8">
+          <h4 style="margin:0 0 0.6rem 0;color:var(--oa-navy);font-size:0.72rem;letter-spacing:0.06em;text-transform:uppercase;font-weight:700">How it works</h4>
+          <ol style="margin:0;padding:0;list-style:none;font-size:0.82rem;line-height:1.45;color:var(--oa-text)">
+            <li style="display:flex;gap:0.55rem;align-items:flex-start;padding:0.25rem 0">
+              <span class="oa-how-num">1</span><span><strong>Filter by ICP</strong></span>
+            </li>
+            <li style="display:flex;gap:0.55rem;align-items:flex-start;padding:0.25rem 0">
+              <span class="oa-how-num">2</span><span><strong>Pick prospects</strong></span>
+            </li>
+            <li style="display:flex;gap:0.55rem;align-items:flex-start;padding:0.25rem 0">
+              <span class="oa-how-num">3</span><span><strong>Checkout at $300/each</strong></span>
+            </li>
+          </ol>
+          <div style="margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid #BBD3E8;display:flex;align-items:center;gap:0.5rem">
+            <span style="font-size:1.1rem">🛡️</span>
+            <strong style="color:var(--oa-green);font-size:0.88rem">Refund on decline</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: search + table -->
+      <div>
+        <!-- Search + selection controls -->
+        <div class="oa-card oa-mb-2" style="padding:0.85rem 1rem">
+          <div style="display:flex;gap:0.75rem;align-items:end">
+            <div style="flex:1">
+              <label class="oa-label">Search</label>
+              <input class="oa-input" id="f-search" placeholder="Name, company, role…" oninput="resetPage();renderDirectors()" />
+            </div>
+            <button class="oa-btn oa-btn-sm" onclick="selectAllVisible()" style="white-space:nowrap">Select all visible</button>
+            <button class="oa-btn oa-btn-sm" onclick="clearSelection()" style="white-space:nowrap">Clear selection</button>
+            <span id="selection-count" class="oa-badge oa-badge-orange">0 selected</span>
+          </div>
+          <div class="oa-text-sm oa-text-muted oa-mt-1" id="results-count" style="margin-top:0.5rem">Showing all leaders</div>
+        </div>
+
+        <!-- Director table (last name + company blurred until booked) -->
+        <div id="director-grid"></div>
+      </div>
+    </div>
+
+    </div><!-- /tab-browse -->
+
+    <!-- ============== TAB: SAVED LISTS ============== -->
+    <div id="tab-saved" class="m-tab" style="display:none">
+
+      <div class="oa-flex-between oa-mb-2">
+        <div>
+          <h1 class="oa-section-title">Saved lists</h1>
+          <p class="oa-section-sub">Curated prospect lists ready to send into outreach. Useful for staging multi-quarter campaigns or grouping by ICP.</p>
+        </div>
+        <button class="oa-btn oa-btn-accent oa-btn-lg" onclick="showMTab('browse',document.querySelector('[data-tab=browse]'))">+ Create new list</button>
+      </div>
+
+      <div class="oa-grid oa-grid-2" style="gap:1rem">
+
+        <!-- List 1 -->
+        <div class="oa-card" style="border-left:4px solid var(--oa-navy)">
+          <div class="oa-flex-between oa-mb-1">
+            <h3 class="oa-card-title" style="margin:0">Top 20 BPO COOs · Manila</h3>
+            <span class="oa-badge oa-badge-green">In outreach</span>
+          </div>
+          <p class="oa-text-xs oa-text-muted oa-mb-2">Created May 12, 2026 · 20 leaders · ICP: C-Suite + COO/SVP Ops · Manila</p>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;font-size:0.78rem;margin-bottom:0.85rem">
+            <span class="oa-badge oa-badge-green">8 booked</span>
+            <span class="oa-badge oa-badge-orange">7 pending</span>
+            <span class="oa-badge oa-badge-gray">3 declined</span>
+            <span class="oa-badge oa-badge-gray">2 not contacted</span>
+          </div>
+          <div class="oa-flex-center oa-text-sm">
+            <button class="oa-btn oa-btn-sm">View list</button>
+            <button class="oa-btn oa-btn-sm">Edit ICP</button>
+            <button class="oa-btn oa-btn-sm">Duplicate</button>
+          </div>
+        </div>
+
+        <!-- List 2 -->
+        <div class="oa-card" style="border-left:4px solid var(--oa-orange)">
+          <div class="oa-flex-between oa-mb-1">
+            <h3 class="oa-card-title" style="margin:0">AI QA buyers · India</h3>
+            <span class="oa-badge oa-badge-orange">Awaiting checkout</span>
+          </div>
+          <p class="oa-text-xs oa-text-muted oa-mb-2">Created Apr 28, 2026 · 15 leaders · ICP: VPs / Directors of CX + QA · India</p>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;font-size:0.78rem;margin-bottom:0.85rem">
+            <span class="oa-badge oa-badge-gray">15 leaders queued · $4,500 total</span>
+          </div>
+          <div class="oa-flex-center oa-text-sm">
+            <button class="oa-btn oa-btn-accent oa-btn-sm">Send to cart</button>
+            <button class="oa-btn oa-btn-sm">View list</button>
+            <button class="oa-btn oa-btn-sm">Edit ICP</button>
+          </div>
+        </div>
+
+        <!-- List 3 -->
+        <div class="oa-card" style="border-left:4px solid var(--oa-green)">
+          <div class="oa-flex-between oa-mb-1">
+            <h3 class="oa-card-title" style="margin:0">WFM decision makers · Q2 outreach</h3>
+            <span class="oa-badge oa-badge-green">Completed</span>
+          </div>
+          <p class="oa-text-xs oa-text-muted oa-mb-2">Created Apr 15, 2026 · 30 leaders · ICP: WFM / Workforce Planning + Director+ · Global</p>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;font-size:0.78rem;margin-bottom:0.85rem">
+            <span class="oa-badge oa-badge-green">18 booked</span>
+            <span class="oa-badge oa-badge-gray">12 declined / refunded</span>
+          </div>
+          <div class="oa-flex-center oa-text-sm">
+            <button class="oa-btn oa-btn-sm">View results</button>
+            <button class="oa-btn oa-btn-sm">Duplicate for Q3</button>
+          </div>
+        </div>
+
+        <!-- List 4 -->
+        <div class="oa-card" style="border-left:4px solid #7C3AED">
+          <div class="oa-flex-between oa-mb-1">
+            <h3 class="oa-card-title" style="margin:0">Voice AI evaluators · Tier-1 BPOs</h3>
+            <span class="oa-badge oa-badge-gray">Draft</span>
+          </div>
+          <p class="oa-text-xs oa-text-muted oa-mb-2">Created May 14, 2026 · 8 leaders · ICP: CIO / CTO / VP Tech · Concentrix, TaskUs, Genpact, Sutherland</p>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;font-size:0.78rem;margin-bottom:0.85rem">
+            <span class="oa-badge oa-badge-gray">8 leaders selected · not yet sent</span>
+          </div>
+          <div class="oa-flex-center oa-text-sm">
+            <button class="oa-btn oa-btn-accent oa-btn-sm">Continue editing</button>
+            <button class="oa-btn oa-btn-sm">Delete draft</button>
+          </div>
+        </div>
+
+        <!-- List 5 -->
+        <div class="oa-card" style="border-left:4px solid #0EA5E9">
+          <div class="oa-flex-between oa-mb-1">
+            <h3 class="oa-card-title" style="margin:0">Training & coaching leaders · APAC</h3>
+            <span class="oa-badge oa-badge-orange">In outreach</span>
+          </div>
+          <p class="oa-text-xs oa-text-muted oa-mb-2">Created May 6, 2026 · 12 leaders · ICP: Training / L&D / People Ops Directors · Philippines + India</p>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;font-size:0.78rem;margin-bottom:0.85rem">
+            <span class="oa-badge oa-badge-green">4 booked</span>
+            <span class="oa-badge oa-badge-orange">6 pending</span>
+            <span class="oa-badge oa-badge-gray">2 declined</span>
+          </div>
+          <div class="oa-flex-center oa-text-sm">
+            <button class="oa-btn oa-btn-sm">View list</button>
+            <button class="oa-btn oa-btn-sm">Edit ICP</button>
+            <button class="oa-btn oa-btn-sm">Duplicate</button>
+          </div>
+        </div>
+
+        <!-- List 6 -->
+        <div class="oa-card" style="border-left:4px solid #EAB308">
+          <div class="oa-flex-between oa-mb-1">
+            <h3 class="oa-card-title" style="margin:0">Procurement & vendor mgmt · Enterprise</h3>
+            <span class="oa-badge oa-badge-gray">Archived</span>
+          </div>
+          <p class="oa-text-xs oa-text-muted oa-mb-2">Created Mar 22, 2026 · 25 leaders · ICP: Procurement Directors at outsourcing-buying enterprises · USA + EU</p>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;font-size:0.78rem;margin-bottom:0.85rem">
+            <span class="oa-badge oa-badge-green">11 booked</span>
+            <span class="oa-badge oa-badge-gray">14 declined / refunded</span>
+          </div>
+          <div class="oa-flex-center oa-text-sm">
+            <button class="oa-btn oa-btn-sm">View results</button>
+            <button class="oa-btn oa-btn-sm">Restore</button>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /tab-saved -->
+
+    <!-- ============== TAB: PAST MEETINGS ============== -->
+    <div id="tab-past" class="m-tab" style="display:none">
+
+      <div class="oa-flex-between oa-mb-2">
+        <div>
+          <h1 class="oa-section-title">Past meetings</h1>
+          <p class="oa-section-sub">Every booked discovery call, with status, ratings, and notes.</p>
+        </div>
+      </div>
+
+      <!-- Stat row -->
+      <div class="oa-grid oa-grid-4 oa-mb-3">
+        <div class="oa-stat">
+          <div class="oa-stat-label">Meetings booked YTD</div>
+          <div class="oa-stat-value">23</div>
+          <div class="oa-stat-delta">+6 last 30 days</div>
+        </div>
+        <div class="oa-stat">
+          <div class="oa-stat-label">Completion rate</div>
+          <div class="oa-stat-value">78%</div>
+          <div class="oa-stat-delta">18 of 23 happened</div>
+        </div>
+        <div class="oa-stat">
+          <div class="oa-stat-label">Spend YTD</div>
+          <div class="oa-stat-value">$5,400</div>
+          <div class="oa-stat-delta">+$1,500 refunded</div>
+        </div>
+        <div class="oa-stat">
+          <div class="oa-stat-label">Pipeline created</div>
+          <div class="oa-stat-value" style="color:var(--oa-green)">$94K</div>
+          <div class="oa-stat-delta">across 11 opportunities</div>
+        </div>
+      </div>
+
+      <!-- Filter strip -->
+      <div class="oa-card oa-mb-2" style="padding:0.85rem 1rem">
+        <div style="display:flex;gap:0.75rem;align-items:end;flex-wrap:wrap">
+          <div>
+            <label class="oa-label">Status</label>
+            <select class="oa-select" style="min-width:160px">
+              <option>All</option><option>Completed</option><option>No-show</option><option>Declined / refunded</option><option>Cancelled</option>
+            </select>
+          </div>
+          <div>
+            <label class="oa-label">Date range</label>
+            <select class="oa-select" style="min-width:160px">
+              <option>Last 90 days</option><option>This month</option><option>Last 30 days</option><option>YTD</option><option>All time</option>
+            </select>
+          </div>
+          <div>
+            <label class="oa-label">List</label>
+            <select class="oa-select" style="min-width:200px">
+              <option>All lists</option><option>Top 20 BPO COOs · Manila</option><option>WFM decision makers · Q2</option><option>Voice AI evaluators</option><option>Training &amp; coaching · APAC</option>
+            </select>
+          </div>
+          <div style="flex:1;text-align:right">
+            <button class="oa-btn oa-btn-sm">Export CSV</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="oa-card">
+        <table class="oa-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Prospect</th>
+              <th>Type</th>
+              <th>Status</th>
+              <th>Rating</th>
+              <th>Notes</th>
+              <th style="text-align:right">Cost</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>May 14, 2026</td>
+              <td><strong>Maria Reyes</strong> · VP Ops · Concentrix Philippines</td>
+              <td>30-min discovery</td>
+              <td><span class="oa-badge oa-badge-green">Completed</span></td>
+              <td>⭐⭐⭐⭐⭐</td>
+              <td class="oa-text-xs">Strong product fit · pilot Q3 · intro to procurement</td>
+              <td style="text-align:right;font-weight:600">$300</td>
+            </tr>
+            <tr>
+              <td>May 12, 2026</td>
+              <td><strong>James Sharma</strong> · Director CX · Genpact</td>
+              <td>45-min discovery</td>
+              <td><span class="oa-badge oa-badge-green">Completed</span></td>
+              <td>⭐⭐⭐⭐</td>
+              <td class="oa-text-xs">Evaluating Cresta &amp; Observe.AI · scheduled deep-dive</td>
+              <td style="text-align:right;font-weight:600">$300</td>
+            </tr>
+            <tr>
+              <td>May 8, 2026</td>
+              <td><strong>Anna Chen</strong> · COO · TaskUs</td>
+              <td>30-min discovery</td>
+              <td><span class="oa-badge oa-badge-green">Completed</span></td>
+              <td>⭐⭐⭐⭐⭐</td>
+              <td class="oa-text-xs">Procurement green-lit · intro to VP WFM · follow-up booked</td>
+              <td style="text-align:right;font-weight:600">$300</td>
+            </tr>
+            <tr>
+              <td>May 5, 2026</td>
+              <td><strong>David Kumar</strong> · SVP Delivery · Sutherland</td>
+              <td>30-min discovery</td>
+              <td><span class="oa-badge oa-badge-gray">Rescheduled</span></td>
+              <td>—</td>
+              <td class="oa-text-xs">Family emergency · rescheduled to May 22</td>
+              <td style="text-align:right;font-weight:600">$300</td>
+            </tr>
+            <tr>
+              <td>Apr 30, 2026</td>
+              <td><strong>Priya Singh</strong> · Head of QA · WNS</td>
+              <td>30-min discovery</td>
+              <td><span class="oa-badge oa-badge-red">Declined</span></td>
+              <td>—</td>
+              <td class="oa-text-xs">Auto-refunded after 14-day window</td>
+              <td style="text-align:right;color:var(--oa-muted);text-decoration:line-through">$300</td>
+            </tr>
+            <tr>
+              <td>Apr 28, 2026</td>
+              <td><strong>Carlos Mendoza</strong> · VP Ops · TDCX</td>
+              <td>45-min discovery</td>
+              <td><span class="oa-badge oa-badge-green">Completed</span></td>
+              <td>⭐⭐⭐</td>
+              <td class="oa-text-xs">Polite but not a fit · use case mismatch · no follow-up</td>
+              <td style="text-align:right;font-weight:600">$300</td>
+            </tr>
+            <tr>
+              <td>Apr 24, 2026</td>
+              <td><strong>Linda Wong</strong> · Director WFM · Sitel Group</td>
+              <td>30-min discovery</td>
+              <td><span class="oa-badge oa-badge-green">Completed</span></td>
+              <td>⭐⭐⭐⭐</td>
+              <td class="oa-text-xs">Asked for case studies · sent same day · awaiting reply</td>
+              <td style="text-align:right;font-weight:600">$300</td>
+            </tr>
+            <tr>
+              <td>Apr 18, 2026</td>
+              <td><strong>Ramon Aquino</strong> · Director Workforce · Inspiro</td>
+              <td>30-min discovery</td>
+              <td><span class="oa-badge oa-badge-gray">No-show</span></td>
+              <td>—</td>
+              <td class="oa-text-xs">Did not join · rescheduled once already</td>
+              <td style="text-align:right;font-weight:600">$300</td>
+            </tr>
+            <tr>
+              <td>Apr 15, 2026</td>
+              <td><strong>Hiroshi Tanaka</strong> · COO · TDCX Japan</td>
+              <td>30-min discovery</td>
+              <td><span class="oa-badge oa-badge-green">Completed</span></td>
+              <td>⭐⭐⭐⭐⭐</td>
+              <td class="oa-text-xs">Best fit so far · pilot proposal sent · expecting LOI</td>
+              <td style="text-align:right;font-weight:600">$300</td>
+            </tr>
+            <tr>
+              <td>Apr 10, 2026</td>
+              <td><strong>Sarah Williams</strong> · Director QA · iQor</td>
+              <td>30-min discovery</td>
+              <td><span class="oa-badge oa-badge-red">Declined</span></td>
+              <td>—</td>
+              <td class="oa-text-xs">Declined after 7 days · auto-refunded</td>
+              <td style="text-align:right;color:var(--oa-muted);text-decoration:line-through">$300</td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="text-align:center;padding:0.85rem 0;font-size:0.85rem;color:var(--oa-muted)">Showing 10 of 23 · <a href="#" style="color:var(--oa-orange);font-weight:600">View all →</a></div>
+      </div>
+    </div><!-- /tab-past -->
+
+    <!-- ============== TAB: HOW IT WORKS ============== -->
+    <div id="tab-how" class="m-tab" style="display:none">
+
+      <h1 class="oa-section-title">How OA Connect works for vendors</h1>
+      <p class="oa-section-sub">A faster, cheaper, more accurate way to get in front of BPO decision-makers — without the cold-outreach grind.</p>
+
+      <!-- Why this beats DIY pitch -->
+      <div class="oa-card oa-mb-3" style="background:linear-gradient(135deg,var(--oa-navy) 0%,#002080 100%);color:white;border:none;padding:2rem 2.25rem">
+        <div class="oa-grid oa-grid-2" style="gap:2rem;align-items:center">
+          <div>
+            <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:#B3C8F5;font-weight:700;margin-bottom:0.5rem">Why vendors switch to OA</div>
+            <h2 style="margin:0 0 0.85rem 0;color:white;font-size:1.5rem;line-height:1.25">Cheaper than your SDR. Faster than LinkedIn. And the prospect actually wants to talk.</h2>
+            <p style="margin:0;font-size:0.95rem;opacity:0.85;line-height:1.6">You pay $300 per <em>accepted</em> meeting (refundable if declined). $50 goes to the prospect as a gift voucher — and that's the secret. They show up. They listen. They engage. Because their time was respected.</p>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.85rem;text-align:center">
+            <div style="background:rgba(255,255,255,0.08);border-radius:10px;padding:0.85rem">
+              <div style="font-size:1.5rem;font-weight:800;color:#6B92E5">~70%</div>
+              <div style="font-size:0.7rem;opacity:0.8;margin-top:0.15rem;line-height:1.3">acceptance rate</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.08);border-radius:10px;padding:0.85rem">
+              <div style="font-size:1.5rem;font-weight:800;color:#6B92E5">4-5d</div>
+              <div style="font-size:0.7rem;opacity:0.8;margin-top:0.15rem;line-height:1.3">avg response window</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.08);border-radius:10px;padding:0.85rem">
+              <div style="font-size:1.5rem;font-weight:800;color:#6B92E5">$0</div>
+              <div style="font-size:0.7rem;opacity:0.8;margin-top:0.15rem;line-height:1.3">spent on declined</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5-step process visualization -->
+      <h2 class="oa-section-title" style="font-size:1.25rem;margin-top:2rem">The 5-step process</h2>
+      <p class="oa-section-sub">From clicking Browse Leaders to taking the call — typically 5-10 days end-to-end.</p>
+
+      <div class="oa-card oa-mb-3" style="padding:2rem 1.75rem;overflow-x:auto">
+        <!-- Flowchart -->
+        <div style="display:flex;align-items:stretch;justify-content:space-between;gap:0.25rem;min-width:780px">
+
+          <!-- Step 1 -->
+          <div style="flex:1;text-align:center;padding:1rem 0.75rem;background:#EEF3F8;border-radius:10px;border:1px solid #BBD3E8;position:relative">
+            <div style="width:36px;height:36px;background:var(--oa-navy);color:white;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:800;margin-bottom:0.5rem">1</div>
+            <div style="font-size:0.75rem;font-weight:700;color:var(--oa-navy);margin-bottom:0.3rem">Day 1</div>
+            <strong style="display:block;color:var(--oa-navy);font-size:0.92rem;margin-bottom:0.3rem">Filter your ICP</strong>
+            <p style="font-size:0.7rem;color:var(--oa-muted);margin:0;line-height:1.4">Role · seniority · region · industry. Or use the AI matchmaker.</p>
+          </div>
+
+          <div style="display:flex;align-items:center;color:var(--oa-orange);font-size:1.5rem;font-weight:800">→</div>
+
+          <!-- Step 2 -->
+          <div style="flex:1;text-align:center;padding:1rem 0.75rem;background:#EEF3F8;border-radius:10px;border:1px solid #BBD3E8;position:relative">
+            <div style="width:36px;height:36px;background:var(--oa-navy);color:white;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:800;margin-bottom:0.5rem">2</div>
+            <div style="font-size:0.75rem;font-weight:700;color:var(--oa-navy);margin-bottom:0.3rem">Day 1</div>
+            <strong style="display:block;color:var(--oa-navy);font-size:0.92rem;margin-bottom:0.3rem">Pick prospects</strong>
+            <p style="font-size:0.7rem;color:var(--oa-muted);margin:0;line-height:1.4">Multi-select directors+ from the curated list. Save for later if needed.</p>
+          </div>
+
+          <div style="display:flex;align-items:center;color:var(--oa-orange);font-size:1.5rem;font-weight:800">→</div>
+
+          <!-- Step 3 -->
+          <div style="flex:1;text-align:center;padding:1rem 0.75rem;background:#E6EDFB;border-radius:10px;border:1px solid var(--oa-orange);position:relative">
+            <div style="width:36px;height:36px;background:var(--oa-orange);color:white;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:800;margin-bottom:0.5rem">3</div>
+            <div style="font-size:0.75rem;font-weight:700;color:#001580;margin-bottom:0.3rem">Day 1</div>
+            <strong style="display:block;color:#001580;font-size:0.92rem;margin-bottom:0.3rem">Pay $300 × N</strong>
+            <p style="font-size:0.7rem;color:#001580;margin:0;line-height:1.4">Held in escrow. Released per meeting accepted. Refunded if declined.</p>
+          </div>
+
+          <div style="display:flex;align-items:center;color:var(--oa-orange);font-size:1.5rem;font-weight:800">→</div>
+
+          <!-- Step 4 -->
+          <div style="flex:1;text-align:center;padding:1rem 0.75rem;background:#EEF3F8;border-radius:10px;border:1px solid #BBD3E8;position:relative">
+            <div style="width:36px;height:36px;background:var(--oa-navy);color:white;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:800;margin-bottom:0.5rem">4</div>
+            <div style="font-size:0.75rem;font-weight:700;color:var(--oa-navy);margin-bottom:0.3rem">Day 2-5</div>
+            <strong style="display:block;color:var(--oa-navy);font-size:0.92rem;margin-bottom:0.3rem">OA reaches out</strong>
+            <p style="font-size:0.7rem;color:var(--oa-muted);margin:0;line-height:1.4">Email + SMS to each prospect with your pitch. They review on their schedule.</p>
+          </div>
+
+          <div style="display:flex;align-items:center;color:var(--oa-orange);font-size:1.5rem;font-weight:800">→</div>
+
+          <!-- Step 5 -->
+          <div style="flex:1;text-align:center;padding:1rem 0.75rem;background:#ECFDF5;border-radius:10px;border:1px solid #A7F3D0;position:relative">
+            <div style="width:36px;height:36px;background:var(--oa-green);color:white;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:800;margin-bottom:0.5rem">5</div>
+            <div style="font-size:0.75rem;font-weight:700;color:var(--oa-green);margin-bottom:0.3rem">Day 5-10</div>
+            <strong style="display:block;color:var(--oa-green);font-size:0.92rem;margin-bottom:0.3rem">Meeting happens</strong>
+            <p style="font-size:0.7rem;color:#065F46;margin:0;line-height:1.4">30-45 min discovery call. Prospect gets $50 voucher. You log notes + outcome.</p>
+          </div>
+        </div>
+
+        <!-- Timeline expectations -->
+        <div style="margin-top:1.5rem;padding-top:1.25rem;border-top:1px dashed var(--oa-border);font-size:0.85rem;color:var(--oa-muted);line-height:1.55">
+          <strong style="color:var(--oa-navy)">⏱ Why 4-5 days for response?</strong> Decision-makers are senior leaders running operations across timezones. Our matchmaker queues your outreach in their working hours, follows up once, and gives them up to 14 days to respond. Most accept within 4-5 days. Any prospect who doesn't respond in 14 days is auto-refunded back to you.
+        </div>
+      </div>
+
+      <!-- Cost comparison -->
+      <h2 class="oa-section-title" style="font-size:1.25rem;margin-top:2rem">Cost comparison · per meeting with a senior BPO leader</h2>
+      <p class="oa-section-sub">Even with the $50 going to the prospect, OA Connect is the cheapest way to actually get on calendar.</p>
+
+      <div class="oa-card oa-mb-3" style="padding:1.5rem 1.75rem">
+        <div style="display:flex;flex-direction:column;gap:1.1rem">
+
+          <!-- DIY SDR -->
+          <div>
+            <div class="oa-flex-between oa-mb-1">
+              <strong style="color:var(--oa-text)">In-house SDR / BDR team</strong>
+              <span style="color:var(--oa-red);font-weight:800;font-size:1.1rem">~$1,400 per meeting</span>
+            </div>
+            <div style="background:var(--oa-bg);height:24px;border-radius:6px;overflow:hidden;position:relative">
+              <div style="background:var(--oa-red);height:100%;width:100%;display:flex;align-items:center;padding-left:0.75rem;color:white;font-size:0.7rem;font-weight:600">$70K SDR salary · ~50 meetings booked/yr · plus tools + benefits</div>
+            </div>
+          </div>
+
+          <!-- Agency outreach -->
+          <div>
+            <div class="oa-flex-between oa-mb-1">
+              <strong style="color:var(--oa-text)">Outsourced cold-outreach agency</strong>
+              <span style="color:#EAB308;font-weight:800;font-size:1.1rem">$600-900 per meeting</span>
+            </div>
+            <div style="background:var(--oa-bg);height:24px;border-radius:6px;overflow:hidden;position:relative">
+              <div style="background:#EAB308;height:100%;width:55%;display:flex;align-items:center;padding-left:0.75rem;color:white;font-size:0.7rem;font-weight:600">Retainer + per-meeting fee · variable quality · 4-6 mo ramp</div>
+            </div>
+          </div>
+
+          <!-- Cold email/LinkedIn -->
+          <div>
+            <div class="oa-flex-between oa-mb-1">
+              <strong style="color:var(--oa-text)">Cold email / LinkedIn (in-house, tools only)</strong>
+              <span style="color:var(--oa-orange);font-weight:800;font-size:1.1rem">$400-700 per meeting</span>
+            </div>
+            <div style="background:var(--oa-bg);height:24px;border-radius:6px;overflow:hidden;position:relative">
+              <div style="background:var(--oa-orange);height:100%;width:38%;display:flex;align-items:center;padding-left:0.75rem;color:white;font-size:0.7rem;font-weight:600">Tools ($300-500/mo) + your team's time · spam filter risk</div>
+            </div>
+          </div>
+
+          <!-- OA Connect -->
+          <div style="background:#ECFDF5;border:2px solid #A7F3D0;border-radius:10px;padding:1rem 1.25rem;margin-top:0.4rem">
+            <div class="oa-flex-between oa-mb-1">
+              <strong style="color:var(--oa-green);font-size:1.05rem">OA Connect ✨</strong>
+              <span style="color:var(--oa-green);font-weight:800;font-size:1.3rem">$300 per accepted meeting</span>
+            </div>
+            <div style="background:white;height:24px;border-radius:6px;overflow:hidden;position:relative">
+              <div style="background:var(--oa-green);height:100%;width:21%;display:flex;align-items:center;padding-left:0.75rem;color:white;font-size:0.7rem;font-weight:700">Refundable · prospect pre-vetted · they're paid to attend</div>
+            </div>
+            <div class="oa-text-xs oa-text-muted oa-mt-1" style="margin-top:0.5rem">$50 of that goes to the prospect's Amazon gift voucher. That's <strong>why they accept</strong> — and why we still come in at half the cost of DIY.</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Why prospects accept -->
+      <h2 class="oa-section-title" style="font-size:1.25rem;margin-top:2rem">Why prospects actually accept</h2>
+      <p class="oa-section-sub">The hard part of outreach isn't sending the message — it's getting a senior leader to give you 30 minutes. Here's why ours says yes:</p>
+
+      <div class="oa-grid oa-grid-3 oa-mb-3">
+        <div class="oa-card" style="border-top:3px solid var(--oa-orange)">
+          <div style="font-size:1.5rem;margin-bottom:0.4rem">🎁</div>
+          <strong style="display:block;color:var(--oa-navy);margin-bottom:0.3rem">$50 Amazon gift voucher</strong>
+          <p class="oa-text-sm oa-text-muted" style="margin:0;line-height:1.55">Their time is compensated. The number-one reason senior leaders ghost cold outreach: they feel disrespected. We fix that.</p>
+        </div>
+        <div class="oa-card" style="border-top:3px solid var(--oa-orange)">
+          <div style="font-size:1.5rem;margin-bottom:0.4rem">✅</div>
+          <strong style="display:block;color:var(--oa-navy);margin-bottom:0.3rem">Pre-vetted by the matchmaker</strong>
+          <p class="oa-text-sm oa-text-muted" style="margin:0;line-height:1.55">Pitches that score low on relevance never reach them. They only see opportunities aligned to their role, focus, and category — so accepts are higher.</p>
+        </div>
+        <div class="oa-card" style="border-top:3px solid var(--oa-orange)">
+          <div style="font-size:1.5rem;margin-bottom:0.4rem">🔒</div>
+          <strong style="display:block;color:var(--oa-navy);margin-bottom:0.3rem">Discovery only · no commitment</strong>
+          <p class="oa-text-sm oa-text-muted" style="margin:0;line-height:1.55">We tell them: it's exploratory. No demos required, no contracts, no follow-up obligation. That lowers the bar to "yes" significantly.</p>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <h2 class="oa-section-title" style="font-size:1.25rem;margin-top:2rem">Vendor FAQ</h2>
+      <div class="oa-card">
+        <div style="padding:0.85rem 1rem;border-bottom:1px solid var(--oa-border)">
+          <strong style="color:var(--oa-navy)">What if no one accepts my pitch?</strong>
+          <p class="oa-text-sm oa-text-muted" style="margin:0.3rem 0 0 0;line-height:1.55">Every prospect who declines or doesn't respond within 14 days auto-refunds the $300. Worst case: you get all your money back and learn your ICP needs refinement. We'll also give you a 30-min consult with our matchmaker for free if your acceptance rate is below 30%.</p>
+        </div>
+        <div style="padding:0.85rem 1rem;border-bottom:1px solid var(--oa-border)">
+          <strong style="color:var(--oa-navy)">How accurate is the matchmaker?</strong>
+          <p class="oa-text-sm oa-text-muted" style="margin:0.3rem 0 0 0;line-height:1.55">Match scores combine the prospect's stated focus areas with their LinkedIn-sourced role, seniority, employer, and recent activity. Strong matches (70%+) historically convert to acceptance ~85% of the time. Medium matches (40-70%) ~55%. Below 40% we don't reach out at all.</p>
+        </div>
+        <div style="padding:0.85rem 1rem;border-bottom:1px solid var(--oa-border)">
+          <strong style="color:var(--oa-navy)">What if the meeting is a waste of time?</strong>
+          <p class="oa-text-sm oa-text-muted" style="margin:0.3rem 0 0 0;line-height:1.55">Rate the meeting after. 1-star meetings are reviewed by our quality team. Pattern issues (e.g. a prospect repeatedly mismatching pitch claims) result in panel removal. For one-off poor fits, we don't refund — but your rating informs the matchmaker so it doesn't happen again.</p>
+        </div>
+        <div style="padding:0.85rem 1rem;border-bottom:1px solid var(--oa-border)">
+          <strong style="color:var(--oa-navy)">Can I book the same prospect more than once?</strong>
+          <p class="oa-text-sm oa-text-muted" style="margin:0.3rem 0 0 0;line-height:1.55">Not within 6 months of a previous booking with that prospect. After that window, you can rebook. Most successful follow-ups happen off-platform after the first discovery call connects you directly.</p>
+        </div>
+        <div style="padding:0.85rem 1rem">
+          <strong style="color:var(--oa-navy)">How is this priced if I want bulk?</strong>
+          <p class="oa-text-sm oa-text-muted" style="margin:0.3rem 0 0 0;line-height:1.55">$300 is the unit price per accepted meeting. Premium tier ($499/mo) includes 2 meeting credits per month that roll over indefinitely — so heavy users get a discount. Reach out to sales for enterprise bulk pricing (50+ meetings/month).</p>
+        </div>
+      </div>
+
+    </div><!-- /tab-how -->
+
+  </div>
+
+  <!-- Floating action bar -->
+  <div id="action-bar" style="position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:var(--oa-navy);color:white;padding:0.85rem 1.5rem;border-radius:12px;display:none;align-items:center;gap:1.25rem;box-shadow:0 12px 40px rgba(0,0,0,0.25);z-index:80;">
+    <div>
+      <div style="font-size:0.75rem;opacity:0.8" id="ab-count-label">0 prospects selected</div>
+      <div style="font-weight:700;font-size:1.1rem" id="ab-cost">$0</div>
+    </div>
+    <button class="oa-btn" onclick="clearSelection()" style="background:rgba(255,255,255,0.15);color:white;border:none">Clear</button>
+    <button class="oa-btn oa-btn-accent" onclick="openBookingModal()">Review & Book →</button>
+  </div>
+
+  <!-- Booking modal -->
+  <div id="booking-modal" class="oa-modal-backdrop">
+    <div class="oa-modal" style="max-width:720px">
+      <div class="oa-flex-between oa-mb-2">
+        <h2 style="margin:0">Review your booking</h2>
+        <button class="oa-btn oa-btn-sm" onclick="closeBookingModal()">✕</button>
+      </div>
+
+      <div class="oa-card" style="background:var(--oa-navy-50);border-color:#BBD3E8">
+        <div class="oa-flex-between">
+          <div>
+            <div class="oa-text-xs oa-text-muted" style="text-transform:uppercase;letter-spacing:0.05em">You're meeting with</div>
+            <div style="font-size:1.5rem;font-weight:700;color:var(--oa-navy)" id="bm-count">0 prospects</div>
+          </div>
+          <div style="text-align:right">
+            <div class="oa-text-xs oa-text-muted" style="text-transform:uppercase;letter-spacing:0.05em">Total</div>
+            <div style="font-size:1.5rem;font-weight:700;color:var(--oa-navy)" id="bm-total">$0</div>
+            <div class="oa-text-xs oa-text-muted" id="bm-math"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="oa-mt-2">
+        <label class="oa-label">Selected prospects</label>
+        <div id="bm-list" style="max-height:200px;overflow-y:auto;border:1px solid var(--oa-border);border-radius:8px;padding:0.5rem"></div>
+      </div>
+
+      <div class="oa-mt-2">
+        <label class="oa-label">What's your pitch? (≤ 250 chars)</label>
+        <textarea class="oa-textarea" id="bm-pitch" style="min-height:90px" maxlength="250" placeholder="One paragraph the prospect will see before accepting. Tell them what you sell, why it's relevant to BPO operations, and what 30 minutes of their time gets them.">QualityIQ helps BPOs cut manual QA hours by 75% by transcribing and scoring 100% of agent interactions. We work with Concentrix, Genpact, and TaskUs. 30 minutes for a walkthrough — happy to share scorecards your peers use.</textarea>
+      </div>
+
+      <div class="oa-mt-2">
+        <label class="oa-label">Meeting type</label>
+        <select class="oa-select">
+          <option>30-min intro call (recommended)</option>
+          <option>15-min discovery call</option>
+          <option>45-min demo</option>
+        </select>
+      </div>
+
+      <div class="oa-card oa-mt-2" style="background:#ECFDF5;border-color:#A7F3D0">
+        <div class="oa-flex-center">
+          <span style="font-size:1.5rem">🛡️</span>
+          <div>
+            <strong style="color:var(--oa-green)">100% refund on declined invites</strong>
+            <div class="oa-text-xs oa-text-muted">You're charged the moment a prospect accepts. If they decline or don't respond within 14 days, the $300 for that seat is automatically refunded.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="oa-flex-between oa-mt-3">
+        <button class="oa-btn" onclick="closeBookingModal()">Back to browse</button>
+        <button class="oa-btn oa-btn-accent oa-btn-lg" onclick="confirmBooking()">Confirm & Pay <span id="bm-confirm-amount"></span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Director detail modal -->
+  <div id="director-modal" class="oa-modal-backdrop">
+    <div class="oa-modal" style="max-width:560px" id="director-modal-inner"></div>
+  </div>
+
+  <div id="oa-cart-drawer-mount"></div>
+
+  <script src="shared.js"></script>
+  <script>
+    initShell('meetings');
+
+    // Tab switcher for the meetings sub-nav (Browse / Saved / Past / How)
+    function showMTab(name, el) {
+      document.querySelectorAll('.m-tab').forEach(t => t.style.display = 'none');
+      document.getElementById('tab-' + name).style.display = 'block';
+      document.querySelectorAll('.oa-subnav a').forEach(a => a.classList.remove('active'));
+      if (el) el.classList.add('active');
+      // Hide the floating action bar when off Browse (selection is contextual)
+      const bar = document.getElementById('action-bar');
+      if (bar) bar.style.display = (name === 'browse' && selected.size > 0) ? 'flex' : 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    const selected = new Set();
+
+    // ===== Pagination state =====
+    let pageSize = 20;
+    let currentPage = 1;
+    function resetPage() { currentPage = 1; }
+
+    // LinkedIn URL generator (mock — deterministic from id so it stays stable)
+    function linkedinUrl(d) {
+      const { first, last } = splitName(d.name);
+      const slug = `${first.toLowerCase()}-${last.toLowerCase()}-${(d.id * 7 + 31)}`;
+      return `linkedin.com/in/${slug}`;
+    }
+
+    // Convert numeric match score to a label band
+    function matchLabel(score) {
+      if (score >= 70) return { band: 'strong', text: 'Strong' };
+      if (score >= 40) return { band: 'medium', text: 'Medium' };
+      return { band: 'neutral', text: 'Neutral' };
+    }
+
+    // ===== Matchmaker state =====
+    let mmActive = false;
+    let mmScores = {}; // director id => 0-100 score
+    let mmInput = '';
+
+    function scoreMatch(director, text) {
+      // Clean URL fragments and tokenize
+      const t = text.toLowerCase()
+        .replace(/https?:\/\//g, '')
+        .replace(/\.(com|io|ai|co|net|org|app)\b/g, ' ');
+      const tokens = t.split(/[^a-z]+/).filter(tok => tok.length > 2);
+
+      let score = 0;
+      for (const tok of tokens) {
+        if (director.role.toLowerCase().includes(tok)) score += 4;
+        if (director.bio.toLowerCase().includes(tok)) score += 1;
+        for (const tag of director.tags) {
+          if (tag.toLowerCase().includes(tok)) score += 3;
+        }
+      }
+
+      // Category-based boosts — what you sell → who buys it
+      const categories = [
+        { sell: /(quality|qa|scoring|monitor|qualityiq)/, buyTags: ['quality','ai curious'], buyRoles: ['quality','cx','customer experience'] },
+        { sell: /(\bai\b|\bml\b|gpt|machine|artificial)/, buyTags: ['ai curious','voice ai','rpa'], buyRoles: ['cio','cto','digital','technology'] },
+        { sell: /(wfm|workforce|schedul|forecast)/, buyTags: ['wfm'], buyRoles: ['workforce','operations'] },
+        { sell: /(rpa|robotic|automat|bot)/, buyTags: ['rpa','ai curious'], buyRoles: ['digital','technology','cio','cto'] },
+        { sell: /(cx|customer experience|support|contact center)/, buyTags: ['cx buyer','ai curious'], buyRoles: ['cx','customer experience','support'] },
+        { sell: /(\bhr\b|hiring|recruit|talent)/, buyTags: ['hiring','training'], buyRoles: ['talent','hr','people','training'] },
+        { sell: /(procurement|sourcing|vendor management)/, buyTags: ['procurement','vendor eval','budget holder'], buyRoles: ['procurement','vendor','sourcing'] },
+        { sell: /(training|learning|coach|enablement|onboarding)/, buyTags: ['training'], buyRoles: ['training','quality','people'] },
+        { sell: /(analytics|insight|dashboard|reporting)/, buyTags: ['ai curious'], buyRoles: ['operations','cx','customer experience'] },
+        { sell: /(speech|transcrip|conversation intel)/, buyTags: ['voice ai','quality','ai curious'], buyRoles: ['cx','customer experience','quality'] },
+      ];
+      for (const c of categories) {
+        if (c.sell.test(t)) {
+          for (const tag of director.tags) {
+            if (c.buyTags.some(b => tag.toLowerCase().includes(b))) score += 8;
+          }
+          for (const role of c.buyRoles) {
+            if (director.role.toLowerCase().includes(role)) score += 8;
+          }
+        }
+      }
+
+      // Seniority and signal boosts
+      if (director.seniority === 'C-Suite') score += 4;
+      else if (director.seniority === 'SVP') score += 3;
+      else if (director.seniority === 'VP') score += 2;
+      if (director.tags.includes('Decision Maker')) score += 6;
+      if (director.tags.includes('Budget Holder')) score += 4;
+
+      return Math.min(100, Math.round(score * 1.6));
+    }
+
+    function runMatchmaker() {
+      const url = document.getElementById('mm-url').value.trim();
+      const desc = document.getElementById('mm-desc').value.trim();
+      const input = (url + ' ' + desc).trim();
+      const status = document.getElementById('mm-status');
+
+      if (!input) {
+        status.innerHTML = '<span style="color:var(--oa-red);font-weight:600">↑ Enter a URL or describe what you sell first.</span>';
+        return;
+      }
+
+      status.innerHTML = '<span style="color:#001580;font-weight:600">⏳ Analyzing 100 leaders against your ICP…</span>';
+
+      setTimeout(() => {
+        mmInput = input;
+        mmScores = {};
+        DIRECTORS.forEach(d => { mmScores[d.id] = scoreMatch(d, input); });
+        mmActive = true;
+
+        const strong = DIRECTORS.filter(d => mmScores[d.id] >= 70).length;
+        const medium = DIRECTORS.filter(d => mmScores[d.id] >= 40 && mmScores[d.id] < 70).length;
+
+        status.innerHTML = `<span style="color:var(--oa-green);font-weight:600">✓ ${strong} strong match${strong !== 1 ? 'es' : ''}, ${medium} possible</span> · sorted by best match`;
+
+        document.getElementById('mm-clear-btn').style.display = '';
+        document.getElementById('f-sort').value = 'match';
+        resetPage();
+        renderDirectors();
+      }, 700);
+    }
+
+    function clearMatchmaker() {
+      mmActive = false;
+      mmScores = {};
+      mmInput = '';
+      document.getElementById('mm-url').value = '';
+      document.getElementById('mm-desc').value = '';
+      document.getElementById('mm-status').innerHTML = '';
+      document.getElementById('mm-clear-btn').style.display = 'none';
+      document.getElementById('f-sort').value = 'conn';
+      resetPage();
+      renderDirectors();
+    }
+
+    function matchesRegion(loc, region) {
+      if (!region) return true;
+      if (region === 'Philippines') return loc.includes('Philippines');
+      if (region === 'India') return loc.includes('India');
+      if (region === 'USA') return loc.includes('USA');
+      return !['Philippines','India','USA'].some(r => loc.includes(r));
+    }
+    function matchesRole(role, roleFilter) {
+      if (!roleFilter) return true;
+      const r = role.toLowerCase();
+      const map = {
+        'Operations': ['operations','coo','ops'],
+        'Customer Experience': ['customer','cx','support'],
+        'Workforce': ['workforce','wfm'],
+        'HR / People': ['people','hr','talent','training','quality'],
+        'Procurement': ['procurement','vendor','sourcing'],
+        'Technology': ['cio','cto','engineering','technology','digital']
+      };
+      return (map[roleFilter] || []).some(k => r.includes(k));
+    }
+
+    function filteredDirectors() {
+      const q = (document.getElementById('f-search').value || '').toLowerCase();
+      const sen = document.getElementById('f-seniority').value;
+      const reg = document.getElementById('f-region').value;
+      const rol = document.getElementById('f-role').value;
+      const sort = document.getElementById('f-sort').value;
+
+      let list = DIRECTORS.filter(d => {
+        if (q && !(d.name.toLowerCase().includes(q) || d.company.toLowerCase().includes(q) || d.role.toLowerCase().includes(q))) return false;
+        if (sen && d.seniority !== sen) return false;
+        if (!matchesRegion(d.location, reg)) return false;
+        if (!matchesRole(d.role, rol)) return false;
+        return true;
+      });
+
+      if (sort === 'match' && mmActive) list.sort((a, b) => (mmScores[b.id] || 0) - (mmScores[a.id] || 0));
+      else if (sort === 'match' && !mmActive) list.sort((a, b) => b.connections - a.connections); // fall back when no matchmaker run
+      else if (sort === 'conn') list.sort((a, b) => b.connections - a.connections);
+      else if (sort === 'name') list.sort((a, b) => a.name.localeCompare(b.name));
+      else if (sort === 'company') list.sort((a, b) => a.company.localeCompare(b.company));
+
+      return list;
+    }
+
+    function splitName(full) {
+      const parts = full.trim().split(/\s+/);
+      return { first: parts[0], last: parts.slice(1).join(' ') };
+    }
+
+    function renderDirectors() {
+      const list = filteredDirectors();
+      const total = list.length;
+      const totalPages = Math.max(1, Math.ceil(total / pageSize));
+      if (currentPage > totalPages) currentPage = totalPages;
+      const startIdx = (currentPage - 1) * pageSize;
+      const endIdx = Math.min(startIdx + pageSize, total);
+      const pageList = list.slice(startIdx, endIdx);
+
+      const grid = document.getElementById('director-grid');
+      if (total === 0) {
+        grid.innerHTML = `<p style="text-align:center;padding:2rem;color:var(--oa-muted)">No leaders match your filters.</p>`;
+      } else {
+        grid.innerHTML = `
+          <table class="oa-director-table">
+            <thead>
+              <tr>
+                <th style="width:36px"></th>
+                <th>Name${mmActive ? ' · Match' : ''}</th>
+                <th>Role</th>
+                <th>Company</th>
+                <th>LinkedIn</th>
+                <th>Seniority</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              ${pageList.map(d => {
+                const { first, last } = splitName(d.name);
+                const score = mmScores[d.id] || 0;
+                const ml = matchLabel(score);
+                const matchClass = mmActive && ml.band === 'strong' ? ' match-strong' : '';
+                const badge = mmActive
+                  ? `<span class="oa-mm-badge ${ml.band}">${ml.text}</span>`
+                  : '';
+                const li = linkedinUrl(d);
+                return `
+                  <tr class="${selected.has(d.id) ? 'selected' : ''}${matchClass}" onclick="toggleSelect(${d.id}, event)">
+                    <td><span class="oa-dt-checkbox">✓</span></td>
+                    <td>
+                      <div class="oa-dt-name-cell">
+                        <img src="${d.avatarUrl}" class="oa-dt-avatar" alt="${first}" />
+                        <span class="oa-dt-name">${first} <span class="oa-dt-blur">${last}</span></span>${badge}
+                      </div>
+                    </td>
+                    <td>${d.role}</td>
+                    <td><span class="oa-dt-blur">${d.company}</span></td>
+                    <td>
+                      <a class="oa-li-link" href="https://${li}" target="_blank" onclick="event.stopPropagation()">
+                        <span class="oa-li-icon">in</span>
+                        <span class="oa-li-text oa-dt-blur">${li}</span>
+                      </a>
+                    </td>
+                    <td><span class="oa-badge oa-badge-gray">${d.seniority}</span></td>
+                    <td><a href="#" onclick="event.preventDefault();event.stopPropagation();openDirectorDetail(${d.id})" style="color:var(--oa-orange);font-weight:600;font-size:0.8rem;white-space:nowrap">Profile →</a></td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+
+          <!-- Pagination controls -->
+          <div class="oa-pagination">
+            <div class="oa-pagination-controls">
+              <button class="oa-btn oa-btn-sm" onclick="prevPage()" ${currentPage === 1 ? 'disabled style="opacity:0.5;cursor:not-allowed"' : ''}>← Previous</button>
+              <span class="oa-text-sm">Page <strong>${currentPage}</strong> of ${totalPages}</span>
+              <button class="oa-btn oa-btn-sm" onclick="nextPage()" ${currentPage === totalPages ? 'disabled style="opacity:0.5;cursor:not-allowed"' : ''}>Next →</button>
+            </div>
+            <div class="oa-pagination-size">
+              <span class="oa-text-sm oa-text-muted">Show:</span>
+              <button class="oa-btn oa-btn-sm ${pageSize === 20 ? 'active' : ''}" onclick="setPageSize(20)">20</button>
+              <button class="oa-btn oa-btn-sm ${pageSize === 50 ? 'active' : ''}" onclick="setPageSize(50)">50</button>
+              <button class="oa-btn oa-btn-sm ${pageSize === 100 ? 'active' : ''}" onclick="setPageSize(100)">100</button>
+            </div>
+          </div>
+        `;
+      }
+      const countLabel = total === 0
+        ? 'No leaders match your filters'
+        : `Showing ${startIdx + 1}–${endIdx} of ${total} leader${total === 1 ? '' : 's'}${total !== DIRECTORS.length ? ` (filtered from ${DIRECTORS.length})` : ''}`;
+      document.getElementById('results-count').textContent = countLabel;
+      updateSelectionUI();
+    }
+
+    function prevPage() { if (currentPage > 1) { currentPage--; renderDirectors(); } }
+    function nextPage() { currentPage++; renderDirectors(); }
+    function setPageSize(n) { pageSize = n; currentPage = 1; renderDirectors(); }
+
+    function toggleSelect(id, event) {
+      if (event && event.target.tagName === 'A') return;
+      if (selected.has(id)) selected.delete(id);
+      else selected.add(id);
+      renderDirectors();
+    }
+
+    function selectAllVisible() {
+      filteredDirectors().forEach(d => selected.add(d.id));
+      renderDirectors();
+    }
+    function clearSelection() {
+      selected.clear();
+      renderDirectors();
+    }
+
+    function updateSelectionUI() {
+      const n = selected.size;
+      const total = n * 300;
+      document.getElementById('selection-count').textContent = `${n} selected`;
+      const bar = document.getElementById('action-bar');
+      bar.style.display = n > 0 ? 'flex' : 'none';
+      document.getElementById('ab-count-label').textContent = `${n} prospect${n === 1 ? '' : 's'} selected`;
+      document.getElementById('ab-cost').textContent = fmtUSD(total);
+    }
+
+    function openBookingModal() {
+      const ids = [...selected];
+      const directors = DIRECTORS.filter(d => ids.includes(d.id));
+      const total = ids.length * 300;
+      document.getElementById('bm-count').textContent = `${ids.length} prospect${ids.length === 1 ? '' : 's'}`;
+      document.getElementById('bm-total').textContent = fmtUSD(total);
+      document.getElementById('bm-math').textContent = `${ids.length} × $300`;
+      document.getElementById('bm-confirm-amount').textContent = ` · ${fmtUSD(total)}`;
+      document.getElementById('bm-list').innerHTML = directors.map(d => {
+        const { first, last } = splitName(d.name);
+        return `
+          <div style="display:flex;align-items:center;gap:0.6rem;padding:0.4rem 0.5rem;border-bottom:1px dashed var(--oa-border)">
+            <img src="${d.avatarUrl}" style="width:28px;height:28px;border-radius:50%" />
+            <div style="flex:1;font-size:0.8rem">
+              <div style="font-weight:600;color:var(--oa-navy)">${first} <span class="oa-dt-blur">${last}</span></div>
+              <div class="oa-text-xs oa-text-muted">${d.role} · <span class="oa-dt-blur">${d.company}</span></div>
+            </div>
+            <span class="oa-text-sm">$300</span>
+            <button class="oa-btn oa-btn-sm" onclick="selected.delete(${d.id});renderDirectors();openBookingModal()">×</button>
+          </div>
+        `;
+      }).join('') || '<p class="oa-text-muted oa-text-sm" style="margin:1rem;text-align:center">No prospects selected.</p>';
+      document.getElementById('booking-modal').classList.add('open');
+    }
+
+    function closeBookingModal() {
+      document.getElementById('booking-modal').classList.remove('open');
+    }
+
+    function confirmBooking() {
+      const ids = [...selected];
+      const total = ids.length * 300;
+      if (ids.length === 0) { alert('Pick at least one prospect.'); return; }
+      const directors = DIRECTORS.filter(d => ids.includes(d.id));
+      directors.forEach(d => {
+        addToCart({
+          kind: 'Meeting (refundable if declined)',
+          title: `${d.name} — ${d.role} @ ${d.company}`,
+          price: 300
+        });
+      });
+      closeBookingModal();
+      selected.clear();
+      renderDirectors();
+      openCart();
+    }
+
+    function openDirectorDetail(id) {
+      const d = DIRECTORS.find(x => x.id === id);
+      if (!d) return;
+      const { first, last } = splitName(d.name);
+      document.getElementById('director-modal-inner').innerHTML = `
+        <div class="oa-flex-between oa-mb-2">
+          <div style="display:flex;gap:0.85rem;align-items:center">
+            <img src="${d.avatarUrl}" style="width:64px;height:64px;border-radius:50%" />
+            <div>
+              <h2 style="margin:0;color:var(--oa-navy)">${first} <span class="oa-dt-blur">${last}</span></h2>
+              <p style="margin:0.15rem 0 0 0;color:var(--oa-muted);font-size:0.9rem">${d.role}</p>
+              <p style="margin:0.15rem 0 0 0;font-weight:600"><span class="oa-dt-blur">${d.company}</span></p>
+            </div>
+          </div>
+          <button class="oa-btn oa-btn-sm" onclick="document.getElementById('director-modal').classList.remove('open')">✕</button>
+        </div>
+
+        <div class="oa-grid oa-grid-2" style="gap:0.5rem">
+          <div class="oa-stat"><div class="oa-stat-label">Experience</div><div class="oa-stat-value">${d.exp} yrs</div></div>
+          <div class="oa-stat"><div class="oa-stat-label">Connections</div><div class="oa-stat-value">${d.connections.toLocaleString()}</div></div>
+        </div>
+
+        <div class="oa-mt-2">
+          <strong style="font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--oa-muted)">Location</strong>
+          <p style="margin:0.25rem 0 0 0">📍 ${d.location}</p>
+        </div>
+
+        <div class="oa-mt-2">
+          <strong style="font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--oa-muted)">About</strong>
+          <p style="margin:0.25rem 0 0 0;line-height:1.5">${d.bio}</p>
+        </div>
+
+        <div class="oa-mt-2">
+          <strong style="font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--oa-muted)">Interests / Buying Signals</strong>
+          <div style="margin-top:0.35rem;display:flex;flex-wrap:wrap;gap:0.35rem">
+            ${d.tags.map(t => `<span class="oa-badge">${t}</span>`).join('')}
+            <span class="oa-badge oa-badge-gray">${d.seniority}</span>
+          </div>
+        </div>
+
+        <div class="oa-mt-2 oa-card" style="background:var(--oa-navy-50);border-color:#BBD3E8">
+          <div class="oa-text-xs oa-text-muted" style="text-transform:uppercase;letter-spacing:0.05em">LinkedIn-sourced</div>
+          <div style="font-size:0.85rem;line-height:1.5;margin-top:0.25rem">Profile data is pulled from LinkedIn at the moment of selection. Last refreshed: ${d.lastActive}.</div>
+        </div>
+
+        <div class="oa-flex-between oa-mt-3">
+          <button class="oa-btn" onclick="document.getElementById('director-modal').classList.remove('open')">Close</button>
+          <button class="oa-btn oa-btn-accent" onclick="toggleSelect(${d.id});document.getElementById('director-modal').classList.remove('open')">${selected.has(d.id) ? 'Remove from list' : 'Add to list — $300'}</button>
+        </div>
+      `;
+      document.getElementById('director-modal').classList.add('open');
+    }
+
+    // Close modal on backdrop click
+    document.getElementById('booking-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'booking-modal') closeBookingModal();
+    });
+    document.getElementById('director-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'director-modal') document.getElementById('director-modal').classList.remove('open');
+    });
+
+    renderDirectors();
+  </script>
+</body>
+</html>

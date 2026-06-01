@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>OA Marketplace — ABM Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css" />
+</head>
+<body>
+  <div id="oa-topbar-mount"></div>
+
+  <div class="oa-subnav">
+    <div class="oa-subnav-inner">
+      <a href="#" class="active" onclick="event.preventDefault();showHubTab('hub')">Hub</a>
+      <a href="#" onclick="event.preventDefault();showHubTab('graph')">Graph</a>
+      <a href="#" onclick="event.preventDefault();showHubTab('firmnet')">Firm Net</a>
+      <a href="#" onclick="event.preventDefault();showHubTab('discover')">Discover</a>
+      <a href="#" onclick="event.preventDefault();showHubTab('segments')">Segments</a>
+      <a href="#" onclick="event.preventDefault();showHubTab('scores')">Scores</a>
+      <a href="#" onclick="event.preventDefault();showHubTab('oa500')">OA500</a>
+      <a href="#" onclick="event.preventDefault();showHubTab('leaders')">Leaders</a>
+      <a href="#" onclick="event.preventDefault();showHubTab('jobs')">Jobs</a>
+      <a href="#" onclick="event.preventDefault();showHubTab('workforce')">Workforce</a>
+      <a href="#" onclick="event.preventDefault();showHubTab('clients')">Clients</a>
+      <a href="#" onclick="event.preventDefault();showHubTab('stack')">Stack</a>
+    </div>
+  </div>
+
+  <div class="oa-page">
+
+    <!-- Hub tab content -->
+    <div id="hub-tab" class="hub-tab">
+      <div class="oa-hero">
+        <span class="oa-badge oa-badge-orange" style="background:rgba(249,115,22,0.15);color:#B3C8F5">LIVE</span>
+        <h1 style="margin-top:0.5rem">The state of the outsourcing industry</h1>
+        <p>OA Marketplace turns 12,400+ outsourcing firms and 87,000+ executive contacts into the ABM, advertising, and matchmaking layer that connects technology vendors to the industry's decision makers.</p>
+        <div class="oa-hero-stats">
+          <div class="oa-hero-stat"><strong>2,000+</strong>firms indexed</div>
+          <div class="oa-hero-stat"><strong>80,000+</strong>executives</div>
+          <div class="oa-hero-stat"><strong>OA-Score™</strong>ranking active</div>
+          <div class="oa-hero-stat"><strong>3</strong>marketplace surfaces</div>
+        </div>
+      </div>
+
+      <!-- Marketplace shortcuts -->
+      <h2 class="oa-section-title">Marketplace</h2>
+      <p class="oa-section-sub">Three ways advertisers reach the outsourcing buying committee.</p>
+      <div class="oa-grid oa-grid-3 oa-mb-3">
+        <a href="index.html" class="oa-card" style="text-decoration:none;border-left:3px solid #001E94">
+          <div class="oa-flex-between oa-mb-1">
+            <span class="oa-badge">Part 1</span>
+            <span class="oa-badge oa-badge-green">Active</span>
+          </div>
+          <h3 class="oa-card-title">ABM Hub</h3>
+          <p class="oa-card-sub">Search firms, build ICPs, surface decision makers and intent signals across the industry.</p>
+          <div class="oa-text-xs oa-text-muted">You are here →</div>
+        </a>
+        <a href="marketplace.html" class="oa-card" style="text-decoration:none;border-left:3px solid #003CB3">
+          <div class="oa-flex-between oa-mb-1">
+            <span class="oa-badge oa-badge-orange">Part 2</span>
+            <span class="oa-badge">Preview-first checkout</span>
+          </div>
+          <h3 class="oa-card-title">OA Media</h3>
+          <p class="oa-card-sub">Buy guest posts, display ads, and newsletter insertions — with live preview before checkout.</p>
+          <div class="oa-text-xs oa-text-muted">Open marketplace →</div>
+        </a>
+        <a href="meetings.html" class="oa-card" style="text-decoration:none;border-left:3px solid #16A34A">
+          <div class="oa-flex-between oa-mb-1">
+            <span class="oa-badge oa-badge-green">Part 3</span>
+            <span class="oa-badge">$300/meeting</span>
+          </div>
+          <h3 class="oa-card-title">OA Connect</h3>
+          <p class="oa-card-sub">Pick from 100+ BPO directors and book intro calls. Refund guaranteed if they decline.</p>
+          <div class="oa-text-xs oa-text-muted">Browse leaders →</div>
+        </a>
+      </div>
+
+      <!-- Stats -->
+      <div class="oa-grid oa-grid-4 oa-mb-3">
+        <div class="oa-stat">
+          <div class="oa-stat-label">Saved accounts</div>
+          <div class="oa-stat-value">3</div>
+          <div class="oa-stat-delta">+1 this week</div>
+        </div>
+        <div class="oa-stat">
+          <div class="oa-stat-label">ICP coverage</div>
+          <div class="oa-stat-value">62%</div>
+          <div class="oa-stat-delta">+8% MoM</div>
+        </div>
+        <div class="oa-stat">
+          <div class="oa-stat-label">Active campaigns</div>
+          <div class="oa-stat-value">2</div>
+          <div class="oa-stat-delta">1 ending soon</div>
+        </div>
+        <div class="oa-stat">
+          <div class="oa-stat-label">Meetings booked</div>
+          <div class="oa-stat-value">11</div>
+          <div class="oa-stat-delta down">2 declined</div>
+        </div>
+      </div>
+
+      <!-- Two-column main area -->
+      <div class="oa-grid oa-grid-3" style="grid-template-columns: 2fr 1fr">
+
+        <!-- Accounts column -->
+        <div>
+          <div class="oa-card">
+            <div class="oa-flex-between oa-mb-2">
+              <div>
+                <h3 class="oa-card-title" style="margin:0">Top Accounts — Outsourcing Industry</h3>
+                <p class="oa-card-sub" style="margin:0.25rem 0 0 0">Ranked by OA-Score™ — proprietary scoring across financials, employee growth, and tech adoption.</p>
+              </div>
+              <button class="oa-btn oa-btn-sm">Filter</button>
+            </div>
+            <table class="oa-table">
+              <thead><tr><th>Firm</th><th>OA-Score</th><th>Executives</th><th>Employees</th><th>Country</th><th></th></tr></thead>
+              <tbody id="accounts-tbody"></tbody>
+            </table>
+          </div>
+
+          <!-- ICP Builder -->
+          <div class="oa-card oa-mt-3">
+            <div class="oa-flex-between oa-mb-2">
+              <h3 class="oa-card-title" style="margin:0">Build your ICP</h3>
+              <span class="oa-badge oa-badge-orange">2 of 4 complete</span>
+            </div>
+            <p class="oa-card-sub">Personalize your database. We'll auto-score accounts and executives against this profile.</p>
+            <div class="oa-grid oa-grid-2">
+              <div><label class="oa-label">Industry</label><select class="oa-select"><option>BPO Services</option><option>Customer Experience</option><option>IT Outsourcing</option><option>F&A Outsourcing</option></select></div>
+              <div><label class="oa-label">Employee size</label><select class="oa-select"><option>500 - 5,000</option><option>5,000 - 50,000</option><option>50,000+</option></select></div>
+              <div><label class="oa-label">Geography</label><select class="oa-select"><option>APAC</option><option>EMEA</option><option>Americas</option><option>Global</option></select></div>
+              <div><label class="oa-label">Buyer role</label><select class="oa-select"><option>COO / VP Ops</option><option>CX leader</option><option>Procurement</option><option>WFM lead</option></select></div>
+            </div>
+            <div class="oa-mt-2 oa-flex-center">
+              <button class="oa-btn oa-btn-primary">Save ICP & re-rank</button>
+              <button class="oa-btn">Preview matches</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right rail -->
+        <div>
+          <div class="oa-card">
+            <h3 class="oa-card-title">⭐ Saved accounts</h3>
+            <p class="oa-card-sub">Quick access to the firms you're watching.</p>
+            <div id="saved-list"></div>
+          </div>
+
+          <div class="oa-card oa-mt-3">
+            <h3 class="oa-card-title">🔭 Constellation</h3>
+            <p class="oa-card-sub">Surface relationships between firms, leaders, and clients. <a href="#" style="color:var(--oa-orange)">Open the graph →</a></p>
+            <div style="height:140px;background:linear-gradient(135deg,var(--oa-navy-50),var(--oa-orange-50));border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--oa-muted);font-size:0.8rem">
+              ◯ ─── ◯ ─── ◯ ─── ◯<br>graph visualization
+            </div>
+          </div>
+
+          <div class="oa-card oa-mt-3" style="border-left:3px solid var(--oa-orange)">
+            <h3 class="oa-card-title">🚀 Onboarding</h3>
+            <p class="oa-card-sub">Tell us what you sell. We'll auto-rank every firm and executive against your product.</p>
+            <button class="oa-btn oa-btn-accent oa-w-full">Connect your product</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Other tab content (stub) -->
+    <div id="other-tab" class="hub-tab" style="display:none">
+      <div class="oa-card" style="text-align:center;padding:4rem 2rem">
+        <h2 class="oa-section-title" id="other-tab-title">Section</h2>
+        <p class="oa-section-sub">This tab exists in the production build. The prototype focuses on Hub + the two marketplace surfaces.</p>
+        <button class="oa-btn oa-btn-primary" onclick="showHubTab('hub')">← Back to Hub</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="oa-cart-drawer-mount"></div>
+
+  <script src="shared.js"></script>
+  <script>
+    initShell('hub');
+
+    // Populate accounts table
+    const tbody = document.getElementById('accounts-tbody');
+    tbody.innerHTML = ACCOUNTS.map(a => `
+      <tr>
+        <td>
+          <div style="font-weight:600;color:var(--oa-navy)">${a.name}</div>
+          <div class="oa-text-xs oa-text-muted">${a.industry}</div>
+        </td>
+        <td>
+          <span class="oa-badge ${a.score >= 90 ? 'oa-badge-orange' : a.score >= 80 ? '' : 'oa-badge-gray'}">${a.score}</span>
+        </td>
+        <td>${a.executives}</td>
+        <td>${a.employees.toLocaleString()}</td>
+        <td><span class="oa-text-sm">${a.country}</span></td>
+        <td><button class="oa-btn oa-btn-sm">${a.saved ? '★ Saved' : '☆ Save'}</button></td>
+      </tr>
+    `).join('');
+
+    // Saved accounts side panel
+    document.getElementById('saved-list').innerHTML = ACCOUNTS.filter(a => a.saved).map(a => `
+      <div class="oa-flex-between" style="padding:0.5rem 0;border-bottom:1px solid var(--oa-border)">
+        <div>
+          <div style="font-weight:600;font-size:0.85rem;color:var(--oa-navy)">${a.name}</div>
+          <div class="oa-text-xs oa-text-muted">${a.executives} execs</div>
+        </div>
+        <span class="oa-badge oa-badge-orange">${a.score}</span>
+      </div>
+    `).join('');
+
+    function showHubTab(name) {
+      document.querySelectorAll('.oa-subnav a').forEach(a => a.classList.remove('active'));
+      event && event.target && event.target.classList.add('active');
+      const hub = document.getElementById('hub-tab');
+      const other = document.getElementById('other-tab');
+      if (name === 'hub') {
+        hub.style.display = 'block';
+        other.style.display = 'none';
+      } else {
+        hub.style.display = 'none';
+        other.style.display = 'block';
+        document.getElementById('other-tab-title').textContent = name.charAt(0).toUpperCase() + name.slice(1);
+      }
+    }
+  </script>
+</body>
+</html>
