@@ -28,7 +28,7 @@ No installation, no build step. Internet connection is needed only for fonts and
 |---|---|---|---|---|---|
 | **Free** | $0 | ✓ Everything | — | — | — |
 | **Standard** | $29/mo (or $24/mo annual — "10+2 free") | ✓ | 50 credits/mo | ✓ Guest posts, display, newsletter | — Locked |
-| **Premium** | $599/mo (quarterly $1,797 or annual $5,990) | ✓ | 200 credits/mo | ✓ All | ✓ 1 Meeting Credit/mo · 1 Guest Post/mo ($599 value) · **roll over** · refund on decline |
+| **Premium** | $599/mo (quarterly $1,797 or annual $5,990) | ✓ | 500 credits/mo ($299 value) | ✓ All | ✓ 1 Weekly Newsletter Insertion/mo ($599 value) · 1 Guest Post/mo ($599 value) · refund on decline |
 
 Premium has **no monthly option** — quarterly or annual only. The pricing section on `sales.html` has a monthly↔annual toggle that recalculates the displayed prices.
 
