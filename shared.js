@@ -186,7 +186,7 @@ function renderTopbar(active) {
         </a>
         <nav class="oa-nav">
           <a href="index.html" ${active === 'hub' ? 'class="active"' : ''}>ABM Hub</a>
-          <a href="marketplace.html" ${active === 'marketplace' ? 'class="active"' : ''}>OA Media</a>
+          <a href="marketplace.html" ${active === 'marketplace' ? 'class="active"' : ''}>Publisher Hub</a>
           <a href="meetings.html" ${active === 'meetings' ? 'class="active"' : ''}>OA Connect</a>
           <a href="sales.html" style="color:var(--oa-orange);font-weight:600">↗ Public site / Pricing</a>
         </nav>

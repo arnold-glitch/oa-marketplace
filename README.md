@@ -16,7 +16,7 @@ No installation, no build step. Internet connection is needed only for fonts and
 | `register.html` | **Panel registration form**. Two-column layout: form on left (name, role, company, LinkedIn URL with "smart-fill" framing, business + personal email, mobile, working hours, timezone, consent). Dashboard preview always visible on right. On submit, the form card swaps to a success card ("we sent a confirmation email · here's what happens next") and the dashboard personalizes with the submitted name / role / company. Success card includes a "Go to my dashboard →" button → `lead-dashboard.html`. |
 | `lead-dashboard.html` | **Logged-in panel-member dashboard**. Sticky header bar with welcome + monthly earnings + 4 stat tiles (Pending pitches, Scheduled calls, YTD earned, Relevance score). 4 tabs: **🏠 How It Works** (default home — 4-step explainer + voluntary reminder + refer CTA), **📬 Upcoming** (3 pending pitch cards with Accept/Skip + 2 scheduled calls with date tiles), **📊 History** (YTD summary + 10-row table of past meetings & referral bonuses), **🎁 Refer a Colleague** (intro + qualifying-criteria card + send-referral form + your-referrals tracking table). Referral pays $20 per Manager-level+ in BPO/outsourcing with verifiable LinkedIn. |
 | `index.html` | Part 1 — ABM Hub (landing, accounts, ICP builder, links to the other surfaces). Replicates the look of the existing Vercel prototype. |
-| `marketplace.html` | Part 2 — OA Media. 7 products: guest posts ($599), display ads ($1,299/mo), newsletter ($799/wk), podcast ($2,499/ep), whitepaper ($1,499), top-list ($1,299–$4,499), and **Premium Bundle** (3 tiers: $1,499 quarterly / $6,999 annual / $12,999 annual premium — save up to 75% vs à la carte). Every product has a **live preview** that re-renders as you type. |
+| `marketplace.html` | Part 2 — Publisher Hub. 7 products: guest posts ($599), display ads ($1,299/mo), newsletter ($799/wk), podcast ($2,499/ep), whitepaper ($1,499), top-list ($1,299–$4,499), and **Premium Bundle** (3 tiers: $1,499 quarterly / $6,999 annual / $12,999 annual premium — save up to 75% vs à la carte). Every product has a **live preview** that re-renders as you type. |
 | `meetings.html` | Part 3 — OA Connect. 100 mock BPO directors generated from a seeded RNG. Filter, multi-select, book at $300/meeting with refund-on-decline policy. |
 | `shared.css`, `shared.js` | Shared design system, mock data, top nav, and persistent cart (`localStorage`). |
 
@@ -36,7 +36,7 @@ Premium has **no monthly option** — quarterly or annual only. The pricing sect
 
 1. **Open `sales.html`** — see the public marketing surface. Scroll through the three surfaces, the preview-first differentiator, social proof, and the pricing table. Toggle monthly↔annual.
 2. **Click "Live Demo" or "Start free"** to drop into `index.html` (the app surface).
-2. **Click "OA Media"** in the top nav → "Build & Preview" on the Guest Posting card.
+2. **Click "Publisher Hub"** in the top nav → "Build & Preview" on the Guest Posting card.
    - Edit the title or draft on the left → the preview on the right re-renders in real time.
    - Watch the editorial checklist update (word count, internal/external links, disclaimer).
    - Click "Add to Cart — $499" → see the cart drawer.
@@ -50,7 +50,7 @@ Premium has **no monthly option** — quarterly or annual only. The pricing sect
 
 ## Notable details
 
-- **Preview-first**: the right-hand panel on each OA Media product re-renders as the user types — there's no "submit" delay. This is the conversion lever the brief called out.
+- **Preview-first**: the right-hand panel on each Publisher Hub product re-renders as the user types — there's no "submit" delay. This is the conversion lever the brief called out.
 - **Editorial checklist** auto-evaluates word count and link counts as you edit the draft.
 - **100 directors** are generated from a seeded RNG (`shared.js` → `generateDirectors()`), so the same list appears every load. Avatars are SVG initials via Dicebear.
 - **Refund policy** is shown prominently in the booking modal — "you only pay for taken meetings."
@@ -66,7 +66,7 @@ Premium has **no monthly option** — quarterly or annual only. The pricing sect
 | Cart with persistence | No real email / Slack notifications on checkout |
 | Tab navigation across the three surfaces | The 9 secondary ABM Hub tabs (Graph, OA500, etc.) are stubbed |
 
-## OA Media inventory (current)
+## Publisher Hub inventory (current)
 
 | Product | Price | Limit | Preview |
 |---|---|---|---|
@@ -74,7 +74,7 @@ Premium has **no monthly option** — quarterly or annual only. The pricing sect
 | Newsletter Insertion | **$1,999 / month** (12 insertions · 3/wk × 4 wks) | one sponsor / edition | **Inside Outsourcing** mockup — purple-branded header, scripted edition name, dedicated 16:9 image slot in the sponsored block. Editorial sections are blurred placeholder (rotates per issue); the sponsor block is the focus and renders sharp. |
 | Display Ads | **$2,999 / quarter** (3 months) | unlimited | Banner placed inside a mock OA News article — right-rail + in-feed banner placements |
 | Podcast Interview | $1,999 / episode | Max 2 / company / year | OA podcast episode page with player, show notes, backlinks, sponsored disclosure |
-| Custom Whitepaper | $3,999 | unlimited | Gated landing page on OA.com + co-branded cover + 1-month newsletter feature + 2 stand-alone articles + 3 months display ads + lead-delivery pipeline (HubSpot/SFDC/webhook) |
+| Co-branded Whitepaper | $3,999 | unlimited | Gated landing page on OA.com + co-branded cover + 1-month newsletter feature + 2 stand-alone articles + 3 months display ads + lead-delivery pipeline (HubSpot/SFDC/webhook) |
 | **Top List Inclusion** | **$1,299–$4,499** (varies by list) | **Editorial review · not guaranteed · refund if rejected** | 10-list catalog, list-aware pricing, full mock of the listicle article with your entry highlighted at position N+1, auto-graded editorial criteria with acceptance-probability estimate |
 | ★ **Premium Bundle** | **$1,499 / 6 mo · $6,999 / yr · $12,999 / yr** | 3 tiers: **Lite** (6 months) · **Standard** (12 mo · Most popular) · **Premium** (12 mo · Best value) | Inverted dark navy tile shown FIRST in Overview. Preview panel shows all 3 mini-tier cards inline. Dedicated tab with full 3-tier comparison, side-by-side feature table showing **84-93% savings** vs à la carte (~$19K / ~$44K / ~$66K saved). Premium tier adds priority editorial review + dedicated success manager. |
 

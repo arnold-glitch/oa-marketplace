@@ -2,12 +2,314 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>OA Marketplace — OA Media</title>
+  <title>OA Marketplace — Publisher Hub</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Allura&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="shared.css" />
+  <style>
+    /* ==========================================================================
+       OA MEDIA — OVERVIEW (sales / landing tab). All rules scoped with .ovw-
+       ========================================================================== */
+    .ovw-wrap { --ovw-navy:#001E94; --ovw-blue:#003CB3; --ovw-line:#E5E7EB; }
+    /* ---------- HERO ---------- */
+    .ovw-hero{position:relative;overflow:hidden;border-radius:18px;padding:3rem 3rem 0;
+      background:linear-gradient(135deg,#001E94 0%,#00238F 45%,#001048 100%);color:#fff;margin-bottom:1.75rem}
+    .ovw-hero::before{content:"";position:absolute;right:-140px;top:-160px;width:420px;height:420px;border-radius:50%;background:#003CB3;opacity:.45}
+    .ovw-hero::after{content:"";position:absolute;left:-90px;bottom:60px;width:240px;height:240px;border-radius:50%;background:#FFDF53;opacity:.10}
+    .ovw-hero-inner{position:relative;z-index:1;max-width:780px}
+    .ovw-hero h1{margin:0 0 .85rem;font-size:2.5rem;line-height:1.08;letter-spacing:-.02em;font-weight:900;color:#fff}
+    .ovw-hero h1 em{font-style:normal;color:#FFDF53}
+    .ovw-hero p{margin:0 0 2.75rem;font-size:1.05rem;line-height:1.65;color:rgba(255,255,255,.84)}
+    .ovw-btn{display:inline-flex;align-items:center;gap:.5rem;border:none;cursor:pointer;font-family:inherit;
+      font-size:.92rem;font-weight:700;padding:.85rem 1.5rem;border-radius:10px;transition:transform .12s ease,box-shadow .12s ease}
+    .ovw-btn:hover{transform:translateY(-1px)}
+    .ovw-prod .ovw-btn{padding:.7rem 1.25rem;font-size:.88rem}
+    .ovw-btn-solid{background:#FFDF53;color:#001E94;box-shadow:0 6px 18px rgba(255,223,83,.25)}
+    .ovw-btn-nav{background:var(--ovw-blue);color:#fff;box-shadow:0 6px 16px rgba(0,60,179,.22)}
+    /* stat strip along the bottom of the hero */
+    .ovw-stats{position:relative;z-index:1;display:grid;grid-template-columns:repeat(5,1fr);
+      border-top:1px solid rgba(255,255,255,.16);margin:0 -3rem;padding:1.25rem 3rem;background:rgba(0,0,0,.16)}
+    .ovw-stat b{display:block;font-size:1.35rem;font-weight:900;letter-spacing:-.02em;color:#fff;line-height:1.1}
+    .ovw-stat span{display:block;font-size:.7rem;color:rgba(255,255,255,.6);margin-top:.25rem;letter-spacing:.03em}
+    /* ---------- 3-step how it works ---------- */
+    .ovw-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2.5rem}
+    .ovw-step{background:#fff;border:1px solid var(--ovw-line);border-radius:14px;padding:1.35rem 1.4rem}
+    .ovw-step-n{font-size:.7rem;font-weight:900;letter-spacing:.12em;color:var(--ovw-blue);margin-bottom:.5rem}
+    .ovw-step strong{display:block;color:var(--ovw-navy);font-size:1rem;margin-bottom:.35rem}
+    .ovw-step p{margin:0;font-size:.85rem;line-height:1.6;color:#7B90A6}
+    .ovw-steps.compact{gap:.75rem;margin:1.1rem 0 1.5rem}
+    .ovw-steps.compact .ovw-step{display:flex;align-items:center;gap:.8rem;padding:.8rem 1rem}
+    .ovw-steps.compact .ovw-step-ico{width:34px;height:34px;border-radius:9px;margin-bottom:0;flex:none}
+    .ovw-steps.compact .ovw-step-ico svg{width:17px;height:17px}
+    .ovw-steps.compact .ovw-step-n{font-size:.95rem;letter-spacing:.03em;margin-bottom:.1rem}
+    .ovw-steps.compact .ovw-step strong{font-size:.8rem;font-weight:400;color:#7B90A6;line-height:1.4}
+    /* ---------- section heading + jump chips ---------- */
+    .ovw-h2{font-size:1.65rem;font-weight:900;color:var(--ovw-navy);letter-spacing:-.02em;margin:0 0 .5rem}
+    .ovw-lede{font-size:.98rem;color:#7B90A6;line-height:1.65;margin:0 0 1.25rem;max-width:780px}
+    .ovw-chips{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.5rem}
+    .ovw-chip{background:#fff;border:1px solid var(--ovw-line);border-radius:999px;padding:.45rem .9rem;
+      font-size:.78rem;font-weight:600;color:var(--ovw-navy);cursor:pointer;font-family:inherit;transition:all .12s ease}
+    .ovw-chip:hover{border-color:var(--ovw-blue);background:#E6EDFB}
+    .ovw-chip i{font-style:normal;color:#9AA7B5;font-weight:800;margin-right:.4rem}
+    /* ---------- product row ---------- */
+    .ovw-prod{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center;
+      padding:1.85rem 0;border-top:1px solid var(--ovw-line);scroll-margin-top:130px}
+    .ovw-prod.flip .ovw-prod-copy{order:2}
+    .ovw-prod.flip .ovw-prod-vis{order:1}
+    .ovw-kicker{display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem;flex-wrap:wrap}
+    .ovw-kicker-n{font-size:.72rem;font-weight:900;color:#C3CCD6;letter-spacing:.1em}
+    .ovw-kicker-tag{font-size:.64rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+      padding:.22rem .6rem;border-radius:999px}
+    .ovw-inq{display:inline-flex;align-items:center;gap:.3rem;background:#FFF7E0;border:1px solid #F6D774;
+      color:#8A6100;font-size:.62rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+      padding:.2rem .55rem;border-radius:999px;white-space:nowrap}
+    .ovw-inq-line{display:flex;gap:.55rem;align-items:flex-start;background:#FFFBEB;border:1px solid #F6D774;
+      border-radius:10px;padding:.6rem .75rem;margin:0 0 .8rem;font-size:.8rem;line-height:1.5;color:#7A5600}
+    .ovw-inq-line b{color:#5C4100}
+    .ovw-inq-line span.i{flex:none;font-size:.9rem;line-height:1.3}
+    .ovw-inq-list{margin:.4rem 0 0;padding:0;list-style:none}
+    .ovw-inq-list li{position:relative;padding-left:.95rem;margin-bottom:.22rem;line-height:1.45}
+    .ovw-inq-list li:last-child{margin-bottom:0}
+    .ovw-inq-list li::before{content:"";position:absolute;left:0;top:.5rem;width:5px;height:5px;
+      border-radius:50%;background:#C79A28}
+    .ovw-chip.inq{border-color:#F6D774;background:#FFFBEB}
+    .ovw-chip.inq::after{content:"inquire";margin-left:.45rem;font-size:.6rem;font-weight:800;
+      letter-spacing:.08em;text-transform:uppercase;color:#8A6100}
+    td .ovw-inq{margin-top:.3rem}
+    .ovw-prod h3{margin:0 0 .25rem;font-size:1.5rem;font-weight:900;color:var(--ovw-navy);letter-spacing:-.02em}
+    .ovw-price{display:flex;align-items:baseline;gap:.45rem;margin-bottom:.65rem;flex-wrap:wrap}
+    .ovw-price b{font-size:1.15rem;font-weight:800;color:#0B1220}
+    .ovw-price span{font-size:.82rem;color:#7B90A6}
+    .ovw-pitch{font-size:.97rem;font-weight:600;color:#0B1220;line-height:1.45;margin:0 0 .45rem}
+    .ovw-prod p.ovw-body{font-size:.88rem;line-height:1.6;color:#5A6672;margin:0 0 .8rem}
+    .ovw-label{font-size:.66rem;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:#9AA7B5;margin-bottom:.35rem}
+    .ovw-list{margin:0 0 .8rem;padding:0;list-style:none}
+    .ovw-list li{position:relative;padding-left:1.25rem;font-size:.85rem;line-height:1.55;color:#3F4851;margin-bottom:.2rem}
+    .ovw-list li::before{content:"";position:absolute;left:0;top:.5rem;width:6px;height:6px;border-radius:2px;background:#003CB3}
+    .ovw-meta{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.95rem}
+    .ovw-meta span{background:#F1F4F8;border:1px solid var(--ovw-line);border-radius:6px;padding:.28rem .6rem;font-size:.72rem;color:#5A6672}
+    .ovw-meta span b{color:#0B1220;font-weight:700}
+    /* ---------- visual mockups ---------- */
+    .ovw-vis{background:#fff;border:1px solid var(--ovw-line);border-radius:16px;padding:1rem;
+      box-shadow:0 14px 34px rgba(15,23,42,.07)}
+    .ovw-vis-cap{font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:#9AA7B5;font-weight:800;
+      margin-bottom:.6rem;display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+    .ovw-shot{border:1px solid #EDF0F4;border-radius:10px;overflow:hidden;background:#FBFCFD;line-height:0}
+    .ovw-shot img{width:100%;height:auto;display:block}
+    .ovw-vis-src{font-size:.64rem;color:#9AA7B5;margin-top:.5rem;letter-spacing:.01em}
+    .ovw-step-ico{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;
+      justify-content:center;margin-bottom:.9rem;background:#E6EDFB;color:#003CB3}
+    .ovw-step-ico svg{width:20px;height:20px}
+    .ovw-buy{display:inline-block;background:#E6EDFB;border:1px solid #B9CBEF;color:#001E94;font-size:.62rem;
+      font-weight:800;letter-spacing:.09em;text-transform:uppercase;padding:.2rem .55rem;border-radius:999px;white-space:nowrap}
+    .ovw-row{display:flex;gap:.6rem;align-items:center;padding:.55rem;border:1px solid #EDF0F4;border-radius:8px;margin-bottom:.4rem;background:#fff}
+    .ovw-row.hot{border-color:#003CB3;background:#F5F8FF;box-shadow:0 0 0 3px rgba(0,60,179,.07)}
+    .ovw-row.hot .ovw-rank{background:#001E94;color:#fff}
+    .ovw-row-s{font-size:.62rem;color:#9AA7B5}
+    .ovw-tier{display:flex;justify-content:space-between;align-items:center;gap:.5rem;border:1px solid #EDF0F4;
+      border-radius:8px;padding:.6rem .75rem;margin-bottom:.45rem;background:#fff}
+    .ovw-tier.best{border-color:#001E94;background:linear-gradient(135deg,#001E94,#002B9E);color:#fff}
+    .ovw-tier-n{font-size:.78rem;font-weight:800;color:#001E94}
+    .ovw-tier.best .ovw-tier-n{color:#fff}
+    .ovw-tier-p{font-size:.72rem;color:#7B90A6;text-align:right}
+    .ovw-tier.best .ovw-tier-p{color:rgba(255,255,255,.82)}
+    /* --- inverted product row (Premium Bundle) --- */
+    .ovw-prod.inv{background:linear-gradient(135deg,#001E94 0%,#00238F 45%,#001048 100%);color:#fff;
+      border-top:none;border-radius:18px;padding:2.1rem;overflow:hidden;position:relative;margin:2rem 0 0}
+    .ovw-prod.inv::before{content:"";position:absolute;right:-130px;top:-150px;width:400px;height:400px;
+      border-radius:50%;background:#003CB3;opacity:.45;pointer-events:none}
+    .ovw-prod.inv::after{content:"";position:absolute;left:-70px;bottom:-90px;width:220px;height:220px;
+      border-radius:50%;background:#FFDF53;opacity:.08;pointer-events:none}
+    .ovw-prod.inv > div{position:relative;z-index:1}
+    .ovw-prod.inv h3{color:#fff}
+    .ovw-prod.inv .ovw-kicker-n{color:rgba(255,255,255,.42)}
+    .ovw-prod.inv .ovw-price b{color:#FFDF53}
+    .ovw-prod.inv .ovw-price span{color:rgba(255,255,255,.6)}
+    .ovw-prod.inv .ovw-pitch{color:#fff}
+    .ovw-prod.inv p.ovw-body{color:rgba(255,255,255,.76)}
+    .ovw-prod.inv .ovw-label{color:rgba(255,255,255,.5)}
+    .ovw-prod.inv .ovw-list li{color:rgba(255,255,255,.84)}
+    .ovw-prod.inv .ovw-list li strong{color:#fff}
+    .ovw-prod.inv .ovw-list li::before{background:#FFDF53}
+    .ovw-prod.inv .ovw-meta span{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18);color:rgba(255,255,255,.7)}
+    .ovw-prod.inv .ovw-meta span b{color:#fff}
+    .ovw-prod.inv .ovw-btn-nav{background:#FFDF53;color:#001E94;box-shadow:0 6px 18px rgba(255,223,83,.22)}
+    .ovw-prod.inv .ovw-vis{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.16);box-shadow:none}
+    .ovw-prod.inv .ovw-vis-cap{color:rgba(255,255,255,.5)}
+    .ovw-prod.inv .ovw-tier{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.16)}
+    .ovw-prod.inv .ovw-tier-n{color:#fff}
+    .ovw-prod.inv .ovw-tier-p{color:rgba(255,255,255,.58)}
+    .ovw-prod.inv .ovw-tier .ovw-row-s{color:rgba(255,255,255,.58)}
+    .ovw-prod.inv .ovw-tier-amt{font-size:.86rem;color:#fff}
+    .ovw-prod.inv .ovw-tier.best{background:#fff;border-color:#fff}
+    .ovw-prod.inv .ovw-tier.best .ovw-tier-n{color:#001E94}
+    .ovw-prod.inv .ovw-tier.best .ovw-row-s{color:#5A6672}
+    .ovw-prod.inv .ovw-tier.best .ovw-tier-p{color:#7B90A6}
+    .ovw-prod.inv .ovw-tier.best .ovw-tier-amt{color:#001E94}
+    .ovw-tier-foot{font-size:.68rem;line-height:1.5;margin-top:.65rem;color:rgba(255,255,255,.5)}
+    @media (max-width:980px){ .ovw-prod.inv{padding:1.6rem} }
+
+    /* ---------- inquiry modal ---------- */
+    .inq-overlay{position:fixed;inset:0;background:rgba(11,18,32,.55);z-index:9000;
+      display:none;align-items:flex-start;justify-content:center;padding:3rem 1rem;overflow-y:auto}
+    .inq-overlay.open{display:flex}
+    .inq-card{background:#fff;border-radius:16px;width:100%;max-width:520px;
+      box-shadow:0 24px 60px rgba(15,23,42,.28);overflow:hidden}
+    .inq-head{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;
+      padding:1.15rem 1.25rem .9rem;border-bottom:1px solid #F1F4F8}
+    .inq-head h3{margin:0;font-size:1.05rem;font-weight:800;color:#001E94}
+    .inq-head p{margin:.2rem 0 0;font-size:.76rem;color:#7B90A6;line-height:1.45}
+    .inq-x{background:none;border:none;cursor:pointer;font-size:1.35rem;line-height:1;color:#9AA7B5;padding:0 .15rem}
+    .inq-x:hover{color:#3F4851}
+    .inq-body{padding:1.15rem 1.25rem;max-height:60vh;overflow-y:auto}
+    .inq-foot{display:flex;gap:.6rem;justify-content:flex-end;padding:.9rem 1.25rem;
+      border-top:1px solid #F1F4F8;background:#F7F8FA}
+    .inq-foot button{font-family:inherit;font-size:.86rem;font-weight:700;border-radius:9px;
+      padding:.65rem 1.2rem;cursor:pointer;border:1px solid transparent}
+    .inq-cancel{background:#fff;border-color:#CBD5E1;color:#3F4851}
+    .inq-send{background:#001E94;color:#fff}
+
+    /* ---------- Co-branded Whitepaper panel (Browse preview) ---------- */
+    .wp-split{display:grid;grid-template-columns:1fr 260px;gap:1.5rem;align-items:start;margin-bottom:1.25rem}
+    .wp-split.wide{grid-template-columns:1fr 320px}
+    .wp-field{margin-bottom:.75rem}
+    .wp-field:last-child{margin-bottom:0}
+    .wp-field label{display:block;font-size:.76rem;font-weight:700;color:#3F4851;margin-bottom:.25rem}
+    .wp-field label i{font-style:normal;color:#DC2626}
+    .wp-field input{width:100%;box-sizing:border-box;border:1px solid #E5E7EB;border-radius:8px;
+      padding:.55rem .7rem;font-family:inherit;font-size:.82rem;color:#0B1220;background:#fff}
+    .wp-field input::placeholder{color:#9AA7B5}
+    .wp-field input:focus{outline:none;border-color:#003CB3;box-shadow:0 0 0 3px rgba(0,60,179,.1)}
+    .wp-grp{display:flex;align-items:stretch}
+    .wp-grp .wp-pre{display:flex;align-items:center;background:#F1F4F8;border:1px solid #E5E7EB;border-right:none;
+      border-radius:8px 0 0 8px;padding:0 .65rem;font-size:.8rem;color:#7B90A6;white-space:nowrap}
+    .wp-grp input{border-radius:0 8px 8px 0}
+    .wp-grp select{border:1px solid #E5E7EB;border-right:none;border-radius:8px 0 0 8px;background:#F1F4F8;
+      font-family:inherit;font-size:.8rem;color:#3F4851;padding:0 .5rem;cursor:pointer}
+    .wp-field textarea{width:100%;box-sizing:border-box;border:1px solid #E5E7EB;border-radius:8px;
+      padding:.55rem .7rem;font-family:inherit;font-size:.82rem;color:#0B1220;background:#fff;resize:vertical}
+    .wp-field textarea::placeholder{color:#9AA7B5}
+    .wp-field textarea:focus{outline:none;border-color:#003CB3;box-shadow:0 0 0 3px rgba(0,60,179,.1)}
+    .wp-note{background:#FFFBEB;border:1px solid #F6D774;border-radius:10px;padding:.7rem .8rem;
+      font-size:.76rem;line-height:1.5;color:#7A5600;margin-bottom:1.1rem}
+    .wp-note b{color:#5C4100}
+    .wp-cover{background:#F7F8FA;border:1px solid #E5E7EB;border-radius:12px;padding:.9rem;text-align:center}
+    .wp-cover img{width:100%;height:auto;display:block;border-radius:8px;box-shadow:0 10px 26px rgba(15,23,42,.16)}
+    .wp-promo{background:#fff;border:1px solid #E5E7EB;border-radius:12px;padding:1.1rem 1.15rem;
+      color:#3F4851;margin-bottom:1.25rem}
+    .wp-promo-head{display:flex;justify-content:space-between;align-items:center;gap:.6rem;margin-bottom:.5rem}
+    .wp-promo-head h4{margin:0;font-size:.92rem;font-weight:800;color:#001E94}
+    .wp-promo-flag{background:#ECFDF5;color:#16A34A;border:1px solid #BBF7D0;font-size:.55rem;font-weight:800;
+      letter-spacing:.08em;text-transform:uppercase;padding:.18rem .5rem;border-radius:999px;white-space:nowrap}
+    .wp-promo > p{margin:0 0 .75rem;font-size:.76rem;line-height:1.5;color:#7B90A6}
+    .wp-promo ul{list-style:none;margin:0;padding:0}
+    .wp-promo li{display:flex;gap:.6rem;align-items:center;padding:.5rem 0;border-bottom:1px dashed #EDF0F4}
+    .wp-promo li:last-child{border-bottom:none}
+    .wp-promo li .ic{font-size:.95rem;line-height:1;flex:none;width:1.2rem;text-align:center}
+    .wp-promo li strong{flex:1;min-width:0;font-size:.79rem;color:#0B1220;font-weight:700}
+    .wp-promo li span.v{flex:none;font-size:.82rem;color:#16A34A;font-weight:800;white-space:nowrap;text-align:right}
+    .wp-promo-foot{display:flex;justify-content:space-between;align-items:center;margin-top:.85rem;
+      padding-top:.7rem;border-top:1px solid #E5E7EB}
+    .wp-promo-foot .l{font-size:.76rem;font-weight:700;color:#0B1220}
+    .wp-promo-foot .l span{display:block;font-size:.66rem;font-weight:400;color:#9AA7B5;margin-top:.1rem}
+    .wp-promo-foot .r{text-align:right}
+    .wp-promo-foot .r s{display:block;font-size:.76rem;color:#9AA7B5}
+    .wp-promo-foot .r b{font-size:1rem;color:#16A34A}
+    @media (max-width:1100px){ .wp-split{grid-template-columns:1fr} .wp-promo ul{grid-template-columns:1fr} }
+
+    /* ---------- Premium Bundle panel (Browse preview) ---------- */
+    .bnd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1.25rem}
+    .bnd-tier{position:relative;border:1px solid #E5E7EB;border-radius:12px;padding:1rem .9rem;background:#fff}
+    .bnd-tier.popular{border-color:#001E94;box-shadow:0 0 0 3px rgba(0,30,148,.07)}
+    .bnd-tier.best{background:linear-gradient(150deg,#001E94,#001A7A);border-color:#001E94;color:#fff}
+    .bnd-flag{position:absolute;top:-9px;left:50%;transform:translateX(-50%);font-size:.55rem;font-weight:800;
+      letter-spacing:.09em;text-transform:uppercase;padding:.18rem .5rem;border-radius:999px;white-space:nowrap}
+    .bnd-flag.pop{background:#001E94;color:#fff}
+    .bnd-flag.val{background:#FFDF53;color:#001E94}
+    .bnd-eyebrow{font-size:.55rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#9AA7B5;margin-bottom:.15rem}
+    .bnd-tier.best .bnd-eyebrow{color:rgba(255,255,255,.55)}
+    .bnd-tier h4{margin:0 0 .35rem;font-size:1.2rem;font-weight:900;color:#001E94;letter-spacing:-.01em}
+    .bnd-tier.best h4{color:#fff}
+    .bnd-price{display:flex;align-items:baseline;gap:.3rem;margin-bottom:.5rem}
+    .bnd-price b{font-size:1.35rem;font-weight:900;color:#0B1220;letter-spacing:-.02em}
+    .bnd-price span{font-size:.68rem;color:#7B90A6}
+    .bnd-tier.best .bnd-price b{color:#FFDF53}
+    .bnd-tier.best .bnd-price span{color:rgba(255,255,255,.6)}
+    .bnd-save{display:block;background:#E6EDFB;color:#001E94;border-radius:6px;padding:.25rem .5rem;
+      font-size:.63rem;font-weight:700;margin-bottom:.6rem}
+    .bnd-tier.best .bnd-save{background:rgba(255,255,255,.14);color:#fff}
+    .bnd-desc{font-size:.7rem;line-height:1.5;color:#5A6672;margin:0 0 .7rem}
+    .bnd-tier.best .bnd-desc{color:rgba(255,255,255,.78)}
+    .bnd-list{list-style:none;margin:0;padding:0}
+    .bnd-list li{position:relative;padding-left:1.05rem;font-size:.71rem;line-height:1.45;color:#3F4851;margin-bottom:.28rem}
+    .bnd-list li::before{content:"";position:absolute;left:0;top:.42rem;width:6px;height:6px;border-radius:50%;background:#001E94}
+    .bnd-tier.best .bnd-list li{color:rgba(255,255,255,.9)}
+    .bnd-tier.best .bnd-list li::before{background:#FFDF53}
+    .bnd-cmp{width:100%;border-collapse:collapse;font-size:.78rem;border:1px solid #E5E7EB;border-radius:10px;
+      overflow:hidden;margin-bottom:1.1rem}
+    .bnd-cmp th{background:#F7F8FA;color:#7B90A6;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;
+      font-weight:800;text-align:right;padding:.6rem .8rem;border-bottom:1px solid #E5E7EB}
+    .bnd-cmp th:first-child{text-align:left}
+    .bnd-cmp td{padding:.6rem .8rem;border-bottom:1px solid #F1F4F8;text-align:right;color:#5A6672}
+    .bnd-cmp td:first-child{text-align:left;font-weight:700;color:#001E94}
+    .bnd-cmp tr:last-child td{border-bottom:none}
+    .bnd-cmp .pkg{font-weight:800;color:#0B1220}
+    .bnd-cmp .sv{font-weight:800;color:#16A34A}
+
+    /* ---------- glance table ---------- */
+    .ovw-table-wrap{background:#fff;border:1px solid var(--ovw-line);border-radius:14px;overflow-x:auto;margin-bottom:2.5rem}
+    table.ovw-table{width:100%;border-collapse:collapse;font-size:.83rem;min-width:960px}
+    table.ovw-table th{text-align:left;background:#F7F8FA;color:#7B90A6;font-size:.66rem;letter-spacing:.09em;
+      text-transform:uppercase;font-weight:800;padding:.8rem 1rem;border-bottom:1px solid var(--ovw-line)}
+    table.ovw-table td{padding:.8rem 1rem;border-bottom:1px solid #F1F4F8;color:#5A6672;vertical-align:top}
+    table.ovw-table tr:last-child td{border-bottom:none}
+    table.ovw-table td.n{font-weight:700;color:var(--ovw-navy);white-space:nowrap}
+    table.ovw-table td.p{font-weight:700;color:#0B1220;white-space:nowrap}
+    table.ovw-table tr.bundle td{background:linear-gradient(135deg,#001E94,#001A7A);
+      color:rgba(255,255,255,.78);border-bottom:none}
+    table.ovw-table tr.bundle td.n{color:#fff}
+    table.ovw-table tr.bundle td.p{color:#FFDF53}
+    table.ovw-table tr.bundle .ovw-buy{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.32);color:#fff}
+    /* ---------- faq (collapsible) ---------- */
+    .ovw-faq{background:#fff;border:1px solid var(--ovw-line);border-radius:14px;overflow:hidden;margin-bottom:2rem}
+    .ovw-faq details{border-bottom:1px solid #F1F4F8}
+    .ovw-faq details:last-child{border-bottom:none}
+    .ovw-faq summary{list-style:none;cursor:pointer;padding:.95rem 2.6rem .95rem 1.25rem;position:relative;
+      color:var(--ovw-navy);font-size:.92rem;font-weight:700;transition:background .12s ease}
+    .ovw-faq summary::-webkit-details-marker{display:none}
+    .ovw-faq summary:hover{background:#F7F9FC}
+    .ovw-faq summary::after{content:"";position:absolute;right:1.25rem;top:1.25rem;width:8px;height:8px;
+      border-right:2px solid #9AA7B5;border-bottom:2px solid #9AA7B5;transform:rotate(45deg);
+      transition:transform .18s ease;transform-origin:center}
+    .ovw-faq details[open] > summary{background:#F7F9FC}
+    .ovw-faq details[open] > summary::after{transform:rotate(-135deg);top:1.4rem}
+    .ovw-faq .ovw-faq-a{padding:0 1.25rem 1.1rem;font-size:.86rem;line-height:1.65;color:#7B90A6}
+    .ovw-faq .ovw-faq-a p{margin:0 0 .6rem}
+    .ovw-faq .ovw-faq-a p:last-child{margin-bottom:0}
+    .ovw-faq .ovw-faq-a strong{color:#3F4851}
+    .ovw-faq details.cta summary{color:#001E94}
+    .ovw-faq details.cta{background:linear-gradient(135deg,#001E94,#001A7A)}
+    .ovw-faq details.cta > summary{color:#fff}
+    .ovw-faq details.cta > summary:hover,.ovw-faq details.cta[open] > summary{background:rgba(255,255,255,.06)}
+    .ovw-faq details.cta > summary::after{border-color:rgba(255,255,255,.6)}
+    .ovw-faq details.cta .ovw-faq-a{color:rgba(255,255,255,.78)}
+    .ovw-faq details.cta .ovw-faq-a strong{color:#fff}
+
+    @media (max-width:980px){ .ovw-prod.inv{padding:1.6rem} }
+
+    @media (max-width:980px){
+      .ovw-hero{padding:2rem 1.5rem 0}
+      .ovw-hero h1{font-size:1.9rem}
+      .ovw-stats{grid-template-columns:repeat(2,1fr);gap:1rem;margin:0 -1.5rem;padding:1.25rem 1.5rem}
+      .ovw-steps{grid-template-columns:1fr}
+      .ovw-prod{grid-template-columns:1fr;gap:1.5rem}
+      .ovw-prod.flip .ovw-prod-copy{order:1}
+      .ovw-prod.flip .ovw-prod-vis{order:2}
+    }
+  
+</style>
 </head>
 <body>
   <div id="oa-topbar-mount"></div>
@@ -15,13 +317,7 @@
   <div class="oa-subnav">
     <div class="oa-subnav-inner">
       <a href="#" class="active" data-tab="overview" onclick="event.preventDefault();showTab('overview',this)">Overview</a>
-      <a href="#" data-tab="bundle" onclick="event.preventDefault();showTab('bundle',this)" style="color:var(--oa-orange);font-weight:600">★ Premium Bundle</a>
-      <a href="#" data-tab="guestpost" onclick="event.preventDefault();showTab('guestpost',this)">Guest Posting</a>
-      <a href="#" data-tab="newsletter" onclick="event.preventDefault();showTab('newsletter',this)">Newsletter Insertion</a>
-      <a href="#" data-tab="displayad" onclick="event.preventDefault();showTab('displayad',this)">Display Ads</a>
-      <a href="#" data-tab="podcast" onclick="event.preventDefault();showTab('podcast',this)">Podcast Interview</a>
-      <a href="#" data-tab="whitepaper" onclick="event.preventDefault();showTab('whitepaper',this)">Custom Whitepaper</a>
-      <a href="#" data-tab="toplist" onclick="event.preventDefault();showTab('toplist',this)">Top List Inclusion</a>
+      <a href="#" data-tab="browse" onclick="event.preventDefault();showTab('browse',this)">Browse</a>
       <a href="#" data-tab="orders" onclick="event.preventDefault();showTab('orders',this)">My Orders</a>
     </div>
   </div>
@@ -29,11 +325,516 @@
   <div class="oa-page">
 
     <!-- =========================================================================== -->
-    <!-- OVERVIEW                                                                     -->
+    <!-- OVERVIEW — sales / landing page. Default landing tab for Publisher Hub.           -->
     <!-- =========================================================================== -->
-    <section id="tab-overview" class="tab-content">
-      <h1 class="oa-section-title">Reach 150K+ outsourcing buyers a month</h1>
-      <p class="oa-section-sub">OutsourceAccelerator.com is the definitive media property for the outsourcing industry. Pick a format below — preview your placement live before you check out.</p>
+    <section id="tab-overview" class="tab-content ovw-wrap">
+
+      <!-- ===================== HERO ===================== -->
+      <div class="ovw-hero">
+        <div class="ovw-hero-inner">
+          <h1>Outsource Accelerator is the <em>world’s leading marketplace &amp; publisher</em> for the outsourcing industry.</h1>
+          <p>Publisher Hub is how you get in front of its buyers: eight placement types across editorial, email, audio and paid media — each one previewed live before you ever pay.</p>
+        </div>
+        <div class="ovw-stats">
+          <div class="ovw-stat"><b>150K+</b><span>Website views</span></div>
+          <div class="ovw-stat"><b>DR 72</b><span>Domain rating</span></div>
+          <div class="ovw-stat"><b>~85K</b><span>News impressions / mo</span></div>
+          <div class="ovw-stat"><b>600+</b><span>Podcast episodes</span></div>
+          <div class="ovw-stat"><b>3&times;/wk</b><span>Newsletters sent</span></div>
+        </div>
+      </div>
+
+      <!-- ===================== HOW IT WORKS ===================== -->
+      <div class="ovw-steps">
+        <div class="ovw-step">
+          <div class="ovw-step-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></div>
+          <div class="ovw-step-n">01. PREVIEW</div>
+          <strong>See it before you buy</strong>
+          <p>Every product has a live builder. Type your headline, drop your creative, and the placement renders exactly as it will appear on OA — no imagination, no "approve a proof later."</p>
+        </div>
+        <div class="ovw-step">
+          <div class="ovw-step-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h2.5l2.3 11.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 2-1.55L21 7H6"/></svg></div>
+          <div class="ovw-step-n">02. ORDER</div>
+          <strong>Nothing charges until you confirm</strong>
+          <p>Iterate as many times as you like — swap headlines, restructure copy, change creative. Your card isn't touched and nothing enters the editorial queue until you approve.</p>
+        </div>
+        <div class="ovw-step">
+          <div class="ovw-step-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/></svg></div>
+          <div class="ovw-step-n">03. PUBLISH</div>
+          <strong>We produce, publish and report</strong>
+          <p>OA editorial handles production and scheduling. You track every placement — status, live URL, and performance — from <b style="color:#001E94">My Orders</b>.</p>
+        </div>
+      </div>
+
+      <!-- ===================== PRODUCT INDEX ===================== -->
+      <h2 class="ovw-h2">Sponsored placements</h2>
+      <p class="ovw-lede">Each one buys a different kind of attention — permanent search visibility, inbox presence, always-on impressions, or a research asset your sales team can reuse all year. Jump to any of them:</p>
+      <div class="ovw-inq-line" style="max-width:780px;margin-bottom:1.5rem">
+        <span class="i">✋</span>
+        <div><b>Three products start with an inquiry, not a checkout.</b> These depend on editorial fit, scheduling
+        or scope. Submit a request first and we confirm with a proposal. Nothing is charged until that's agreed.
+        The other five you can build, preview and buy on the spot.</div>
+      </div>
+      <div class="ovw-chips">
+        <button class="ovw-chip" onclick="document.getElementById('ovw-guestpost').scrollIntoView({behavior:'smooth'})"><i>01</i>Guest Posting</button>
+        <button class="ovw-chip" onclick="document.getElementById('ovw-linkinsertion').scrollIntoView({behavior:'smooth'})"><i>02</i>Link Insertion</button>
+        <button class="ovw-chip inq" onclick="document.getElementById('ovw-toplist').scrollIntoView({behavior:'smooth'})"><i>03</i>Top List Inclusion</button>
+        <button class="ovw-chip" onclick="document.getElementById('ovw-newsletter').scrollIntoView({behavior:'smooth'})"><i>04</i>Newsletter Insertion</button>
+        <button class="ovw-chip inq" onclick="document.getElementById('ovw-podcast').scrollIntoView({behavior:'smooth'})"><i>05</i>Podcast Interview</button>
+        <button class="ovw-chip" onclick="document.getElementById('ovw-displayad').scrollIntoView({behavior:'smooth'})"><i>06</i>Display Ads</button>
+        <button class="ovw-chip inq" onclick="document.getElementById('ovw-whitepaper').scrollIntoView({behavior:'smooth'})"><i>07</i>Co-branded Whitepaper</button>
+        <button class="ovw-chip" onclick="document.getElementById('ovw-bundle').scrollIntoView({behavior:'smooth'})"><i>08</i>Premium Bundle</button>
+      </div>
+
+      <!-- ===================== 01 · GUEST POSTING ===================== -->
+      <div class="ovw-prod" id="ovw-guestpost">
+        <div class="ovw-prod-copy">
+          <div class="ovw-kicker">
+            <span class="ovw-kicker-n">01</span>
+            <span class="ovw-kicker-tag" style="background:#E6EDFB;color:#001E94">Editorial · SEO</span>
+          </div>
+          <h3>Guest Posting</h3>
+          <div class="ovw-price"><b>$599</b><span>per article · one-off</span></div>
+          <p class="ovw-pitch">Your byline, permanently published on OutsourceAccelerator.com.</p>
+          <p class="ovw-body">Your 1,000+ word article, edited by OA and published as real editorial — indexed fast, and permanently linked from the related-articles widget across the topic.</p>
+          <div class="ovw-label">What you get</div>
+          <ul class="ovw-list">
+            <li>1,000+ words, edited by the OA editorial team</li>
+            <li>1 do-follow link to the destination you choose</li>
+            <li>Permanent placement — it never expires or rotates out</li>
+            <li>Author bio with headshot and company link</li>
+            <li>Live preview of the finished article before checkout</li>
+          </ul>
+          <div class="ovw-meta">
+            <span>Turnaround <b>3 business days</b></span>
+            <span>Term <b>Permanent</b></span>
+            <span>Best for <b>Search authority</b></span>
+          </div>
+          <button class="ovw-btn ovw-btn-nav" onclick="showTab('guestpost', document.querySelector('[data-tab=guestpost]'))">Build &amp; preview an article →</button>
+        </div>
+        <div class="ovw-prod-vis">
+          <div class="ovw-vis">
+            <div class="ovw-vis-cap"><span>How it appears</span></div>
+            <div class="ovw-shot"><img src="img/guestpost.jpg" alt="An Outsource Accelerator editorial article, live on the site" loading="lazy"></div>
+            <div class="ovw-vis-src">outsourceaccelerator.com/articles/philippines-the-top-outsourcing-destination</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================== 02 · LINK INSERTION ===================== -->
+      <div class="ovw-prod flip" id="ovw-linkinsertion">
+        <div class="ovw-prod-copy">
+          <div class="ovw-kicker">
+            <span class="ovw-kicker-n">02</span>
+            <span class="ovw-kicker-tag" style="background:#E6EDFB;color:#001E94">Editorial · Existing article</span>
+          </div>
+          <h3>Link Insertion</h3>
+          <div class="ovw-price"><b>$599</b><span>one-time</span></div>
+          <p class="ovw-pitch">A do-follow link inside an article that already ranks.</p>
+          <p class="ovw-body">The fastest way to place a backlink on OA — we insert a contextual, in-context link to your site inside an existing OutsourceAccelerator.com article. Listicles and “Top N” list-of-services articles aren’t eligible.</p>
+          <div class="ovw-label">What you get</div>
+          <ul class="ovw-list">
+            <li>One contextual do-follow link inside a live OA article</li>
+            <li>You choose the target article and the anchor keyword</li>
+            <li>Placed naturally in-context by OA editorial</li>
+            <li>Permanent — the link stays in the article</li>
+            <li>Paste an OA article URL and see exactly where it lands before paying</li>
+          </ul>
+          <div class="ovw-meta">
+            <span>Turnaround <b>3–5 business days</b></span>
+            <span>Term <b>Permanent</b></span>
+            <span>Best for <b>Fast link equity</b></span>
+          </div>
+          <button class="ovw-btn ovw-btn-nav" onclick="showTab('linkinsertion', document.querySelector('[data-tab=linkinsertion]'))">Build &amp; preview a link →</button>
+        </div>
+        <div class="ovw-prod-vis">
+          <div class="ovw-vis">
+            <div class="ovw-vis-cap"><span>How it appears</span></div>
+            <div class="ovw-shot"><img src="img/linkinsertion.jpg" alt="In-context do-follow links inside a live Outsource Accelerator article" loading="lazy"></div>
+            <div class="ovw-vis-src">outsourceaccelerator.com/articles/outsource-legal-services</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================== 03 · TOP LIST INCLUSION ===================== -->
+      <div class="ovw-prod" id="ovw-toplist">
+        <div class="ovw-prod-copy">
+          <div class="ovw-kicker">
+            <span class="ovw-kicker-n">03</span>
+            <span class="ovw-kicker-tag" style="background:#FEF9C3;color:#A16207">Editorial · Curated</span>
+            <span class="ovw-inq">✋ Inquire first</span>
+          </div>
+          <h3>Top List Inclusion</h3>
+          <div class="ovw-price"><b>From $999</b><span>per submission · scales with list traffic</span></div>
+          <p class="ovw-pitch">Get into the listicles buyers actually shortlist from.</p>
+          <p class="ovw-body">OA’s “Top X” listicles are where buyers build their shortlist. Paste the list you want to be in; we assess fit and send a proposal within 2 business days.</p>
+          <div class="ovw-inq-line"><span class="i">✋</span><div><b>Inquire first — limited slots available.</b>
+            <ul class="ovw-inq-list">
+              <li>We assess fit and send proposal within 2 business days</li>
+              <li>Only pay once you accept the proposal</li>
+              <li>Editorially curated — acceptance is <b>not</b> guaranteed</li>
+            </ul></div></div>
+          <div class="ovw-label">What you get</div>
+          <ul class="ovw-list">
+            <li>Permanent inclusion if accepted — no monthly fee</li>
+            <li>Fee scales with the list: $999 (smallest) up to ~$4,499 (most competitive)</li>
+            <li>Auto-graded editorial criteria before you submit</li>
+          </ul>
+          <div class="ovw-meta">
+            <span>Turnaround <b>5 business days</b></span>
+            <span>Term <b>Permanent</b></span>
+            <span>Best for <b>Shortlist capture</b></span>
+          </div>
+          <button class="ovw-btn ovw-btn-nav" onclick="showTab('toplist', document.querySelector('[data-tab=toplist]'))">Inquire — submit a list URL →</button>
+        </div>
+        <div class="ovw-prod-vis">
+          <div class="ovw-vis">
+            <div class="ovw-vis-cap"><span>How it appears</span></div>
+            <div class="ovw-shot"><img src="img/toplist.jpg" alt="A live OA &ldquo;Top 20&rdquo; listicle page showing all twenty ranked entries" loading="lazy"></div>
+            <div class="ovw-vis-src">outsourceaccelerator.com/articles/top-voip-call-center-solutions</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================== 03 · NEWSLETTER INSERTION ===================== -->
+      <div class="ovw-prod flip" id="ovw-newsletter">
+        <div class="ovw-prod-copy">
+          <div class="ovw-kicker">
+            <span class="ovw-kicker-n">04</span>
+            <span class="ovw-kicker-tag" style="background:#ECFDF5;color:#16A34A">Email</span>
+          </div>
+          <h3>Newsletter Insertion</h3>
+          <div class="ovw-price"><b>$1,999</b><span>per month · 12 insertions</span></div>
+          <p class="ovw-pitch">Twelve appearances in <em>Inside Outsourcing</em> for one flat monthly fee.</p>
+          <p class="ovw-body">One sponsored block running in all three weekly editions for a month — 12 insertions across 600K+ sends, with no competing sponsor.</p>
+          <div class="ovw-label">What you get</div>
+          <ul class="ovw-list">
+            <li>12 insertions in one month — 3 per week × 4 weeks</li>
+            <li>600K+ email sends / month · ~27% open rate</li>
+            <li>Featured 16:9 image + 80-word blurb + your CTA</li>
+            <li>One sponsor per edition — no competing placements</li>
+            <li>Effective cost ~$166 per send</li>
+          </ul>
+          <div class="ovw-meta">
+            <span>Term <b>1 month</b></span>
+            <span>Cadence <b>3× / week</b></span>
+            <span>Best for <b>Repeat exposure</b></span>
+          </div>
+          <button class="ovw-btn ovw-btn-nav" onclick="showTab('newsletter', document.querySelector('[data-tab=newsletter]'))">Build &amp; preview a block →</button>
+        </div>
+        <div class="ovw-prod-vis">
+          <div class="ovw-vis">
+            <div class="ovw-vis-cap"><span>How it appears</span></div>
+            <div class="ovw-shot"><img src="img/newsletter.jpg" alt="Three sponsored blocks as they ran in the Inside Outsourcing newsletter" loading="lazy"></div>
+            <div class="ovw-vis-src">Sponsored blocks from Inside Outsourcing &amp; Gone Global</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================== 04 · PODCAST INTERVIEW ===================== -->
+      <div class="ovw-prod" id="ovw-podcast">
+        <div class="ovw-prod-copy">
+          <div class="ovw-kicker">
+            <span class="ovw-kicker-n">05</span>
+            <span class="ovw-kicker-tag" style="background:#F3E8FF;color:#7C3AED">Audio · Video</span>
+            <span class="ovw-inq">✋ Inquire first</span>
+          </div>
+          <h3>Podcast Interview</h3>
+          <div class="ovw-price"><b>$1,999</b><span>per episode</span></div>
+          <p class="ovw-pitch">Forty-five minutes with Derek Gallimore, distributed everywhere.</p>
+          <p class="ovw-body">A real conversation with Derek Gallimore on the industry’s longest-running show, published to Apple, Spotify, YouTube and RSS.</p>
+          <div class="ovw-inq-line"><span class="i">✋</span><div><b>Inquire first — limited slots available.</b>
+            <ul class="ovw-inq-list">
+              <li>Pitch your episode angle</li>
+              <li>We propose 1-2 recording date</li>
+              <li>Nothing is charged until the angle and date are agreed</li>
+            </ul></div></div>
+          <div class="ovw-label">What you get</div>
+          <ul class="ovw-list">
+            <li>~45-minute recorded conversation with Derek Gallimore</li>
+            <li>Show notes with 1 do-follow backlink</li>
+            <li>Distributed to Apple Podcasts, Spotify, YouTube and RSS</li>
+            <li>Promoted in <em>Inside Outsourcing</em> the week of release</li>
+            <li>600+ published episodes — the industry’s longest-running show</li>
+            <li>Limit: 2 episodes per company per calendar year</li>
+          </ul>
+          <div class="ovw-meta">
+            <span>Format <b>~45 min</b></span>
+            <span>Term <b>Permanent</b></span>
+            <span>Best for <b>Credibility</b></span>
+          </div>
+          <button class="ovw-btn ovw-btn-nav" onclick="showTab('podcast', document.querySelector('[data-tab=podcast]'))">Inquire — pitch an episode →</button>
+        </div>
+        <div class="ovw-prod-vis">
+          <div class="ovw-vis">
+            <div class="ovw-vis-cap"><span>How it appears</span></div>
+            <div class="ovw-shot"><img src="img/podcast.jpg" alt="Episode artwork for the Outsource Accelerator Podcast with Derek Gallimore" loading="lazy"></div>
+            <div class="ovw-vis-src">outsourceaccelerator.com/podcast/derek-gallimore-interviewed-on-eo-fire</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================== 05 · DISPLAY ADS ===================== -->
+      <div class="ovw-prod flip" id="ovw-displayad">
+        <div class="ovw-prod-copy">
+          <div class="ovw-kicker">
+            <span class="ovw-kicker-n">06</span>
+            <span class="ovw-kicker-tag" style="background:#E6EDFB;color:#003CB3">Paid media</span>
+          </div>
+          <h3>Display Ads</h3>
+          <div class="ovw-price"><b>$2,999</b><span>per quarter · 3-month term</span></div>
+          <p class="ovw-pitch">Always-on presence across every article on OA News.</p>
+          <p class="ovw-body">Both banner slots on OA News — the sticky right rail and the in-feed wide banner — rotating across every article for a full quarter.</p>
+          <div class="ovw-label">What you get</div>
+          <ul class="ovw-list">
+            <li>~255,000 guaranteed quarterly impressions</li>
+            <li>Both slots included — right rail (300×360) and in-feed wide banner</li>
+            <li>Your own CTA text and destination URL</li>
+            <li>Monthly click-through and conversion report</li>
+            <li>Swap creative up to 3 times during the quarter — free</li>
+          </ul>
+          <div class="ovw-meta">
+            <span>Term <b>3 months</b></span>
+            <span>Volume <b>~255K impressions</b></span>
+            <span>Best for <b>Brand presence</b></span>
+          </div>
+          <button class="ovw-btn ovw-btn-nav" onclick="showTab('displayad', document.querySelector('[data-tab=displayad]'))">Upload creative &amp; preview →</button>
+        </div>
+        <div class="ovw-prod-vis">
+          <div class="ovw-vis">
+            <div class="ovw-vis-cap"><span>How it appears</span></div>
+            <div class="ovw-shot"><img src="img/displayad.jpg" alt="A live in-feed banner ad running between articles on OA News" loading="lazy"></div>
+            <div class="ovw-vis-src">news.outsourceaccelerator.com/title-inflation-india</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================== 06 · CUSTOM WHITEPAPER ===================== -->
+      <div class="ovw-prod" id="ovw-whitepaper">
+        <div class="ovw-prod-copy">
+          <div class="ovw-kicker">
+            <span class="ovw-kicker-n">07</span>
+            <span class="ovw-kicker-tag" style="background:#E0F2FE;color:#0EA5E9">Content + campaign</span>
+            <span class="ovw-inq">✋ Inquire first</span>
+          </div>
+          <h3>Co-branded Whitepaper</h3>
+          <div class="ovw-price"><b>$3,999</b><span>per whitepaper · production + amplification</span></div>
+          <p class="ovw-pitch">A research asset — plus the whole campaign to push it.</p>
+          <p class="ovw-body">The only product where OA does the writing: a co-branded, gated research report plus the six-channel campaign that pushes it.</p>
+          <div class="ovw-inq-line"><span class="i">✋</span><div><b>Inquire first — limited slots available.</b>
+            <ul class="ovw-inq-list">
+              <li>Every whitepaper is scoped individually</li>
+              <li>Tell us the topic, research angle and page count you want</li>
+              <li>We come back with scope, timeline and price to sign off</li>
+            </ul></div></div>
+          <div class="ovw-label">Production</div>
+          <ul class="ovw-list">
+            <li>OA writes 12–18 pages, co-branded design</li>
+            <li>Gated landing page on OA.com — leads routed to your CRM</li>
+          </ul>
+          <div class="ovw-label">Amplification included</div>
+          <ul class="ovw-list">
+            <li>One-month feature in <em>Inside Outsourcing</em></li>
+            <li>2 stand-alone articles unpacking the findings</li>
+            <li>3 months of display ads across OA.com</li>
+            <li>Social boost (LinkedIn + Meta) + a podcast appearance</li>
+          </ul>
+          <div class="ovw-meta">
+            <span>Output <b>12–18 pages</b></span>
+            <span>Surfaces <b>6 channels</b></span>
+            <span>Best for <b>Lead generation</b></span>
+          </div>
+          <button class="ovw-btn ovw-btn-nav" onclick="showTab('whitepaper', document.querySelector('[data-tab=whitepaper]'))">Inquire — scope a whitepaper →</button>
+        </div>
+        <div class="ovw-prod-vis">
+          <div class="ovw-vis">
+            <div class="ovw-vis-cap"><span>How it appears</span></div>
+            <div class="ovw-shot"><img src="img/whitepaper.jpg" alt="Whitepapers already published and hosted on OA" loading="lazy"></div>
+            <div class="ovw-vis-src">outsourceaccelerator.com/source/whitepapers</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================== 07 · PREMIUM BUNDLE ===================== -->
+      <div class="ovw-prod inv" id="ovw-bundle">
+        <div class="ovw-prod-copy">
+          <div class="ovw-kicker">
+            <span class="ovw-kicker-n">08</span>
+            <span class="ovw-kicker-tag" style="background:#FFDF53;color:#001E94">All-in-one · Best value</span>
+          </div>
+          <h3>Premium Bundle</h3>
+          <div class="ovw-price"><b>$9,999 – $19,999</b><span>6 or 12 months · save 47–72%</span></div>
+          <p class="ovw-pitch">Every surface, one package, one renewal date.</p>
+          <p class="ovw-body">Every product on autopilot for a 6- or 12-month term, on one contract with one renewal date — at 47–72% off the à la carte equivalent.</p>
+          <div class="ovw-label">Which tier</div>
+          <ul class="ovw-list">
+            <li><strong>Lite</strong> — a half-year trial of the editorial channels, before you commit to a full year</li>
+            <li><strong>Standard</strong> — the workhorse: a full year, plus display ads, a podcast and a second top-list slot</li>
+            <li><strong>Premium</strong> — double the articles, a whitepaper, priority editorial review and a dedicated success manager</li>
+          </ul>
+          <div class="ovw-meta">
+            <span>Term <b>6 or 12 months</b></span>
+            <span>Savings <b>up to ~$52K</b></span>
+            <span>Rollover <b>up to 3 months</b></span>
+          </div>
+          <button class="ovw-btn ovw-btn-nav" onclick="showTab('bundle', document.querySelector('[data-tab=bundle]'))">Book a call →</button>
+        </div>
+        <div class="ovw-prod-vis">
+          <div class="ovw-vis">
+            <div class="ovw-vis-cap">The three tiers</div>
+            <div class="ovw-tier">
+              <div><div class="ovw-tier-n">Lite · 6 months</div><div class="ovw-row-s">6 articles · newsletter · 1 top-list</div></div>
+              <div class="ovw-tier-p"><strong class="ovw-tier-amt">$9,999</strong><br>save ~47%</div>
+            </div>
+            <div class="ovw-tier">
+              <div><div class="ovw-tier-n">Standard · 12 months</div><div class="ovw-row-s">12 articles · display · podcast · 2 top-lists</div></div>
+              <div class="ovw-tier-p"><strong class="ovw-tier-amt">$14,999</strong><br>save ~67%</div>
+            </div>
+            <div class="ovw-tier best">
+              <div><div class="ovw-tier-n">Premium · 12 months</div><div class="ovw-row-s">24 articles · whitepaper · 2 podcasts · 4 top-lists</div></div>
+              <div class="ovw-tier-p"><strong class="ovw-tier-amt">$19,999</strong><br>save ~72%</div>
+            </div>
+            <div class="ovw-tier-foot">All tiers include social boost (LinkedIn + Meta) and article mentions. Premium adds priority editorial review and a dedicated success manager.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================== AT A GLANCE ===================== -->
+      <h2 class="ovw-h2" style="margin-top:2.75rem">Everything at a glance</h2>
+      <p class="ovw-lede">Same eight products, side by side.</p>
+      <div class="ovw-table-wrap">
+        <table class="ovw-table">
+          <thead>
+            <tr>
+              <th>Product</th><th>Format</th><th>Price</th><th>How to buy</th><th>Term</th><th>Turnaround</th><th>Best for</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="n">Guest Posting</td><td>1,000+ word editorial article</td><td class="p">$599</td>
+              <td>Instant checkout</td>
+              <td>Permanent</td><td>3 business days</td><td>Search authority &amp; long-tail traffic</td>
+            </tr>
+            <tr>
+              <td class="n">Link Insertion</td><td>Do-follow link in an existing OA article</td><td class="p">$599</td>
+              <td>Instant checkout</td>
+              <td>Permanent</td><td>3–5 business days</td><td>Fast link equity on a ranking page</td>
+            </tr>
+            <tr>
+              <td class="n">Top List Inclusion</td><td>Entry in a curated "Top X" listicle</td><td class="p">From $999</td>
+              <td><span class="ovw-inq">✋ Inquire first</span></td>
+              <td>Permanent</td><td>5 business days</td><td>Getting on the buyer shortlist</td>
+            </tr>
+            <tr>
+              <td class="n">Newsletter Insertion</td><td>Sponsored block, 12 sends</td><td class="p">$1,999 / mo</td>
+              <td>Instant checkout</td>
+              <td>1 month</td><td>Next edition</td><td>Repeat inbox exposure</td>
+            </tr>
+            <tr>
+              <td class="n">Podcast Interview</td><td>~45-min interview episode</td><td class="p">$1,999 / ep</td>
+              <td><span class="ovw-inq">✋ Inquire first</span></td>
+              <td>Permanent</td><td>Scheduled</td><td>Credibility &amp; category authority</td>
+            </tr>
+            <tr>
+              <td class="n">Display Ads</td><td>Right rail + in-feed banner on OA News</td><td class="p">$2,999 / qtr</td>
+              <td>Instant checkout</td>
+              <td>3 months</td><td>~3 business days</td><td>Always-on brand presence</td>
+            </tr>
+            <tr>
+              <td class="n">Co-branded Whitepaper</td><td>Co-branded research + campaign</td><td class="p">$3,999</td>
+              <td><span class="ovw-inq">✋ Inquire first</span></td>
+              <td>Permanent + promotion</td><td>2–3 months</td><td>Gated lead generation</td>
+            </tr>
+            <tr class="bundle">
+              <td class="n">Premium Bundle</td><td>All of the above, packaged</td><td class="p">$9,999–$19,999</td>
+              <td><span class="ovw-buy">☎ Book a call</span></td>
+              <td>6 or 12 months</td><td>Rolling</td><td>Owning the channel — save 47–72%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ===================== FAQ ===================== -->
+      <h2 class="ovw-h2">FAQ</h2>
+      <p class="ovw-lede">The short version. Bundle-specific terms live on the Premium Bundle tab.</p>
+      <div class="ovw-faq">
+        <details open>
+          <summary>Do I have to pay before I see the placement?</summary>
+          <div class="ovw-faq-a"><p>No. Every product renders a live preview inside its builder, and you can iterate as many times as you like. Nothing enters the editorial queue and your card isn’t charged until you approve.</p></div>
+        </details>
+        <details>
+          <summary>Which products can I just buy, and which need an inquiry?</summary>
+          <div class="ovw-faq-a"><p>Guest Posting, Link Insertion, Newsletter Insertion and Display Ads are instant — build, preview, check out. Top List Inclusion, Podcast Interview and Co-branded Whitepaper depend on editorial fit, scheduling or scope, so you submit a request and we confirm availability and final price before anything is charged. Bundles start with a call.</p></div>
+        </details>
+        <details>
+          <summary>How quickly does a placement go live?</summary>
+          <div class="ovw-faq-a"><p>It depends on the format. Guest Posting is 3 business days and Link Insertion 3–5. Top List Inclusion gets an editorial decision in 5 business days. Newsletter Insertion starts with the next edition and Display Ads go up in about 3 business days. Podcast Interviews are booked around the recording calendar, and whitepapers take 2–3 months end to end.</p></div>
+        </details>
+        <details>
+          <summary>Which placements are permanent, and which run for a term?</summary>
+          <div class="ovw-faq-a"><p>Guest Posting, Link Insertion, Top List Inclusion and podcast show notes stay up permanently — there’s no monthly fee and nothing rotates out. Newsletter Insertion runs for one month, Display Ads for a quarter, and the whitepaper campaign for three months, though the whitepaper itself stays hosted on OA.</p></div>
+        </details>
+        <details>
+          <summary>Can I choose which article my link goes into?</summary>
+          <div class="ovw-faq-a"><p>Yes. With Link Insertion you pick the target article and the anchor keyword, and OA editorial places it naturally in-context. Listicles and “Top N” list-of-services articles aren’t eligible — those are handled through Top List Inclusion instead.</p></div>
+        </details>
+        <details>
+          <summary>Who writes the content?</summary>
+          <div class="ovw-faq-a"><p>You do, for most formats — you supply the guest-post draft, the newsletter blurb and the ad creative, and OA editorial edits and formats them. Co-branded Whitepaper is the exception: OA researches, writes and designs the whole 12–18 page report with you.</p></div>
+        </details>
+        <details>
+          <summary>Is Top List Inclusion a guaranteed placement?</summary>
+          <div class="ovw-faq-a"><p>No — it’s a paid submission to an editorially curated list. Decisions come back in 5 business days, and if your submission is rejected the fee is refunded in full.</p></div>
+        </details>
+        <details>
+          <summary>Can I upgrade from à la carte to a bundle later?</summary>
+          <div class="ovw-faq-a"><p>Yes. Bundle upgrades are pro-rated — Lite to Standard or Premium carries no penalty. Downgrades take effect at the next renewal.</p></div>
+        </details>
+        <details>
+          <summary>What happens to slots I don’t use?</summary>
+          <div class="ovw-faq-a"><p>Unused articles, podcast slots, whitepapers and top-list submissions roll over for up to 3 months after the term ends.</p></div>
+        </details>
+        <details class="cta">
+          <summary>Still have questions? Book a call with us.</summary>
+          <div class="ovw-faq-a"><p>If you’re not sure which format fits — or you want a mix priced up as a bundle — a 20-minute call is the fastest way to work it out. We’ll walk through what’s worked for vendors in your category and send a proposal afterwards.</p><p style="margin-top:.9rem"><button class="ovw-btn ovw-btn-solid" onclick="showTab('bundle', document.querySelector('[data-tab=bundle]'))">Book a call →</button></p></div>
+        </details>
+      </div>
+
+    </section>
+
+    <!-- =========================================================================== -->
+    <!-- BROWSE — compact product tiles + detail preview panel                         -->
+    <!-- =========================================================================== -->
+    <section id="tab-browse" class="tab-content" style="display:none">
+      <h1 class="oa-section-title">Buy placement in front of outsourcing buyers</h1>
+      <p class="oa-section-sub">Editorial, email, audio and paid media on the industry’s leading marketplace &amp; publisher.<br>Transparent pricing, no minimum spend.</p>
+
+      <div class="ovw-wrap">
+        <div class="ovw-steps compact">
+          <div class="ovw-step">
+            <div class="ovw-step-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></div>
+            <div>
+              <div class="ovw-step-n">01. PREVIEW</div>
+              <strong style="margin-bottom:0">See it before you buy</strong>
+            </div>
+          </div>
+          <div class="ovw-step">
+            <div class="ovw-step-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h2.5l2.3 11.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 2-1.55L21 7H6"/></svg></div>
+            <div>
+              <div class="ovw-step-n">02. ORDER</div>
+              <strong style="margin-bottom:0">Nothing charges until you confirm</strong>
+            </div>
+          </div>
+          <div class="ovw-step">
+            <div class="ovw-step-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/></svg></div>
+            <div>
+              <div class="ovw-step-n">03. PUBLISH</div>
+              <strong style="margin-bottom:0">We produce, publish and report</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
 
       <!-- 2-column overview: 6 compact tiles on left, preview panel on right -->
       <div class="oa-grid" style="grid-template-columns: 340px 1fr; gap:1.5rem">
@@ -46,39 +847,6 @@
         <!-- RIGHT: live preview panel -->
         <div id="overview-preview" class="oa-overview-preview">
           <!-- Rendered by JS — see showOverviewPreview() below -->
-        </div>
-      </div>
-
-      <div class="oa-card oa-mt-3" style="background:linear-gradient(135deg,var(--oa-navy) 0%,#002080 100%);color:white;border:none;padding:2.25rem 2.5rem;position:relative;overflow:hidden">
-        <!-- Decorative orange glow -->
-        <span style="position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:var(--oa-orange);opacity:0.12;pointer-events:none"></span>
-
-        <div style="position:relative;z-index:1">
-          <span style="display:inline-block;background:rgba(249,115,22,0.18);color:#B3C8F5;padding:0.25rem 0.75rem;border-radius:999px;font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;font-weight:700;margin-bottom:0.85rem">⚡ Our difference</span>
-          <h3 style="margin:0 0 0.5rem 0;color:white;font-size:1.5rem;letter-spacing:-0.01em">Preview first. Pay only when you're sure.</h3>
-          <p style="margin:0 0 1.75rem 0;opacity:0.82;max-width:780px;font-size:0.95rem;line-height:1.6">Most ad checkout flows are blind — you pay first and only see your placement after fulfillment. We invert that across every surface — editorial articles, newsletter blocks, display ads, podcasts, whitepapers, top-list entries.</p>
-
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
-
-            <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:1.1rem 1.2rem">
-              <div style="width:42px;height:42px;border-radius:10px;background:rgba(249,115,22,0.2);color:#6B92E5;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:0.65rem">👁️</div>
-              <strong style="display:block;color:white;font-size:0.95rem;margin-bottom:0.3rem">See it first</strong>
-              <p style="margin:0;font-size:0.82rem;color:rgba(255,255,255,0.72);line-height:1.5">Every placement renders live as you fill out the form. No imagination required, no "approve a proof later."</p>
-            </div>
-
-            <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:1.1rem 1.2rem">
-              <div style="width:42px;height:42px;border-radius:10px;background:rgba(34,197,94,0.2);color:#86EFAC;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:0.65rem">✅</div>
-              <strong style="display:block;color:white;font-size:0.95rem;margin-bottom:0.3rem">Approve before charge</strong>
-              <p style="margin:0;font-size:0.82rem;color:rgba(255,255,255,0.72);line-height:1.5">Nothing submits to the editorial queue until you confirm. Your card isn't touched until the proof is approved.</p>
-            </div>
-
-            <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:1.1rem 1.2rem">
-              <div style="width:42px;height:42px;border-radius:10px;background:rgba(124,58,237,0.2);color:#C4B5FD;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:0.65rem">🔄</div>
-              <strong style="display:block;color:white;font-size:0.95rem;margin-bottom:0.3rem">Iterate freely</strong>
-              <p style="margin:0;font-size:0.82rem;color:rgba(255,255,255,0.72);line-height:1.5">Tweak headlines, swap creative, restructure copy. Re-render unlimited times — no penalty, no extra fees.</p>
-            </div>
-
-          </div>
         </div>
       </div>
     </section>
@@ -428,6 +1196,83 @@ https://qualityiq.com/demo</textarea>
     </section>
 
     <!-- =========================================================================== -->
+    <!-- LINK INSERTION — do-follow link inside an existing OA article               -->
+    <!-- =========================================================================== -->
+    <section id="tab-linkinsertion" class="tab-content" style="display:none">
+      <div class="oa-flex-between oa-mb-2">
+        <div>
+          <h1 class="oa-section-title">Link Insertion — $599</h1>
+          <p class="oa-section-sub">Paste the OA article you want to be linked from. We insert one contextual, do-follow link in-context — and you see exactly where it lands before anything is charged.</p>
+        </div>
+        <button class="oa-btn oa-btn-accent oa-btn-lg" onclick="addLinkInsertionToCart()">Add to Cart — $599</button>
+      </div>
+
+      <!-- spec strip -->
+      <div class="oa-grid oa-mb-2" style="grid-template-columns:repeat(3,1fr);gap:0">
+        <div class="oa-card" style="border-radius:12px 0 0 12px;border-right:none">
+          <strong style="display:block;color:var(--oa-navy);font-size:1.05rem">Permanent</strong>
+          <span class="oa-text-xs oa-text-muted">Stays in the article</span>
+        </div>
+        <div class="oa-card" style="border-radius:0;border-right:none">
+          <strong style="display:block;color:var(--oa-navy);font-size:1.05rem">3–5 days</strong>
+          <span class="oa-text-xs oa-text-muted">Inserted after review</span>
+        </div>
+        <div class="oa-card" style="border-radius:0 12px 12px 0">
+          <strong style="display:block;color:var(--oa-navy);font-size:1.05rem">Do-follow</strong>
+          <span class="oa-text-xs oa-text-muted">In-context link</span>
+        </div>
+      </div>
+
+      <div class="oa-grid" style="grid-template-columns:1fr 1fr;gap:1.5rem">
+
+        <!-- LEFT: form + what you get -->
+        <div>
+          <div class="oa-card oa-mb-2">
+            <h3 class="oa-card-title">Your link</h3>
+            <label class="oa-label">Target OA article URL</label>
+            <input class="oa-input" id="li-url" placeholder="https://outsourceaccelerator.com/articles/..." />
+            <p class="oa-help">Any live OA article is eligible except listicles and “Top N” list-of-services pages — those run through Top List Inclusion instead.</p>
+
+            <label class="oa-label oa-mt-2">Anchor keyword</label>
+            <input class="oa-input" id="li-anchor" value="contact center quality assurance" />
+
+            <label class="oa-label oa-mt-2">Destination URL</label>
+            <input class="oa-input" id="li-dest" value="https://qualityiq.com" />
+          </div>
+
+          <div class="oa-card">
+            <h3 class="oa-card-title">What you get</h3>
+            <ul style="font-size:0.85rem;padding-left:1.2rem;margin:0;line-height:1.7">
+              <li>One contextual do-follow link inside a live OA article</li>
+              <li>You choose the target article and the anchor keyword</li>
+              <li>Placed naturally in-context by OA editorial</li>
+              <li>Permanent — the link stays in the article</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- RIGHT: how it runs -->
+        <div>
+          <div class="oa-card oa-mb-2">
+            <h3 class="oa-card-title">How it runs</h3>
+            <table class="oa-table" style="font-size:0.85rem">
+              <tbody>
+                <tr><td>Lead time</td><td style="text-align:right;font-weight:700">3–5 business days</td></tr>
+                <tr><td>Anchor</td><td style="text-align:right;font-weight:700">Your keyword</td></tr>
+                <tr><td>Placement</td><td style="text-align:right;font-weight:700">Editorial discretion, in-context</td></tr>
+                <tr><td>Eligibility</td><td style="text-align:right;font-weight:700">No listicles</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="oa-card" style="background:var(--oa-bg);border-style:dashed">
+            <p class="oa-text-sm oa-text-muted" style="margin:0;line-height:1.6">Paste an OA article URL and see exactly where your link would be inserted before anything is charged. The target article is checked for eligibility before checkout.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================== -->
     <!-- DISPLAY ADS — preview-first builder                                          -->
     <!-- =========================================================================== -->
     <section id="tab-displayad" class="tab-content" style="display:none">
@@ -651,129 +1496,269 @@ https://qualityiq.com/demo</textarea>
     </section>
 
     <!-- =========================================================================== -->
-    <!-- CUSTOM WHITEPAPER — preview-first builder                                    -->
+    <!-- CUSTOM WHITEPAPER — landing page (what you're buying)                        -->
     <!-- =========================================================================== -->
     <section id="tab-whitepaper" class="tab-content" style="display:none">
       <div class="oa-flex-between oa-mb-2">
         <div>
-          <h1 class="oa-section-title">Custom Whitepaper — $3,999</h1>
-          <p class="oa-section-sub">A co-branded research whitepaper produced by the OA editorial team, <strong>then amplified across the entire OA domain</strong> — newsletter, articles, social, and podcast. Distributed as a gated download with all download leads sent to your CRM.</p>
+          <h1 class="oa-section-title">Co-branded Whitepaper — $3,999</h1>
+          <p class="oa-section-sub">A co-branded research whitepaper produced by the OA editorial team, <strong>then amplified across the entire OA domain</strong> — newsletter, articles, display ads, social, and podcast. Distributed as a gated download with all download leads sent to your CRM.</p>
         </div>
         <button class="oa-btn oa-btn-accent oa-btn-lg" onclick="addWhitepaperToCart()">Add to Cart — $3,999</button>
       </div>
 
+      <!-- Value banner -->
+      <div class="oa-card oa-mb-2" style="background:#E0F2FE;border-color:#7DD3FC">
+        <div class="oa-flex-center" style="align-items:flex-start">
+          <span style="font-size:1.4rem">📣</span>
+          <div style="flex:1">
+            <strong style="color:#0369A1">Production <em>and</em> promotion — the amplification alone is $8,195 à la carte.</strong>
+            <div class="oa-text-xs" style="color:#075985;line-height:1.55;margin-top:0.15rem">A whitepaper nobody sees is worth nothing, so the $3,999 covers a 12-18 page co-branded report <strong>plus</strong> a five-channel launch campaign across OA — the same placements sold separately on the other tabs of this marketplace. Every download lead is pushed to your CRM, exclusively yours.</div>
+          </div>
+        </div>
+      </div>
 
       <div class="oa-grid" style="grid-template-columns: 380px 1fr; gap:1.5rem">
-        <!-- Brief form -->
+
+        <!-- LEFT: what we build, what's included, process -->
         <div>
 
-          <!-- Compact Production card (Step 1 — what we build) -->
+          <!-- Production — what we build (expanded) -->
           <div class="oa-card oa-mb-2" style="background:#E0F2FE;border-color:#7DD3FC">
             <div class="oa-flex-between oa-mb-1">
               <strong style="color:#0369A1;font-size:0.72rem;letter-spacing:0.06em;text-transform:uppercase">📘 Production · what we build</strong>
-              <span class="oa-badge" style="background:#0369A1;color:white">Step 1</span>
+              <span class="oa-badge" style="background:#0369A1;color:white">Included</span>
             </div>
-            <ul style="margin:0.4rem 0 0 0;padding:0;list-style:none;font-size:0.78rem;color:#0369A1;line-height:1.5">
-              <li style="padding:0.3rem 0;display:flex;gap:0.5rem;border-bottom:1px solid rgba(3,105,161,0.12)"><span>✏️</span><span><strong>OA writes it</strong> — 12-18 page whitepaper. You brief, we draft, you approve.</span></li>
-              <li style="padding:0.3rem 0;display:flex;gap:0.5rem;border-bottom:1px solid rgba(3,105,161,0.12)"><span>🎨</span><span><strong>Co-branded design</strong> — OA + your logo, your colors, your CTA.</span></li>
-              <li style="padding:0.3rem 0;display:flex;gap:0.5rem;border-bottom:1px solid rgba(3,105,161,0.12)"><span>🔒</span><span><strong>Gated landing page</strong> on OA.com with a download form.</span></li>
-              <li style="padding:0.3rem 0;display:flex;gap:0.5rem"><span>📨</span><span><strong>Leads → your CRM</strong> via HubSpot / SFDC / webhook.</span></li>
+            <p style="font-size:0.75rem;color:#075985;line-height:1.5;margin:0 0 0.5rem 0">You don't need a writer, a designer, or a landing page. OA's editorial team produces the whole asset end to end — you brief it and approve it.</p>
+            <ul style="margin:0;padding:0;list-style:none;font-size:0.78rem;color:#0369A1;line-height:1.5">
+              <li style="padding:0.5rem 0;display:flex;gap:0.5rem;border-bottom:1px solid rgba(3,105,161,0.12)"><span style="flex-shrink:0">✏️</span><span><strong>OA writes it</strong> — a 12-18 page whitepaper written by the OA editorial team. You brief the angle, we draft, you approve. Two revision rounds included.</span></li>
+              <li style="padding:0.5rem 0;display:flex;gap:0.5rem;border-bottom:1px solid rgba(3,105,161,0.12)"><span style="flex-shrink:0">🔬</span><span><strong>Original research &amp; data</strong> — we pull from OA's BPO firm directory, our own buyer enquiry data, and desk research, so the report carries numbers nobody else can publish.</span></li>
+              <li style="padding:0.5rem 0;display:flex;gap:0.5rem;border-bottom:1px solid rgba(3,105,161,0.12)"><span style="flex-shrink:0">🎨</span><span><strong>Co-branded design</strong> — professionally laid out with the OA mark alongside your logo, your brand colour, your CTA, and charts built from the report's data.</span></li>
+              <li style="padding:0.5rem 0;display:flex;gap:0.5rem;border-bottom:1px solid rgba(3,105,161,0.12)"><span style="flex-shrink:0">🔒</span><span><strong>Gated landing page on OA.com</strong> — a permanent page under <em>The Source › Whitepapers</em> with a download form, on the domain that already ranks for BPO buyer queries.</span></li>
+              <li style="padding:0.5rem 0;display:flex;gap:0.5rem;border-bottom:1px solid rgba(3,105,161,0.12)"><span style="flex-shrink:0">📨</span><span><strong>Leads → your CRM</strong> — name, work email, company, and role for every download, pushed in real time to HubSpot, Salesforce, Pipedrive, Marketo, or a webhook. No lead sharing.</span></li>
+              <li style="padding:0.5rem 0;display:flex;gap:0.5rem"><span style="flex-shrink:0">📄</span><span><strong>The files are yours to reuse</strong> — the final PDF plus chart and cover assets, for your own sequences, trade shows, and website, in perpetuity.</span></li>
             </ul>
           </div>
 
-          <div class="oa-card">
-            <h3 class="oa-card-title">The brief</h3>
-            <p class="oa-help oa-mb-1">Have a brief already? Upload or link it. Otherwise fill in the fields below — both can be used together.</p>
-
-            <!-- Brief input mode picker -->
-            <div id="wp-brief-modes" class="oa-draft-modes" style="margin-bottom:1rem">
-              <button type="button" class="oa-draft-mode-btn" onclick="setBriefMode('link')">
-                <span class="icon">🔗</span>
-                <div class="body">
-                  <strong>Link a brief</strong>
-                  <div class="sub">Google Doc, Notion, or any shareable URL.</div>
+          <!-- How it works -->
+          <div class="oa-card oa-mb-2">
+            <h3 class="oa-card-title">How it works</h3>
+            <p class="oa-help oa-mb-1">Brief to live in about 6 weeks.</p>
+            <ul class="oa-checklist">
+              <li>
+                <span class="oa-check-icon" style="background:var(--oa-navy);color:white">1</span>
+                <div>
+                  <div class="oa-check-label">Kickoff &amp; brief <span class="oa-text-xs oa-text-muted">· week 0</span></div>
+                  <div class="oa-check-detail">A 45-minute call with the editorial lead. Send a brief you already have, or we build it live on the call.</div>
                 </div>
-                <span class="arrow">→</span>
-              </button>
-              <button type="button" class="oa-draft-mode-btn" onclick="setBriefMode('upload')">
-                <span class="icon">📎</span>
-                <div class="body">
-                  <strong>Upload .docx or PDF</strong>
-                  <div class="sub">Max 10 MB. Our editorial team reads it before drafting.</div>
+              </li>
+              <li>
+                <span class="oa-check-icon" style="background:var(--oa-navy);color:white">2</span>
+                <div>
+                  <div class="oa-check-label">Research &amp; draft <span class="oa-text-xs oa-text-muted">· weeks 1-3</span></div>
+                  <div class="oa-check-detail">We gather the data, interview your exec if useful, and write the full draft against the agreed chapter outline.</div>
                 </div>
-                <span class="arrow">→</span>
-              </button>
-            </div>
-
-            <!-- Link panel -->
-            <div id="wp-brief-link" class="oa-draft-panel" style="display:none">
-              <div class="oa-flex-between oa-mb-1">
-                <strong style="color:var(--oa-navy)">🔗 Brief link</strong>
-                <button type="button" class="oa-btn oa-btn-sm" onclick="setBriefMode(null)">← Remove</button>
-              </div>
-              <input class="oa-input" id="wp-brief-url" placeholder="https://docs.google.com/document/d/.../edit" />
-              <p class="oa-help">Ensure the doc is set to "Anyone with the link can view."</p>
-            </div>
-
-            <!-- Upload panel -->
-            <div id="wp-brief-upload" class="oa-draft-panel" style="display:none">
-              <div class="oa-flex-between oa-mb-1">
-                <strong style="color:var(--oa-navy)">📎 Upload brief</strong>
-                <button type="button" class="oa-btn oa-btn-sm" onclick="setBriefMode(null)">← Remove</button>
-              </div>
-              <input class="oa-input" type="file" id="wp-brief-file" accept=".docx,.pdf,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" onchange="handleBriefFile()" />
-              <p class="oa-help">.docx and .pdf accepted, up to 10 MB.</p>
-              <div id="wp-brief-info" class="oa-text-xs oa-text-muted" style="margin-top:0.5rem"></div>
-            </div>
-
-            <hr style="border:none;border-top:1px solid var(--oa-border);margin:1.25rem 0" />
-
-            <label class="oa-label">Working title</label>
-            <input class="oa-input" id="wp-title" value="The 2026 State of AI Quality Assurance in BPO" oninput="renderWhitepaperPreview()" />
-
-            <label class="oa-label oa-mt-2">Co-author / sponsor brand</label>
-            <input class="oa-input" id="wp-brand" value="QualityIQ" oninput="renderWhitepaperPreview()" />
-
-            <label class="oa-label oa-mt-2">Sponsor brand color (hex)</label>
-            <input class="oa-input" id="wp-color" value="#7C3AED" oninput="renderWhitepaperPreview()" />
-
-            <label class="oa-label oa-mt-2">Topic angle / pitch (≤ 300 chars)</label>
-            <textarea class="oa-textarea" id="wp-angle" style="min-height:90px" maxlength="300" oninput="renderWhitepaperPreview()">An original-research view of how the top 20 global BPOs have deployed AI QA in 2026, what the buying committee looks like, average procurement cycles, and what 'success' looks like 6 months post-deployment.</textarea>
-
-            <label class="oa-label oa-mt-2">Chapters (one per line)</label>
-            <textarea class="oa-textarea" id="wp-chapters" style="min-height:130px" oninput="renderWhitepaperPreview()">Executive summary
-The QA bottleneck: why 2% sampling is dead
-Survey: how the top 20 BPOs deployed AI QA in 2026
-Procurement: the 5-stage buying journey
-Integration: what passes & what fails
-Case studies: Concentrix, Genpact, TaskUs
-Forecast: 2027 and the live-coaching frontier
-About the sponsor</textarea>
-
-            <label class="oa-label oa-mt-2">Foreword author (your exec)</label>
-            <input class="oa-input" id="wp-foreword" value="Marcus Chen, VP Product, QualityIQ" oninput="renderWhitepaperPreview()" />
-
-            <label class="oa-label oa-mt-2">Logo URL (optional)</label>
-            <input class="oa-input" id="wp-logo" placeholder="https://..." oninput="renderWhitepaperPreview()" />
+              </li>
+              <li>
+                <span class="oa-check-icon" style="background:var(--oa-navy);color:white">3</span>
+                <div>
+                  <div class="oa-check-label">Your review <span class="oa-text-xs oa-text-muted">· week 4</span></div>
+                  <div class="oa-check-detail">You mark up the draft. Two revision rounds included. Nothing publishes without your written sign-off.</div>
+                </div>
+              </li>
+              <li>
+                <span class="oa-check-icon" style="background:var(--oa-navy);color:white">4</span>
+                <div>
+                  <div class="oa-check-label">Design &amp; build <span class="oa-text-xs oa-text-muted">· week 5</span></div>
+                  <div class="oa-check-detail">Co-branded layout, charts, cover, gated landing page, and the CRM connection — tested end to end with a live test lead.</div>
+                </div>
+              </li>
+              <li>
+                <span class="oa-check-icon" style="background:var(--oa-orange);color:white">5</span>
+                <div>
+                  <div class="oa-check-label">Publish &amp; amplify <span class="oa-text-xs oa-text-muted">· week 6+</span></div>
+                  <div class="oa-check-detail">Goes live, the five-channel campaign starts, and leads begin landing in your CRM from day one. Monthly download report.</div>
+                </div>
+              </li>
+            </ul>
           </div>
 
-          <div class="oa-card oa-mt-2">
-            <h3 class="oa-card-title">Lead delivery</h3>
-            <label class="oa-label">CRM / Marketing automation</label>
-            <select class="oa-select" id="wp-crm">
-              <option>HubSpot (recommended)</option><option>Salesforce</option><option>Pipedrive</option><option>Marketo</option><option>Webhook / Zapier</option>
-            </select>
-            <p class="oa-help">Each download submits name, work email, company, role to your destination of choice. Lead delivery starts on publication day.</p>
-          </div>
         </div>
 
-        <!-- Preview -->
+        <!-- RIGHT: what it looks like live + FAQ -->
         <div>
           <div class="oa-flex-between oa-mb-1">
-            <h3 class="oa-card-title">Live preview — gated landing page + whitepaper cover</h3>
-            <span class="oa-badge oa-badge-orange">REAL-TIME</span>
+            <h3 class="oa-card-title">What it looks like when it's live — gated landing page + whitepaper cover</h3>
+            <span class="oa-badge oa-badge-gray">ILLUSTRATIVE EXAMPLE</span>
           </div>
-          <div id="wp-preview"></div>
+
+          <div class="oa-article-preview oa-mb-1">
+            <div class="oa-article-header">
+              <div style="display:flex;align-items:center;gap:0.5rem">
+                <span class="oa-logo-dot" style="width:18px;height:18px"></span>
+                <strong>OutsourceAccelerator</strong> · The Source · Whitepapers
+              </div>
+              <div class="oa-article-header-nav">
+                <span>Industry</span><span>Articles</span><span>Research</span>
+              </div>
+            </div>
+            <div style="padding:2.5rem 2rem;background:linear-gradient(135deg,#EEF3F8 0%,white 60%);display:grid;grid-template-columns:1.1fr 280px;gap:2rem;align-items:center">
+              <div>
+                <div class="oa-article-breadcrumb">The Source › Whitepapers › QualityIQ</div>
+                <span class="oa-badge" style="background:#E0F2FE;color:#0EA5E9;margin-top:0.5rem">Gated download · Free</span>
+                <h1 style="font-size:1.6rem;font-weight:800;color:var(--oa-navy);margin:0.75rem 0 0.5rem 0;line-height:1.2">The 2026 State of AI Quality Assurance in BPO</h1>
+                <p style="color:var(--oa-muted);line-height:1.6;font-size:0.9rem">An original-research view of how the top 20 global BPOs have deployed AI QA in 2026, what the buying committee looks like, average procurement cycles, and what 'success' looks like 6 months post-deployment.</p>
+                <div style="margin-top:1rem;display:flex;gap:1.5rem;font-size:0.75rem;color:var(--oa-muted)">
+                  <div>📄 8 chapters</div>
+                  <div>👤 Foreword by the sponsor's exec</div>
+                  <div>📅 Gated · free download</div>
+                </div>
+                <div style="margin-top:1.5rem;background:white;border:1px solid var(--oa-border);border-radius:10px;padding:1.25rem;max-width:340px;box-shadow:0 4px 12px rgba(0,0,0,0.04)">
+                  <div style="font-weight:700;font-size:0.85rem;margin-bottom:0.5rem;color:var(--oa-navy)">Download the report</div>
+                  <input class="oa-input" placeholder="Work email" style="font-size:0.8rem;padding:0.45rem 0.6rem;margin-bottom:0.4rem" disabled />
+                  <input class="oa-input" placeholder="Company" style="font-size:0.8rem;padding:0.45rem 0.6rem;margin-bottom:0.6rem" disabled />
+                  <button class="oa-btn oa-btn-accent oa-w-full oa-btn-sm" style="background:#7C3AED;border-color:#7C3AED" disabled>Get the whitepaper →</button>
+                  <p class="oa-text-xs oa-text-muted" style="margin:0.5rem 0 0 0;text-align:center">Every submission — name, work email, company, role — lands in your CRM.</p>
+                </div>
+              </div>
+              <div style="display:flex;justify-content:center">
+                <div style="width:280px;height:380px;background:linear-gradient(165deg,var(--oa-navy) 0%,#002080 60%,#7C3AED 130%);border-radius:8px;padding:1.5rem;color:white;display:flex;flex-direction:column;box-shadow:0 18px 40px rgba(0,0,0,0.2);position:relative;overflow:hidden">
+                  <div style="position:absolute;top:-30px;right:-30px;width:140px;height:140px;border-radius:50%;background:#7C3AED;opacity:0.25"></div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;opacity:0.85;margin-bottom:1.5rem">
+                    <span>OA Research</span>
+                    <span>2026</span>
+                  </div>
+                  <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.06em;color:#6B92E5;font-weight:700;margin-bottom:0.85rem">Whitepaper · 8 chapters</div>
+                  <h2 style="font-size:1.45rem;line-height:1.2;margin:0 0 1rem 0;font-weight:800">The 2026 State of AI Quality Assurance in BPO</h2>
+                  <p style="font-size:0.75rem;opacity:0.85;line-height:1.5;margin:0">A co-produced research report from Outsource Accelerator and QualityIQ.</p>
+                  <div style="margin-top:auto;padding-top:1rem;border-top:1px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:space-between;gap:0.5rem">
+                    <div style="font-size:0.65rem">
+                      <div style="opacity:0.7">PUBLISHED BY</div>
+                      <strong>OutsourceAccelerator</strong>
+                    </div>
+                    <div style="font-size:0.65rem;text-align:right">
+                      <div style="opacity:0.7">IN PARTNERSHIP WITH</div>
+                      <strong>QualityIQ</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="oa-text-xs oa-text-muted oa-mb-2">The mock-up above shows the format, not a real client. Your title, chapters, brand colour, and logo take its place.</p>
+
+          <!-- Promotion across the OA domain -->
+          <div class="oa-card oa-card-inverted oa-mb-2">
+            <div class="oa-flex-between oa-mb-1">
+              <h3 class="oa-card-title" style="margin:0;font-size:0.95rem">📣 Promotion across the OA domain</h3>
+              <span class="oa-badge oa-badge-orange" style="flex-shrink:0">NO EXTRA COST</span>
+            </div>
+            <p style="font-size:0.78rem;margin:0 0 0.35rem 0">Every purchase includes a full launch campaign — the same placements sold separately elsewhere in this marketplace.</p>
+            <ul class="oa-checklist" style="font-size:0.8rem;display:grid;grid-template-columns:repeat(2,1fr);gap:0 1.5rem">
+              <li>
+                <span style="font-size:1.05rem;flex-shrink:0;line-height:1.2">📧</span>
+                <div style="flex:1;min-width:0">
+                  <div class="oa-flex-between" style="gap:0.5rem;align-items:flex-start">
+                    <strong style="color:white;font-size:0.82rem">Inside Outsourcing newsletter</strong>
+                    <span class="oa-badge" style="background:rgba(255,255,255,0.14);color:white;flex-shrink:0">$1,999</span>
+                  </div>
+                  <div class="oa-check-detail">A one-month feature across all editions — 600K+ email sends per month to outsourcing buyers, operators, and BPO executives.</div>
+                </div>
+              </li>
+              <li>
+                <span style="font-size:1.05rem;flex-shrink:0;line-height:1.2">📝</span>
+                <div style="flex:1;min-width:0">
+                  <div class="oa-flex-between" style="gap:0.5rem;align-items:flex-start">
+                    <strong style="color:white;font-size:0.82rem">2 stand-alone articles on OA.com</strong>
+                    <span class="oa-badge" style="background:rgba(255,255,255,0.14);color:white;flex-shrink:0">$1,198</span>
+                  </div>
+                  <div class="oa-check-detail">Two editorial pieces unpacking your findings, each linking to the gated download — indexed and permanent, working as SEO surface long after the campaign ends.</div>
+                </div>
+              </li>
+              <li>
+                <span style="font-size:1.05rem;flex-shrink:0;line-height:1.2">🖼️</span>
+                <div style="flex:1;min-width:0">
+                  <div class="oa-flex-between" style="gap:0.5rem;align-items:flex-start">
+                    <strong style="color:white;font-size:0.82rem">Display ads across OA</strong>
+                    <span class="oa-badge" style="background:rgba(255,255,255,0.14);color:white;flex-shrink:0">$2,999</span>
+                  </div>
+                  <div class="oa-check-detail">Three months of in-article and right-rail banners driving traffic to the download — roughly 255,000 impressions across the OA News inventory.</div>
+                </div>
+              </li>
+              <li style="border-bottom:none">
+                <span style="font-size:1.05rem;flex-shrink:0;line-height:1.2">🎙</span>
+                <div style="flex:1;min-width:0">
+                  <div class="oa-flex-between" style="gap:0.5rem;align-items:flex-start">
+                    <strong style="color:white;font-size:0.82rem">Podcast appearance</strong>
+                    <span class="oa-badge" style="background:rgba(255,255,255,0.14);color:white;flex-shrink:0">$1,999</span>
+                  </div>
+                  <div class="oa-check-detail">Your exec joins Derek Gallimore on the Outsourcing Podcast (350+ episodes) for a full episode on the research, with show-note links back to the download.</div>
+                </div>
+              </li>
+              <li>
+                <span style="font-size:1.05rem;flex-shrink:0;line-height:1.2">📱</span>
+                <div style="flex:1;min-width:0">
+                  <div class="oa-flex-between" style="gap:0.5rem;align-items:flex-start">
+                    <strong style="color:white;font-size:0.82rem">Social boost</strong>
+                    <span class="oa-badge" style="background:rgba(255,255,255,0.14);color:white;flex-shrink:0">Included</span>
+                  </div>
+                  <div class="oa-check-detail">Promoted across OA's official LinkedIn and Meta channels at launch, plus a second push mid-campaign.</div>
+                </div>
+              </li>
+            </ul>
+            <div class="oa-flex-between" style="margin-top:0.85rem;padding-top:0.75rem;border-top:1px solid rgba(255,255,255,0.25)">
+              <div>
+                <strong style="color:white;font-size:0.82rem">Amplification à la carte</strong>
+                <div style="color:rgba(255,255,255,0.6);font-size:0.7rem;margin-top:0.1rem">Before the whitepaper production itself</div>
+              </div>
+              <div style="text-align:right">
+                <div style="color:rgba(255,255,255,0.55);font-size:0.8rem;text-decoration:line-through">$8,195</div>
+                <div style="color:white;font-size:1.05rem;font-weight:800">Included</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ -->
+          <div class="oa-card">
+            <h3 class="oa-card-title">Common questions</h3>
+            <div class="oa-grid oa-grid-2" style="gap:1rem 1.5rem;margin-top:0.5rem">
+              <div>
+                <strong style="font-size:0.85rem;color:var(--oa-navy)">Who owns the content?</strong>
+                <p style="margin:0.2rem 0 0 0;font-size:0.8rem;color:var(--oa-muted);line-height:1.55">You get the PDF and design assets to reuse in perpetuity. OA keeps the landing page live and retains editorial credit as co-publisher.</p>
+              </div>
+              <div>
+                <strong style="font-size:0.85rem;color:var(--oa-navy)">Do you share the leads with anyone else?</strong>
+                <p style="margin:0.2rem 0 0 0;font-size:0.8rem;color:var(--oa-muted);line-height:1.55">No. Every download lead goes to you. OA retains the record for its own subscriber list only where the downloader opts in separately.</p>
+              </div>
+              <div>
+                <strong style="font-size:0.85rem;color:var(--oa-navy)">Is this editorial or advertorial?</strong>
+                <p style="margin:0.2rem 0 0 0;font-size:0.8rem;color:var(--oa-muted);line-height:1.55">Co-published research. It's clearly marked as produced with your brand, and the OA team retains a veto on claims we can't stand behind — that's what makes buyers download it.</p>
+              </div>
+              <div>
+                <strong style="font-size:0.85rem;color:var(--oa-navy)">How many downloads should we expect?</strong>
+                <p style="margin:0.2rem 0 0 0;font-size:0.8rem;color:var(--oa-muted);line-height:1.55">It varies a lot by topic, so we don't quote a number — we guarantee the placements and send a monthly download report. Your editorial lead can walk you through comparable campaigns on the kickoff call.</p>
+              </div>
+              <div>
+                <strong style="font-size:0.85rem;color:var(--oa-navy)">Can we run it under our brand only?</strong>
+                <p style="margin:0.2rem 0 0 0;font-size:0.8rem;color:var(--oa-muted);line-height:1.55">No — the OA co-brand is what earns the distribution and the trust. But your logo, colour, CTA, and exec voice are all over it.</p>
+              </div>
+              <div>
+                <strong style="font-size:0.85rem;color:var(--oa-navy)">When do we pay?</strong>
+                <p style="margin:0.2rem 0 0 0;font-size:0.8rem;color:var(--oa-muted);line-height:1.55">Add it to your cart and we'll book the kickoff call within one business day. No payment is taken until the brief is agreed.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Final CTA -->
+          <div class="oa-card oa-mt-2" style="background:linear-gradient(135deg,var(--oa-navy) 0%,#002080 100%);border:none;color:white">
+            <div class="oa-flex-between" style="gap:1.5rem;flex-wrap:wrap">
+              <div style="flex:1;min-width:280px">
+                <h3 style="margin:0 0 0.35rem 0;color:white;font-size:1.15rem;font-weight:800">One asset. Five channels. Every lead yours.</h3>
+                <p style="margin:0;font-size:0.85rem;color:rgba(255,255,255,0.78);line-height:1.55">$3,999 covers production and the full amplification campaign.</p>
+              </div>
+              <button class="oa-btn oa-btn-accent oa-btn-lg" style="flex-shrink:0" onclick="addWhitepaperToCart()">Add to Cart — $3,999</button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -914,6 +1899,8 @@ TaskUs</textarea>
 
   <div id="oa-cart-drawer-mount"></div>
 
+  <div id="inq-modal" class="inq-overlay" onclick="if(event.target===this)closeInquiry()"></div>
+
   <script src="shared.js"></script>
   <script>
     initShell('marketplace');
@@ -922,32 +1909,35 @@ TaskUs</textarea>
       document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
       document.getElementById('tab-' + name).style.display = 'block';
       document.querySelectorAll('.oa-subnav a').forEach(a => a.classList.remove('active'));
-      if (el) el.classList.add('active');
+      // product tabs have no subnav entry of their own — keep Browse lit for them
+      const lit = el || document.querySelector('[data-tab=browse]');
+      if (lit) lit.classList.add('active');
       window.scrollTo({ top: 0, behavior: 'smooth' });
       // re-render whichever preview is in focus
+      if (name === 'browse') renderOverviewTiles();
       if (name === 'guestpost') renderGuestPostPreview();
       if (name === 'displayad') renderDisplayAdPreview();
       if (name === 'newsletter') renderNewsletterPreview();
       if (name === 'podcast') renderPodcastPreview();
-      if (name === 'whitepaper') renderWhitepaperPreview();
       if (name === 'toplist') renderTopListPreview();
     }
 
     // =======================================================
-    // OVERVIEW — 6 compact tiles + detail preview panel
+    // BROWSE tab — compact product tiles + detail preview panel
     // =======================================================
     const OVERVIEW_PRODUCTS = [
       {
         id: 'bundle',
+        icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7l9 5 9-5-9-5Z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/></svg>`,
         inverted: true,
-        accent: '#003CB3',
+        accent: '#001E94',
         badge: 'ALL-IN-ONE · BEST VALUE',
         badgeBg: 'rgba(249,115,22,0.2)', badgeColor: '#6B92E5',
         name: 'Premium Bundle',
-        price: '$19,999',
-        priceUnit: '/ year · save up to 72%',
+        price: '$9,999*',
+        priceUnit: '*starts at',
         short: 'Every surface in one annual package.',
-        desc: 'Why pay for each surface separately? Three tier packages bundle every OA Media product into a 6- or 12-month commitment. Premium adds priority editorial review and a dedicated success manager.',
+        desc: 'Why pay for each surface separately? Three tier packages bundle every Publisher Hub product into a 6- or 12-month commitment. Premium adds priority editorial review and a dedicated success manager.',
         bullets: [
           '24 SEO articles · 12 mo display ads · 12 mo newsletter',
           '24 article mentions · 2 podcast interviews · 1 custom whitepaper',
@@ -956,52 +1946,59 @@ TaskUs</textarea>
           'Dedicated success manager + quarterly business review',
           'Save up to ~$52K vs. à la carte (Premium tier)'
         ],
-        cta: 'See bundle options →',
+        cta: 'Book a call →',
         tabId: 'bundle'
       },
       {
-        id: 'guestpost',
+        id: 'whitepaper',
+        inquire: true,
+        icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4a2 2 0 0 1 2-2h11l4 4v16H6a2 2 0 0 1-2-2Z"/><path d="M17 2v4h4"/><path d="M8 11h8"/><path d="M8 15h6"/></svg>`,
         accent: '#001E94',
         badge: '',
-        badgeBg: '#EEF3F8', badgeColor: '#001E94',
-        name: 'Guest Posting',
-        price: '$599', priceUnit: '',
-        short: 'Permanent thought-leadership article on OA.com.',
-        desc: 'Get your byline published as a real editorial article on OutsourceAccelerator.com — permanent placement, do-follow links, indexed by Google within 48 hours, and surfaced in every "related articles" widget on the topic.',
+        badgeBg: '#EEF3F8', badgeColor: '#0EA5E9',
+        name: 'Co-branded Whitepaper',
+        price: '$3,999', priceUnit: 'including promotion',
+        short: 'Co-branded research, amplified across all OA channels.',
+        desc: 'The only product where OA does the writing. We research, write and design a co-branded 12–18 page report, then host it as a gated download with every lead routed straight to your CRM — and push it across the whole domain: a month in the newsletter, two stand-alone articles, three months of display ads, social, and a podcast appearance. One asset, six surfaces.',
         bullets: [
-          '1,000+ words, edited by the OA editorial team',
-          'Up to 3 do-follow links to your destinations',
-          'Permanent placement — never expires',
-          'Author bio with company link & headshot',
-          'Live preview before checkout'
+          'Production: OA writes 12-18 pages, co-branded design',
+          'Gated landing page on OA.com; leads → your CRM',
+          'Promotion: one-month feature in Inside Outsourcing newsletter',
+          'Promotion: 2 stand-alone articles unpacking findings',
+          'Promotion: display ads across OA.com for 3 months',
+          'Promotion: social boost (LinkedIn + Meta) + podcast appearance'
         ],
-        cta: 'Build & Preview →',
-        tabId: 'guestpost'
+        cta: 'See what\'s included →',
+        tabId: 'whitepaper'
       },
       {
-        id: 'toplist',
-        accent: '#EAB308',
+        id: 'displayad',
+        img: 'displayad.jpg', imgAlt: 'A live in-feed banner ad running between articles on OA News',
+        icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="12" rx="2"/><path d="M2 12h20"/><path d="M8 20h8"/></svg>`,
+        accent: '#001E94',
         badge: '',
-        badgeBg: '#FEF9C3', badgeColor: '#A16207',
-        name: 'Top List Inclusion',
-        price: '$999*', priceUnit: 'Starts at',
-        short: 'Get into an OA "Top X tools" listicle.',
-        desc: 'Paste the OA top-list URL you want your product considered for. We evaluate fit and quote the fee within 24 hours based on the list\'s monthly traffic and competitiveness.',
+        badgeBg: '#EEF3F8', badgeColor: '#003CB3',
+        name: 'Display Ads',
+        price: '$2,999', priceUnit: '/ quarter (3 months)',
+        short: 'Right-rail + in-feed banner on OA News.',
+        desc: 'Banner placements on news.outsourceaccelerator.com — both the right-rail (300×360) and the wide in-feed banner between news articles. Your creative rotates across every OA News article for a full quarter.',
         bullets: [
-          'Permanent inclusion if accepted (no monthly fee)',
-          'Editorial review in 7-14 days',
-          'Fee scales with list traffic: $1,299 (low) to $4,499 (top tier)',
-          'Full refund if rejected — every submission judged on merit',
-          'No waitlist, no boost, no pay-for-position'
+          '~255,000 guaranteed quarterly impressions (~85K/mo × 3)',
+          'Right rail and in-feed wide banner — both included',
+          'Custom CTA and destination URL',
+          'Monthly click-through and conversion report',
+          'Swap creative up to 3 times during the quarter — free'
         ],
-        cta: 'Submit a URL →',
-        tabId: 'toplist'
+        cta: 'Build & Preview →',
+        tabId: 'displayad'
       },
       {
         id: 'newsletter',
-        accent: '#16A34A',
+        img: 'newsletter.jpg', imgAlt: 'Sponsored blocks as they ran in the Inside Outsourcing newsletter',
+        icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg>`,
+        accent: '#001E94',
         badge: '',
-        badgeBg: '#ECFDF5', badgeColor: '#16A34A',
+        badgeBg: '#EEF3F8', badgeColor: '#16A34A',
         name: 'Newsletter Insertion',
         price: '$1,999', priceUnit: '/ month (12 insertions)',
         short: 'Sponsored block in Inside Outsourcing.',
@@ -1018,16 +2015,18 @@ TaskUs</textarea>
       },
       {
         id: 'podcast',
-        accent: '#7C3AED',
+        inquire: true,
+        icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><path d="M12 17v5"/></svg>`,
+        accent: '#001E94',
         badge: '',
-        badgeBg: '#F3E8FF', badgeColor: '#7C3AED',
+        badgeBg: '#EEF3F8', badgeColor: '#7C3AED',
         name: 'Podcast Interview',
         price: '$1,999', priceUnit: '/ episode',
         short: 'Guest spot with Derek Gallimore.',
-        desc: 'Be a guest on the Outsource Accelerator Podcast — 350+ episodes deep. Hosted by Derek Gallimore. Distributed to Apple, Spotify, YouTube, and RSS.',
+        desc: 'Be a guest on the Outsource Accelerator Podcast — 600+ episodes deep. Hosted by Derek Gallimore. Distributed to Apple, Spotify, YouTube, and RSS.',
         bullets: [
           '~45-min recorded conversation with Derek Gallimore',
-          'Show notes with up to 3 do-follow backlinks',
+          'Show notes with 1 do-follow backlink',
           'Distributed to Apple, Spotify, YouTube, RSS',
           'Promoted in Inside Outsourcing the week of release',
           'Limit: 2 episodes per company per calendar year'
@@ -1036,43 +2035,68 @@ TaskUs</textarea>
         tabId: 'podcast'
       },
       {
-        id: 'displayad',
-        accent: '#003CB3',
+        id: 'toplist',
+        inquire: true,
+        icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6h11"/><path d="M10 12h11"/><path d="M10 18h11"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 16a1.5 1.5 0 1 0-3 0c0 1 1 1.5 3 3H3"/></svg>`,
+        accent: '#001E94',
         badge: '',
-        badgeBg: '#E6EDFB', badgeColor: '#003CB3',
-        name: 'Display Ads',
-        price: '$2,999', priceUnit: '/ quarter (3 months)',
-        short: 'Right-rail + in-feed banner on OA News.',
-        desc: 'Banner placements on news.outsourceaccelerator.com — both the right-rail (300×360) and the wide in-feed banner between news articles. Your creative rotates across every OA News article for a full quarter.',
+        badgeBg: '#EEF3F8', badgeColor: '#A16207',
+        name: 'Top List Inclusion',
+        price: '$999*', priceUnit: '*starts at',
+        short: 'Get into an OA "Top X tools" listicle.',
+        desc: 'Paste the OA top-list URL you want your product considered for. We assess fit and send a proposal within 2 business days, priced on that list’s traffic and competitiveness.',
         bullets: [
-          '~255,000 guaranteed quarterly impressions (~85K/mo × 3)',
-          'Right rail and in-feed wide banner — both included',
-          'Custom CTA and destination URL',
-          'Monthly click-through and conversion report',
-          'Swap creative up to 3 times during the quarter — free'
+          'Permanent inclusion if accepted (no monthly fee)',
+          'Editorial review in 5 business days',
+          'Submitting a URL is free',
+          'We send a proposal within 2 business days',
+          'You only pay if you accept',
+          'Fee scales with the list: $999 (smallest) up to ~$4,499 (most competitive)'
         ],
-        cta: 'Build & Preview →',
-        tabId: 'displayad'
+        cta: 'Submit a URL →',
+        tabId: 'toplist'
       },
       {
-        id: 'whitepaper',
-        accent: '#0EA5E9',
+        id: 'guestpost',
+        img: 'guestpost.jpg', imgAlt: 'A live Outsource Accelerator editorial article',
+        icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M8 13h8"/><path d="M8 17h5"/></svg>`,
+        accent: '#001E94',
         badge: '',
-        badgeBg: '#E0F2FE', badgeColor: '#0EA5E9',
-        name: 'Custom Whitepaper',
-        price: '$3,999', priceUnit: '/ whitepaper',
-        short: 'Co-branded research, amplified across all OA channels.',
-        desc: 'OA produces a co-branded 12-18 page whitepaper, then amplifies it across the entire OA domain — a one-month newsletter feature, two stand-alone articles, three months of display ads, social, and a podcast appearance. Distributed as a gated download with leads pushed to your CRM.',
+        badgeBg: '#EEF3F8', badgeColor: '#001E94',
+        name: 'Guest Posting',
+        price: '$599', priceUnit: 'evergreen content',
+        short: 'Permanent thought-leadership article on OA.com.',
+        desc: 'Get your byline published as a real editorial article on OutsourceAccelerator.com — permanent placement, a do-follow link, indexed by Google within 48 hours, and surfaced in every "related articles" widget on the topic.',
         bullets: [
-          'Production: OA writes 12-18 pages, co-branded design',
-          'Gated landing page on OA.com; leads → your CRM',
-          'Promotion: one-month feature in Inside Outsourcing newsletter',
-          'Promotion: 2 stand-alone articles unpacking findings',
-          'Promotion: display ads across OA.com for 3 months',
-          'Promotion: social boost (LinkedIn + Meta) + podcast appearance'
+          '1,000+ words, edited by the OA editorial team',
+          '1 do-follow link to the destination you choose',
+          'Permanent placement — never expires',
+          'Author bio with company link & headshot',
+          'Live preview before checkout'
         ],
-        cta: 'Brief & Preview →',
-        tabId: 'whitepaper'
+        cta: 'Build & Preview →',
+        tabId: 'guestpost'
+      },
+      {
+        id: 'linkinsertion',
+        img: 'linkinsertion.jpg', imgAlt: 'A do-follow link placed in-context inside a live OA article',
+        icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.1.1l3-3a5 5 0 0 0-7.1-7.1L11.3 4.7"/><path d="M14 11a5 5 0 0 0-7.1-.1l-3 3a5 5 0 0 0 7.1 7.1l1.7-1.7"/></svg>`,
+        accent: '#001E94',
+        badge: '',
+        badgeBg: '#EEF3F8', badgeColor: '#0F766E',
+        name: 'Link Insertion',
+        price: '$599', priceUnit: 'one do-follow link',
+        short: 'Do-follow link inside a live OA article.',
+        desc: 'Insert a contextual, do-follow link to your site inside an existing OutsourceAccelerator.com article \u2014 the fastest way to place a backlink on an already-ranking page. Listicles and \u201cTop N\u201d list-of-services articles aren\u2019t eligible.',
+        bullets: [
+          'One contextual do-follow link inside a live OA article',
+          'You choose the target article and the anchor keyword',
+          'Placed naturally in-context by OA editorial',
+          'Permanent \u2014 the link stays in the article',
+          'Paste an OA article URL and see where it lands before paying'
+        ],
+        cta: 'Build & Preview \u2192',
+        tabId: 'linkinsertion'
       }
     ];
 
@@ -1082,14 +2106,15 @@ TaskUs</textarea>
       const wrap = document.getElementById('overview-tiles');
       wrap.innerHTML = OVERVIEW_PRODUCTS.map(p => {
         const sel = p.id === overviewSelectedId;
-        const cls = `oa-overview-tile${sel ? ' selected' : ''}${p.inverted ? ' inverted' : ''}`;
+        const cls = `oa-overview-tile${sel ? ' selected' : ''}${p.inverted ? ' inverted' : ''}${p.inquire ? ' inquire' : ''}`;
         const borderStyle = p.inverted ? '' : `style="border-left-color:${p.accent}"`;
         return `
           <div class="${cls}" data-product-id="${p.id}" onclick="showOverviewPreview('${p.id}')" ${borderStyle}>
+            <div class="oa-overview-tile-ico" style="background:${p.badgeBg};color:${p.accent}">${p.icon}</div>
             <div class="oa-overview-tile-body">
               ${p.badge ? `<div class="oa-overview-tile-badge" style="color:${p.badgeColor}">${p.badge}</div>` : ''}
               <h3 class="oa-overview-tile-title">${p.name}</h3>
-              <p class="oa-overview-tile-desc">${p.short}</p>
+              ${p.inquire ? `<div class="oa-overview-tile-note">✋ Inquire first</div>` : ''}
             </div>
             <div style="text-align:right">
               <div class="oa-overview-tile-price">${p.price}</div>
@@ -1117,29 +2142,126 @@ TaskUs</textarea>
             </div>
           </div>
 
-          <!-- Placeholder image -->
-          <div style="aspect-ratio:32/9;background:linear-gradient(135deg,var(--oa-navy) 0%,#002080 45%,#6D28D9 100%);border-radius:14px;margin-bottom:1.25rem;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center">
-            <span style="position:absolute;right:-50px;top:-50px;width:180px;height:180px;border-radius:50%;background:var(--oa-orange);opacity:0.22"></span>
-            <span style="position:absolute;left:-40px;bottom:-40px;width:140px;height:140px;border-radius:50%;background:var(--oa-orange);opacity:0.14"></span>
-            <span style="position:relative;z-index:1;color:rgba(255,255,255,0.55);font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700">[ Premium Bundle hero image · placeholder ]</span>
+          <p class="oa-overview-preview-desc" style="margin-bottom:1.1rem">Every Publisher Hub product on autopilot for a 6- or 12-month term — one contract, one renewal date. Three tiers map to three levels of commitment.</p>
+
+          <div class="bnd-grid">
+            <div class="bnd-tier "><div class="bnd-eyebrow">Test the waters · 6 months</div><h4>Lite</h4><div class="bnd-price"><b>$9,999</b><span>/ 6 months</span></div><span class="bnd-save">Save 44% vs à la carte</span><p class="bnd-desc">A half-year of editorial presence to test whether OA is the right channel. Article-driven mix with no long-form podcast or whitepaper assets.</p><ul class="bnd-list"><li>6 SEO articles</li><li>4 months newsletter insertion</li><li>3 months display ads</li><li>6 article mentions</li><li>1 top-list submission</li><li>Social media boost (LinkedIn + Meta)</li></ul></div>
+            <div class="bnd-tier popular"><span class="bnd-flag pop">Most popular</span><div class="bnd-eyebrow">Best for ongoing presence · 12 months</div><h4>Standard</h4><div class="bnd-price"><b>$14,999</b><span>/ 12 months</span></div><span class="bnd-save">Save 64% vs à la carte</span><p class="bnd-desc">A full year of OA coverage. Doubles every editorial channel from Lite and adds display ads, podcast, and a second top-list submission.</p><ul class="bnd-list"><li>12 SEO articles</li><li>8 months newsletter insertion</li><li>6 months display ads</li><li>12 article mentions</li><li>1 podcast interview</li><li>1 co-branded whitepaper</li><li>2 top-list submissions</li><li>Social media boost (LinkedIn + Meta)</li></ul></div>
+            <div class="bnd-tier best"><span class="bnd-flag val">Best value</span><div class="bnd-eyebrow">Everything · 12 months</div><h4>Premium</h4><div class="bnd-price"><b>$19,999</b><span>/ 12 months</span></div><span class="bnd-save">Save 74% vs à la carte</span><p class="bnd-desc">Doubles SEO articles and article mentions, full-year display ads, includes two co-branded whitepapers, and adds priority editorial review plus a dedicated success manager.</p><ul class="bnd-list"><li>24 SEO articles</li><li>12 months newsletter insertion</li><li>12 months display ads</li><li>24 article mentions</li><li>2 podcast interviews</li><li>2 co-branded whitepapers</li><li>4 top-list submissions</li><li>Social media boost (LinkedIn + Meta)</li><li>Priority editorial review on every placement</li><li>Dedicated success manager + quarterly business review</li></ul></div>
           </div>
 
-          <!-- Expanded description -->
-          <p class="oa-overview-preview-desc">Bundle every OA Media product into a 6- or 12-month package. Pay once, get every surface running on autopilot for the full term — SEO articles publishing every month, the <em>Inside Outsourcing</em> newsletter slot reserved, display ads rotating on OA News, podcast interviews scheduled, top-list submissions queued, and social boosts coordinated across LinkedIn + Meta.</p>
+          <div class="oa-overview-preview-bullets-label">Package price vs à la carte</div>
+          <table class="bnd-cmp">
+            <thead><tr><th>Tier</th><th>Package price</th><th>À la carte</th><th>You save</th></tr></thead>
+            <tbody><tr><td>Lite</td><td class="pkg">$9,999</td><td>$17,982</td><td class="sv">$7,983 (44%)</td></tr><tr><td>Standard</td><td class="pkg">$14,999</td><td>$41,962</td><td class="sv">$26,963 (64%)</td></tr><tr><td>Premium</td><td class="pkg">$19,999</td><td>$75,928</td><td class="sv">$55,929 (74%)</td></tr></tbody>
+          </table>
 
-          <p class="oa-overview-preview-desc">Three tiers map to three stages of commitment. <strong>Lite</strong> is a half-year trial of the editorial channels — perfect for testing whether OA is your right audience without locking in for a full year. <strong>Standard</strong> is the workhorse — twelve months of presence with display ads, a podcast interview, and a second top-list submission added to the mix. <strong>Premium</strong> doubles the SEO output and article mentions, unlocks whitepaper production, and adds priority editorial review plus a dedicated success manager — built for vendors who want to dominate the OA channel.</p>
+          <button class="oa-btn oa-btn-lg oa-w-full" style="background:${p.accent};color:white;border-color:${p.accent}" onclick="bookACall()">☎ Book a call</button>
+        `;
+        return;
+      }
 
-          <p class="oa-overview-preview-desc">All three tiers save dramatically vs paying per placement — <strong>47% to 72% off</strong> the à la carte equivalent. The bigger the commitment, the bigger the absolute dollar savings.</p>
+      // Co-branded Whitepaper: promotion left, cover right — form opens in a modal
+      if (id === 'whitepaper') {
+        panel.innerHTML = `
+          <div class="oa-overview-preview-head">
+            <div><h2 class="oa-overview-preview-name">${p.name}</h2></div>
+            <div class="oa-overview-preview-price-wrap">
+              <span class="oa-overview-preview-price">${p.price}</span>
+              <span class="oa-overview-preview-unit">${p.priceUnit}</span>
+            </div>
+          </div>
+          <p class="oa-overview-preview-desc">${p.desc}</p>
 
-          <!-- Tier savings recap -->
-          <div class="oa-overview-preview-bullets-label">Tier savings</div>
-          <ul class="oa-overview-preview-bullets" style="margin-bottom:1.5rem">
-            <li><strong>Lite</strong> · $9,999 / 6 mo — save ~$9,000 (47%)</li>
-            <li><strong>Standard</strong> · $14,999 / yr — save ~$31,000 (67%)</li>
-            <li><strong>Premium</strong> · $19,999 / yr — save ~$52,000 (72%)</li>
-          </ul>
+          <div class="wp-split">
+            <div class="wp-promo" style="margin-bottom:0">
+              <div class="wp-promo-head">
+                <h4>📣 Promotion across the OA domain</h4>
+                <span class="wp-promo-flag">No extra cost</span>
+              </div>
+              <p>Every whitepaper includes a full launch campaign — the same placements sold separately elsewhere in this marketplace.</p>
+              <ul>
+                <li><span class="ic">📧</span><strong>Inside Outsourcing newsletter</strong><span class="v">$1,999</span></li>
+                <li><span class="ic">📝</span><strong>2 stand-alone articles on OA.com</strong><span class="v">$1,198</span></li>
+                <li><span class="ic">🖼️</span><strong>Display ads across OA · 3 months</strong><span class="v">$2,999</span></li>
+                <li><span class="ic">🎙</span><strong>Podcast appearance with Derek</strong><span class="v">$1,999</span></li>
+                <li><span class="ic">📱</span><strong>Social boost · LinkedIn + Meta</strong><span class="v">Included</span></li>
+              </ul>
+              <div class="wp-promo-foot">
+                <div class="l">Amplification à la carte<span>Before the whitepaper production itself</span></div>
+                <div class="r"><s>$8,195</s><b>Included</b></div>
+              </div>
+            </div>
+            <div class="wp-cover">
+              <img src="img/whitepaper-cover.jpg" alt="An Outsource Accelerator whitepaper cover" loading="lazy">
+            </div>
+          </div>
 
-          <button class="oa-btn oa-btn-lg oa-w-full" style="background:${p.accent};color:white;border-color:${p.accent}" onclick="showTab('${p.tabId}', document.querySelector('[data-tab=${p.tabId}]'))">${p.cta}</button>
+          <div class="wp-note"><b>✋ Inquire first — limited slots available.</b> Every whitepaper is scoped individually. Tell us the topic, angle and page count you want, and we come back with scope, timeline and price to sign off.</div>
+
+          <button class="oa-btn oa-btn-lg oa-w-full" style="background:${p.accent};color:white;border-color:${p.accent}" onclick="openInquiry('whitepaper')">✋ Send inquiry</button>
+        `;
+        return;
+      }
+
+      // Podcast Interview: what you get left, artwork right — form opens in a modal
+      if (id === 'podcast') {
+        panel.innerHTML = `
+          <div class="oa-overview-preview-head">
+            <div><h2 class="oa-overview-preview-name">${p.name}</h2></div>
+            <div class="oa-overview-preview-price-wrap">
+              <span class="oa-overview-preview-price">${p.price}</span>
+              <span class="oa-overview-preview-unit">${p.priceUnit}</span>
+            </div>
+          </div>
+          <p class="oa-overview-preview-desc">${p.desc}</p>
+
+          <div class="wp-split">
+            <div>
+              <div class="oa-overview-preview-bullets-label">What you get</div>
+              <ul class="oa-overview-preview-bullets" style="margin-bottom:0">
+                ${p.bullets.map(function(b){ return `<li>${b}</li>`; }).join('')}
+              </ul>
+            </div>
+            <div class="wp-cover">
+              <img src="img/podcast.jpg" alt="Outsource Accelerator Podcast episode artwork" loading="lazy">
+            </div>
+          </div>
+
+          <div class="wp-note"><b>✋ Inquire first — limited slots available.</b> Pitch your episode angle, we propose 1-2 recording dates, and nothing is charged until the angle and date are agreed.</div>
+
+          <button class="oa-btn oa-btn-lg oa-w-full" style="background:${p.accent};color:white;border-color:${p.accent}" onclick="openInquiry('podcast')">✋ Send inquiry</button>
+        `;
+        return;
+      }
+
+      // Top List Inclusion: what you get left, list preview right — form opens in a modal
+      if (id === 'toplist') {
+        panel.innerHTML = `
+          <div class="oa-overview-preview-head">
+            <div><h2 class="oa-overview-preview-name">${p.name}</h2></div>
+            <div class="oa-overview-preview-price-wrap">
+              <span class="oa-overview-preview-price">${p.price}</span>
+              <span class="oa-overview-preview-unit">${p.priceUnit}</span>
+            </div>
+          </div>
+          <p class="oa-overview-preview-desc">${p.desc}</p>
+
+          <div class="wp-split">
+            <div>
+              <div class="oa-overview-preview-bullets-label">What you get</div>
+              <ul class="oa-overview-preview-bullets" style="margin-bottom:0">
+                ${p.bullets.map(function(b){ return `<li>${b}</li>`; }).join('')}
+              </ul>
+            </div>
+            <div class="wp-cover">
+              <img src="img/toplist.jpg" alt="A live OA top-list article showing its ranked entries" loading="lazy">
+            </div>
+          </div>
+
+          <div class="wp-note"><b>✋ Inquire first — limited slots available.</b> We assess fit and send a proposal within 2 business days, and you only pay once you accept it. Every list is editorially curated — acceptance is <b>not</b> guaranteed, and rejected submissions are refunded in full.</div>
+
+          <button class="oa-btn oa-btn-lg oa-w-full" style="background:${p.accent};color:white;border-color:${p.accent}" onclick="openInquiry('toplist')">✋ Send inquiry</button>
         `;
         return;
       }
@@ -1157,10 +2279,15 @@ TaskUs</textarea>
           </div>
         </div>
         <p class="oa-overview-preview-desc">${p.desc}</p>
-        <div class="oa-overview-preview-bullets-label">What's included</div>
-        <ul class="oa-overview-preview-bullets">
-          ${p.bullets.map(b => `<li>${b}</li>`).join('')}
-        </ul>
+        <div class="wp-split wide">
+          <div>
+            <div class="oa-overview-preview-bullets-label">What's included</div>
+            <ul class="oa-overview-preview-bullets" style="margin-bottom:0">
+              ${p.bullets.map(b => `<li>${b}</li>`).join('')}
+            </ul>
+          </div>
+          ${p.img ? `<div class="wp-cover"><img src="img/${p.img}" alt="${p.imgAlt}" loading="lazy"></div>` : ''}
+        </div>
         <button class="oa-btn oa-btn-lg oa-w-full" style="background:${p.accent};color:white;border-color:${p.accent}" onclick="showTab('${p.tabId}', document.querySelector('[data-tab=${p.tabId}]'))">${p.cta}</button>
       `;
     }
@@ -1579,6 +2706,108 @@ TaskUs</textarea>
       if (failing > 0) { overall.textContent = `${failing} blocking issue${failing > 1 ? 's' : ''}`; overall.className = 'oa-badge oa-badge-red'; }
       else if (warning > 0) { overall.textContent = `${warning} warning${warning > 1 ? 's' : ''}`; overall.className = 'oa-badge oa-badge-orange'; }
       else { overall.textContent = 'Ready to publish'; overall.className = 'oa-badge oa-badge-green'; }
+    }
+
+
+    // =======================================================
+    // INQUIRY MODAL — shared by the three inquire-first products
+    // =======================================================
+    const INQUIRY = {
+      whitepaper: {
+        title: 'Co-branded Whitepaper — inquiry',
+        note: 'Every whitepaper is scoped individually. Tell us what you want to publish and we come back with scope, timeline and price to sign off.',
+        fields: [
+          {l:'Company name',   r:true,  p:'Acme Solutions'},
+          {l:'Company URL',    r:true,  p:'yourcompany.com', pre:'https://'},
+          {l:'Whitepaper topic', r:true, p:'e.g. The 2027 state of offshore CX'},
+          {l:'Contact name',   r:true,  p:'Jane Dela Cruz'},
+          {l:'Contact email',  r:true,  p:'jane@yourcompany.com', t:'email'},
+          {l:'Mobile phone',   r:false, p:'', dial:true}
+        ]
+      },
+      podcast: {
+        title: 'Podcast Interview — inquiry',
+        note: 'Pitch your episode angle. We propose 1-2 recording dates and nothing is charged until the angle and date are agreed.',
+        fields: [
+          {l:'Guest name',    r:true, p:'Jane Dela Cruz'},
+          {l:'Job title',     r:true, p:'VP of Operations'},
+          {l:'Company',       r:true, p:'Acme Solutions'},
+          {l:'Company URL',   r:true, p:'yourcompany.com', pre:'https://'},
+          {l:'Contact email', r:true, p:'jane@yourcompany.com', t:'email'},
+          {l:'Episode angle', r:true, p:'What can this guest say that nobody else can? 2–3 sentences.', area:true},
+          {l:'3 talking points', r:false, p:'One per line', area:true}
+        ]
+      },
+      toplist: {
+        title: 'Top List Inclusion — inquiry',
+        note: 'Submitting a URL is free. We assess fit and send a proposal within 2 business days, and you only pay once you accept it.',
+        fields: [
+          {l:'Top-list URL you want to be in', r:true, p:'https://outsourceaccelerator.com/articles/top-...'},
+          {l:'Product / company name', r:true, p:'Acme Solutions'},
+          {l:'Website URL',   r:true, p:'yourcompany.com', pre:'https://'},
+          {l:'Tagline',       r:true, p:'One line, 80 characters or fewer'},
+          {l:'Contact email', r:true, p:'jane@yourcompany.com', t:'email'},
+          {l:'Why does this list need you in it?', r:true, p:'What do you offer that the current entries don\u2019t? Name customers if you can.', area:true}
+        ]
+      }
+    };
+
+    function inqField(f) {
+      const req = f.r ? ' <i>*</i>' : '';
+      let ctrl;
+      if (f.area) {
+        ctrl = `<textarea rows="3" placeholder="${f.p}"></textarea>`;
+      } else if (f.pre) {
+        ctrl = `<div class="wp-grp"><span class="wp-pre">${f.pre}</span><input placeholder="${f.p}"></div>`;
+      } else if (f.dial) {
+        ctrl = `<div class="wp-grp"><select><option>US +1</option><option>PH +63</option><option>UK +44</option><option>AU +61</option></select><input placeholder=""></div>`;
+      } else {
+        ctrl = `<input type="${f.t || 'text'}" placeholder="${f.p}">`;
+      }
+      return `<div class="wp-field"><label>${f.l}${req}</label>${ctrl}</div>`;
+    }
+
+    function openInquiry(id) {
+      const q = INQUIRY[id];
+      if (!q) return;
+      const m = document.getElementById('inq-modal');
+      m.innerHTML = `
+        <div class="inq-card" role="dialog" aria-modal="true">
+          <div class="inq-head">
+            <div><h3>${q.title}</h3><p>${q.note}</p></div>
+            <button class="inq-x" onclick="closeInquiry()" aria-label="Close">&times;</button>
+          </div>
+          <div class="inq-body">${q.fields.map(inqField).join('')}</div>
+          <div class="inq-foot">
+            <button class="inq-cancel" onclick="closeInquiry()">Cancel</button>
+            <button class="inq-send" onclick="closeInquiry();submitInquiry('${q.title.split(' \u2014 ')[0]}')">Send inquiry</button>
+          </div>
+        </div>`;
+      m.classList.add('open');
+    }
+
+    function closeInquiry() {
+      document.getElementById('inq-modal').classList.remove('open');
+    }
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeInquiry(); });
+
+    function submitInquiry(product) {
+      alert(product + ' inquiry sent\n\nIn the live product this routes to the OA editorial team, who come back with fit, timing and final price to sign off before anything is charged.');
+    }
+    function submitWhitepaperInquiry() { submitInquiry('Co-branded Whitepaper'); }
+
+    function bookACall() {
+      alert('Book a call\n\nIn the live product this opens the OA scheduling link so a vendor can pick a slot. Bundles are quoted and contracted on that call \u2014 nothing is charged beforehand.');
+    }
+
+    function addLinkInsertionToCart() {
+      const url = (document.getElementById('li-url') || {}).value;
+      addToCart({
+        kind: 'Link Insertion',
+        title: url ? ('Link into ' + url) : 'Link insertion \u2014 article TBC',
+        price: 599
+      });
+      openCart();
     }
 
     function addGuestPostToCart() {
@@ -2247,155 +3476,12 @@ TaskUs</textarea>
     }
 
     // =======================================================
-    // CUSTOM WHITEPAPER — preview
+    // CUSTOM WHITEPAPER — fixed-scope product, no builder
     // =======================================================
-    function setBriefMode(mode) {
-      document.getElementById('wp-brief-modes').style.display = mode ? 'none' : 'grid';
-      document.getElementById('wp-brief-link').style.display = mode === 'link' ? 'block' : 'none';
-      document.getElementById('wp-brief-upload').style.display = mode === 'upload' ? 'block' : 'none';
-    }
-    function handleBriefFile() {
-      const f = document.getElementById('wp-brief-file').files[0];
-      const info = document.getElementById('wp-brief-info');
-      if (f) {
-        info.innerHTML = `<span style="color:var(--oa-green);font-weight:600">✓ ${f.name}</span> · ${(f.size/1024).toFixed(1)} KB · attached to brief`;
-      } else {
-        info.textContent = '';
-      }
-    }
-
-    function renderWhitepaperPreview() {
-      const title = document.getElementById('wp-title').value;
-      const brand = document.getElementById('wp-brand').value;
-      const color = document.getElementById('wp-color').value || '#7C3AED';
-      const angle = document.getElementById('wp-angle').value;
-      const chaptersText = document.getElementById('wp-chapters').value;
-      const foreword = document.getElementById('wp-foreword').value;
-      const logo = document.getElementById('wp-logo').value;
-      const crm = document.getElementById('wp-crm') ? document.getElementById('wp-crm').value : 'HubSpot';
-
-      const chapters = chaptersText.split(/\n/).map(s => s.trim()).filter(Boolean);
-
-      // Whitepaper cover preview
-      const coverHtml = `
-        <div style="width:280px;height:380px;background:linear-gradient(165deg,var(--oa-navy) 0%,#002080 60%,${color} 130%);border-radius:8px;padding:1.5rem;color:white;display:flex;flex-direction:column;box-shadow:0 18px 40px rgba(0,0,0,0.2);position:relative;overflow:hidden">
-          <div style="position:absolute;top:-30px;right:-30px;width:140px;height:140px;border-radius:50%;background:${color};opacity:0.25"></div>
-          <div style="display:flex;align-items:center;justify-content:space-between;font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;opacity:0.85;margin-bottom:1.5rem">
-            <span>OA Research</span>
-            <span>2026</span>
-          </div>
-          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.06em;color:#6B92E5;font-weight:700;margin-bottom:0.85rem">Whitepaper · ${chapters.length} chapters</div>
-          <h2 style="font-size:1.45rem;line-height:1.2;margin:0 0 1rem 0;font-weight:800">${escapeHtml(title || 'Whitepaper title')}</h2>
-          <p style="font-size:0.75rem;opacity:0.85;line-height:1.5;margin:0">A co-produced research report from Outsource Accelerator and ${escapeHtml(brand || 'sponsor')}.</p>
-          <div style="margin-top:auto;padding-top:1rem;border-top:1px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:space-between;gap:0.5rem">
-            <div style="font-size:0.65rem">
-              <div style="opacity:0.7">PUBLISHED BY</div>
-              <strong>OutsourceAccelerator</strong>
-            </div>
-            <div style="font-size:0.65rem;text-align:right">
-              <div style="opacity:0.7">IN PARTNERSHIP WITH</div>
-              ${logo ? `<img src="${logo}" style="max-width:100px;max-height:24px;filter:brightness(0) invert(1)" />` : `<strong>${escapeHtml(brand || 'BRAND')}</strong>`}
-            </div>
-          </div>
-        </div>
-      `;
-
-      document.getElementById('wp-preview').innerHTML = `
-        <!-- Landing page mockup -->
-        <div class="oa-article-preview oa-mb-2">
-          <div class="oa-article-header">
-            <div style="display:flex;align-items:center;gap:0.5rem">
-              <span class="oa-logo-dot" style="width:18px;height:18px"></span>
-              <strong>OutsourceAccelerator</strong> · The Source · Whitepapers
-            </div>
-            <div class="oa-article-header-nav">
-              <span>Industry</span><span>Articles</span><span>Research</span>
-            </div>
-          </div>
-          <div style="padding:2.5rem 2rem;background:linear-gradient(135deg,#EEF3F8 0%,white 60%);display:grid;grid-template-columns:1.1fr 280px;gap:2rem;align-items:center">
-            <div>
-              <div class="oa-article-breadcrumb">The Source › Whitepapers › ${escapeHtml(brand || 'Sponsor')}</div>
-              <span class="oa-badge" style="background:#E0F2FE;color:#0EA5E9;margin-top:0.5rem">Gated download · Free</span>
-              <h1 style="font-size:1.6rem;font-weight:800;color:var(--oa-navy);margin:0.75rem 0 0.5rem 0;line-height:1.2">${escapeHtml(title || 'Whitepaper title')}</h1>
-              <p style="color:var(--oa-muted);line-height:1.6;font-size:0.9rem">${escapeHtml(angle || 'Description goes here.')}</p>
-              <div style="margin-top:1rem;display:flex;gap:1.5rem;font-size:0.75rem;color:var(--oa-muted)">
-                <div>📄 ${chapters.length || '15'} chapters</div>
-                <div>👤 Foreword by ${escapeHtml(foreword || 'sponsor exec')}</div>
-                <div>📅 ${new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}</div>
-              </div>
-              <!-- Download form -->
-              <div style="margin-top:1.5rem;background:white;border:1px solid var(--oa-border);border-radius:10px;padding:1.25rem;max-width:340px;box-shadow:0 4px 12px rgba(0,0,0,0.04)">
-                <div style="font-weight:700;font-size:0.85rem;margin-bottom:0.5rem;color:var(--oa-navy)">Download the report</div>
-                <input class="oa-input" placeholder="Work email" style="font-size:0.8rem;padding:0.45rem 0.6rem;margin-bottom:0.4rem" disabled />
-                <input class="oa-input" placeholder="Company" style="font-size:0.8rem;padding:0.45rem 0.6rem;margin-bottom:0.6rem" disabled />
-                <button class="oa-btn oa-btn-accent oa-w-full oa-btn-sm" style="background:${color};border-color:${color}">Get the whitepaper →</button>
-                <p class="oa-text-xs oa-text-muted" style="margin:0.5rem 0 0 0;text-align:center">By downloading, you agree to share your details with ${escapeHtml(brand || 'the sponsor')}.</p>
-              </div>
-            </div>
-            <div style="display:flex;justify-content:center">${coverHtml}</div>
-          </div>
-        </div>
-
-        <!-- Table of contents preview -->
-        <div class="oa-grid oa-grid-2" style="gap:1rem">
-          <div class="oa-card">
-            <h3 class="oa-card-title">Table of contents</h3>
-            ${chapters.length ? `
-              <ol style="margin:0;padding-left:1.25rem;line-height:1.85;font-size:0.85rem">
-                ${chapters.map(c => `<li>${escapeHtml(c)}</li>`).join('')}
-              </ol>
-            ` : '<p class="oa-text-muted oa-text-sm">Add chapters in the brief to see the TOC.</p>'}
-          </div>
-          <div class="oa-card" style="background:var(--oa-navy);color:white;border:none">
-            <h3 class="oa-card-title" style="color:white">📣 Promotion across the OA domain</h3>
-            <p style="font-size:0.72rem;color:rgba(255,255,255,0.65);margin:0 0 0.85rem 0">Included at no extra cost · leads pushed to <strong style="color:white">${escapeHtml(crm)}</strong> in real time</p>
-            <div style="display:flex;flex-direction:column;gap:0.7rem;font-size:0.85rem">
-              <div style="display:flex;gap:0.7rem;align-items:flex-start">
-                <span style="font-size:1.1rem;flex-shrink:0;line-height:1.2">📧</span>
-                <div>
-                  <strong>Inside Outsourcing newsletter</strong>
-                  <div style="opacity:0.72;font-size:0.75rem;margin-top:0.1rem;line-height:1.45">One-month feature across all editions · 600K+ email sends / month</div>
-                </div>
-              </div>
-              <div style="display:flex;gap:0.7rem;align-items:flex-start">
-                <span style="font-size:1.1rem;flex-shrink:0;line-height:1.2">📝</span>
-                <div>
-                  <strong>Stand-alone articles</strong>
-                  <div style="opacity:0.72;font-size:0.75rem;margin-top:0.1rem;line-height:1.45">2 articles unpacking your findings, with links to the download</div>
-                </div>
-              </div>
-              <div style="display:flex;gap:0.7rem;align-items:flex-start">
-                <span style="font-size:1.1rem;flex-shrink:0;line-height:1.2">🖼️</span>
-                <div>
-                  <strong>Display ads on OA.com</strong>
-                  <div style="opacity:0.72;font-size:0.75rem;margin-top:0.1rem;line-height:1.45">3 months of in-article banners promoting the download</div>
-                </div>
-              </div>
-              <div style="display:flex;gap:0.7rem;align-items:flex-start">
-                <span style="font-size:1.1rem;flex-shrink:0;line-height:1.2">📱</span>
-                <div>
-                  <strong>Social boost</strong>
-                  <div style="opacity:0.72;font-size:0.75rem;margin-top:0.1rem;line-height:1.45">OA's official LinkedIn + Meta channels</div>
-                </div>
-              </div>
-              <div style="display:flex;gap:0.7rem;align-items:flex-start">
-                <span style="font-size:1.1rem;flex-shrink:0;line-height:1.2">🎙</span>
-                <div>
-                  <strong>Podcast appearance</strong>
-                  <div style="opacity:0.72;font-size:0.75rem;margin-top:0.1rem;line-height:1.45">Your exec joins Derek Gallimore for an episode discussing the findings</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
     function addWhitepaperToCart() {
-      const title = document.getElementById('wp-title').value;
       addToCart({
-        kind: 'Custom Whitepaper',
-        title: title || 'Custom whitepaper',
+        kind: 'Co-branded Whitepaper',
+        title: 'Custom whitepaper + full OA amplification',
         price: 3999
       });
       openCart();
@@ -2687,9 +3773,9 @@ TaskUs</textarea>
         addToCart({
           kind: `Top-List Submission · Custom URL · 7-14 day review · final price quoted in 24h`,
           title: `${name || 'Submission'} → ${customUrl}`,
-          price: 2499 // placeholder; actual fee is quoted post-review in the $1,299-$4,499 range
+          price: 1999 // placeholder; actual fee is quoted post-review in the $999-$4,499 range
         });
-        alert(`Your custom-URL submission has been added to the cart.\n\nURL: ${customUrl}\nFee: To be quoted within 24 hours ($1,299 – $4,499 range, based on list traffic and competitiveness).\n\nThe $2,499 placeholder shown in cart will be adjusted to the actual tier before charge. Full refund if you don't proceed or if the submission is rejected.`);
+        alert(`Your custom-URL submission has been added to the cart.\n\nURL: ${customUrl}\nFee: Proposal within 2 business days ($999 – $4,499 range, based on list traffic and competitiveness).\n\nThe $2,499 placeholder shown in cart will be adjusted to the actual tier before charge. Full refund if you don't proceed or if the submission is rejected.`);
         openCart();
         return;
       }
@@ -2710,7 +3796,6 @@ TaskUs</textarea>
     renderNewsletterPreview();
     renderPodcastPreview();
     renderTopListPreview();
-    renderWhitepaperPreview();
   </script>
 </body>
 </html>

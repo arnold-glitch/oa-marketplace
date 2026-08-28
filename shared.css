@@ -333,7 +333,7 @@ a { color: inherit; }
 /* Overview tile + preview pattern (marketplace.html overview tab) */
 .oa-overview-tile {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.85rem;
   padding: 0.85rem 1rem;
   background: white;
@@ -519,10 +519,32 @@ a { color: inherit; }
   color: white;
 }
 .oa-overview-tile-body { flex: 1; min-width: 0; }
+/* inquire-first products */
+.oa-overview-tile.inquire {
+  background: #FFFBEB;
+  border-color: #F6D774;
+  border-left-color: #EAB308 !important;
+}
+.oa-overview-tile.inquire:hover { border-color: #D9A400; border-left-color: #D9A400 !important; }
+.oa-overview-tile.inquire.selected { border-color: #D9A400; box-shadow: 0 0 0 3px rgba(234,179,8,0.15); }
+.oa-overview-tile.inquire .oa-overview-tile-ico { background: #FDF2C8 !important; color: #A16207 !important; }
+.oa-overview-tile-note {
+  font-size: 0.58rem; font-weight: 800; letter-spacing: 0.08em;
+  text-transform: uppercase; color: #A16207; margin-top: 0.15rem;
+}
+
+.oa-overview-tile-ico {
+  width: 34px; height: 34px; border-radius: 9px; flex: none;
+  display: flex; align-items: center; justify-content: center;
+}
+.oa-overview-tile-ico svg { width: 17px; height: 17px; }
+.oa-overview-tile.inverted .oa-overview-tile-ico {
+  background: rgba(255,255,255,0.14) !important; color: white !important;
+}
 .oa-overview-tile-badge {
-  font-size: 0.65rem; letter-spacing: 0.05em;
+  font-size: 0.57rem; letter-spacing: 0.03em;
   text-transform: uppercase; font-weight: 700;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.2rem; white-space: nowrap;
 }
 .oa-overview-tile-title {
   font-size: 0.95rem;
@@ -2052,7 +2074,7 @@ a { color: inherit; }
   font-size: 1.1rem;
 }
 
-/* OA Media interactive tiles */
+/* Publisher Hub interactive tiles */
 .ad-tile {
   display: flex;
   align-items: flex-start;
